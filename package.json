@@ -1,0 +1,26 @@
+{
+  "name": "react-redux-todo",
+  "version": "1.0.0",
+  "description": "react-redux app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gbophuk0s98/react-redux-todo.git"
+  },
+  "keywords": [
+    "mern",
+    "stack"
+  ],
+  "author": "Pavel Surta <surta.iit1@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gbophuk0s98/react-redux-todo/issues"
+  },
+  "homepage": "https://github.com/gbophuk0s98/react-redux-todo#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
