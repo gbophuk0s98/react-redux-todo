@@ -8,8 +8,8 @@ router.get('/register', async (req, res) => {
     }
     catch (e)
     {
-        
+
     }
 })
 
-export default router
+module.exports = router
