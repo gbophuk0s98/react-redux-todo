@@ -17,7 +17,6 @@ const reducer = (state = initialState, action) => {
             console.log('TEST_ACTION')
             return state
         default:
-            return "hello"
             return state
     }
 }
