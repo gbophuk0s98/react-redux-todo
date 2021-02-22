@@ -1,9 +1,22 @@
 const express = require('express')
+const mongo = require('mongoose')
 const app = express()
+const PORT = process.env.PORT || 8080
 
 app.use(express.json({ extended: true }))
-app.use('/api/auth/', require('./routes/routes'))
+app.use('/api/auth/', require('./routes/auth.routes'))
 
-app.listen(8080, () => {
-    console.log('server')
+app.listen(PORT, async () => {
+    try
+    {
+        await mongo.connect('mongodb://127.0.0.1:27017', {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        })
+        console.log(`Сервер работает на порту ${PORT}`)
+    }
+    catch (e) 
+    {
+        console.error(e)
+    }
 })
