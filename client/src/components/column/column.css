@@ -1,0 +1,37 @@
+.column {
+    height: max-content;
+    min-height: 100px;
+    max-width: 300px;
+    width: 100%;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    border: 2px solid #7d7d7d;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    color: #201E1E;
+}
+
+.column-title {
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+    font-size: 20px;
+}
+  
+.do-it-column {
+    background-color: #fff0f0;
+}
+  
+.in-progress-column {
+    background-color: #fef2e7;
+}
+  
+.awaiting-review-column {
+    background-color: #fffada;
+}
+  
+.done-column {
+    background-color: #f5ffe5;
+}

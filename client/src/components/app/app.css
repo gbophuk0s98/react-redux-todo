@@ -1,8 +1,14 @@
-.app {
+ .app {
     width: 100%;
     height: 100vh;
 }
 
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+/*
 .cards-list{
     max-width: 100%;
     display: inline-flex;
@@ -36,5 +42,10 @@
     border-radius: 6px;
     margin: 5px 0;
     cursor: grab;
-    /* background-color: #fcfcf9; */
-}
+    background-color: #fcfcf9;
+} */
+
+p {
+    font-family: DavidLibre, serif;
+    font-weight: bold;
+  }
