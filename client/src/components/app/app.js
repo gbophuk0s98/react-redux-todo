@@ -49,16 +49,16 @@ export const App = () => {
 	return (
 		<div className="container">
 			<DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
-				<Column title={DO_IT} className='column do-it-column'>
+				<Column title={DO_IT} className='card border-light mb-3'>
 					{returnItemsForColumn(DO_IT)}
 				</Column>
-				<Column title={IN_PROGRESS} className='column in-progress-column'>
+				<Column title={IN_PROGRESS} className='card border-light mb-3'>
 					{returnItemsForColumn(IN_PROGRESS)}
 				</Column>
-				<Column title={AWAITING_REVIEW} className='column awaiting-review-column'>
+				<Column title={AWAITING_REVIEW} className='card border-light mb-3'>
 					{returnItemsForColumn(AWAITING_REVIEW)}
 				</Column>
-				<Column title={DONE} className='column done-column'>
+				<Column title={DONE} className='card border-light mb-3'>
 					{returnItemsForColumn(DONE)}
 				</Column>
 			</DndProvider>

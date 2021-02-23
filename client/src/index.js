@@ -19,11 +19,11 @@ ReactDOM.render(
         <Provider store={store}>
             <Router>
                 <Switch>
-                    <Route path="/">
+                    <Route path="/home">
                         <Header />
                         <App />
                     </Route>
-                    <Redirect to="/" />
+                    <Redirect to="/home" />
                 </Switch>
             </Router>
         </Provider>

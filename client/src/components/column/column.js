@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDrop } from 'react-dnd'
 import COLUMN_NAMES from '../../constants'
 
@@ -6,6 +6,7 @@ import './column.css'
 
 export const Column = ({ children, className, title }) => {
 	
+	const [classes, setClasses] = useState(className)
 	const [{ isOver, canDrop }, drop] = useDrop(() => ({
 		accept: 'Our first type',
 		drop: () => ({ name: title }),
@@ -26,16 +27,19 @@ export const Column = ({ children, className, title }) => {
 
 	const getBackgroundColor = () => {
 		if (isOver) {
-			if (canDrop) return 'rgb(188, 251, 255)'
-			return 'rgb(255, 188, 188)'
+			if (canDrop) return 'rgb(0, 188, 140)'
+			return 'rgb(231, 76, 60)'
 		}
 		return ''
 	}
 
 	return (
 		<div ref={drop} className={className} style={{backgroundColor: getBackgroundColor()}}>
-			<div className="column-title">{title}</div>
-			{children}
+			{/* <div className="column-title">{title}</div> */}
+			<div className="card-header column-title">{title}</div>
+				<div className="card-body">
+					{children}
+				</div>
 		</div>
 	)
 }
