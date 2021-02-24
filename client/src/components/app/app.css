@@ -9,7 +9,8 @@
     justify-content: space-around;
     flex-wrap: wrap;
     max-width: 100%;
-  }
+    margin-top: 10px;
+}
 
 p {
     font-family: DavidLibre, serif;

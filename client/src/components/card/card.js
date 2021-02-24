@@ -2,12 +2,12 @@ import React from 'react'
 import { useDrop } from 'react-dnd'
 import COLUMN_NAMES from '../../constants'
 
-import './column.css'
+import './card.css'
 
-export const Column = ({ children, className, title }) => {
+export const Card = ({ children, title }) => {
 	
 	const [{ isOver, canDrop }, drop] = useDrop(() => ({
-		accept: 'Our first type',
+		accept: 'Card',
 		drop: () => ({ name: title }),
 		collect: (monitor) => ({
             isOver: monitor.isOver(),
@@ -33,12 +33,11 @@ export const Column = ({ children, className, title }) => {
 	}
 
 	return (
-		<div ref={drop} className={className} style={{backgroundColor: getBackgroundColor()}}>
-			{/* <div className="column-title">{title}</div> */}
+		<div ref={drop} className="card border-light mb-3" style={{backgroundColor: getBackgroundColor()}}>
 			<div className="card-header column-title">{title}</div>
-				<div className="card-body">
-					{children}
-				</div>
+			<div className="card-body">
+				{children}
+			</div>
 		</div>
 	)
 }

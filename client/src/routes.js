@@ -8,15 +8,17 @@ export const useRoutes = (isAuthenticated = true) => {
     return (
         <>
         <Header />
-        <Switch>
-            <Route path="/home" exact>
-                <CardPage />
-            </Route>
-            <Route path="/about" exact>
-                <AboutPage />
-            </Route>
-            <Redirect to="/home" />
-        </Switch>
+        <div className="container">
+            <Switch>
+                <Route path="/cards" exact>
+                    <CardPage />
+                </Route>
+                <Route path="/about" exact>
+                    <AboutPage />
+                </Route>
+                <Redirect to="/home" />
+            </Switch>
+        </div>
         </>
     )
 }

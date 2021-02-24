@@ -5,47 +5,42 @@ import COLUMN_NAMES from '../../constants'
 
 import './movable-item.css'
 
-export const MovableItem = ({ name, index, moveCardHandler, currentColumnName, setItems }) => {
+export const MovableItem = ({ name, index, id, moveCardHandler, currentColumnName, setItems }) => {
 
     const ref = useRef(null)
     const [, drop] = useDrop(() => ({
-        accept: 'Our first type',
+        accept: 'Card',
         hover(item, monitor) {
-            if (!ref.current) {
-                return;
-            }
+            if (!ref.current) return
             const dragIndex = item.index;
             const hoverIndex = index;
-            
-            if (dragIndex === hoverIndex) {
-                return;
-            }
-            
+            console.log(1)
+            if (dragIndex === hoverIndex) return
+            console.log(2)
             const hoverBoundingRect = ref.current?.getBoundingClientRect()
-            
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-            
             const clientOffset = monitor.getClientOffset()
             
             const hoverClientY = clientOffset.y - hoverBoundingRect.top
 
-            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-                return;
-            }
+            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return
+			console.log(3)
             
-            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-                return;
-            }
+            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return
+			console.log(4)
             
-            moveCardHandler(dragIndex, hoverIndex)
+			console.log(item.currentColumnName)
+
+            moveCardHandler(dragIndex, hoverIndex, item.currentColumnName)
 
             item.index = hoverIndex
         },
     }), [index, moveCardHandler])
 
     const [{ isDragging }, drag] = useDrag(() => ({
-		item: { index, name, currentColumnName, type: 'Our first type'},
+		item: { index, id, name, currentColumnName, type: 'Card'},
 		end: (item, monitor) => {
+			console.log(item)
 			const dropResult = monitor.getDropResult()
 			if (dropResult){
 				const { name } = dropResult
@@ -78,7 +73,7 @@ export const MovableItem = ({ name, index, moveCardHandler, currentColumnName, s
 			return prevState.map(e => {
 				return {
 					...e,
-					column: e.name === currentItem.name ? columnName: e.column,
+					column: e.id === currentItem.id ? columnName: e.column,
 				}
 			})
 		})

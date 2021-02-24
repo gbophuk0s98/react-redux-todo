@@ -1,30 +1,25 @@
 import React, { useState } from 'react'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { TouchBackend } from 'react-dnd-touch-backend'
 
 import COLUMN_NAMES from '../../constants'
-import Column from '../column'
+import Card from '../card'
 import MovableItem from '../movable-item'
 import tasks from '../../tasks'
 
 export const CardPage = () => {
 
     const [items, setItems] = useState(tasks)
-	const isMobile = window.innerWidth < 600
-
 	const { DO_IT, IN_PROGRESS, AWAITING_REVIEW, DONE } = COLUMN_NAMES
 
-	const moveCardHandler = (dragIndex, hoverIndex) => {
+	const moveCardHandler = (dragIndex, hoverIndex, columnName) => {
 		const dragItem = items[dragIndex]
-		if (dragItem) {
+		console.log('dragItem', dragItem)
+
+		if (dragItem && dragItem.column===columnName) {
 			setItems(prevState => {
 				const coppiedStateArray = [...prevState]
-
+				console.log(coppiedStateArray)
 				const prevItem = coppiedStateArray.splice(hoverIndex, 1, dragItem)
-
 				coppiedStateArray.splice(dragIndex, 1, prevItem[0])
-				
 				return coppiedStateArray
 			})
 		}
@@ -39,27 +34,27 @@ export const CardPage = () => {
 					name={item.name}
 					setItems={setItems}
 					index={index}
+					id={item.id}
 					currentColumnName={item.column}
 					moveCardHandler={moveCardHandler}
 				/>))
 	}
+	
 
     return(
-        <div className="container">
-			<DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
-				<Column title={DO_IT} className='card border-light mb-3'>
-					{returnItemsForColumn(DO_IT)}
-				</Column>
-				<Column title={IN_PROGRESS} className='card border-light mb-3'>
-					{returnItemsForColumn(IN_PROGRESS)}
-				</Column>
-				<Column title={AWAITING_REVIEW} className='card border-light mb-3'>
-					{returnItemsForColumn(AWAITING_REVIEW)}
-				</Column>
-				<Column title={DONE} className='card border-light mb-3'>
-					{returnItemsForColumn(DONE)}
-				</Column>
-			</DndProvider>
-		</div>
+		<>
+			<Card title={DO_IT}>
+				{returnItemsForColumn(DO_IT)}
+			</Card>
+			<Card title={IN_PROGRESS}>
+				{returnItemsForColumn(IN_PROGRESS)}
+			</Card>
+			<Card title={AWAITING_REVIEW}>
+				{returnItemsForColumn(AWAITING_REVIEW)}
+			</Card>
+			<Card title={DONE}>
+				{returnItemsForColumn(DONE)}
+			</Card>
+		</>
     )
 }

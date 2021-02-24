@@ -15,22 +15,7 @@
 .column-title {
     width: 100%;
     text-align: center;
-    font-weight: 700;
+    font-weight: 500;
     font-size: 20px;
-}
-  
-.do-it-column {
-    background-color: #fff0f0;
-}
-  
-.in-progress-column {
-    background-color: #fef2e7;
-}
-  
-.awaiting-review-column {
-    background-color: #fffada;
-}
-  
-.done-column {
-    background-color: #f5ffe5;
+    color: #fff;
 }
