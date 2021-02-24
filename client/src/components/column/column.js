@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDrop } from 'react-dnd'
 import COLUMN_NAMES from '../../constants'
 
@@ -6,7 +6,6 @@ import './column.css'
 
 export const Column = ({ children, className, title }) => {
 	
-	const [classes, setClasses] = useState(className)
 	const [{ isOver, canDrop }, drop] = useDrop(() => ({
 		accept: 'Our first type',
 		drop: () => ({ name: title }),
