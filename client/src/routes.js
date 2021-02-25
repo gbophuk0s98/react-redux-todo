@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
 import Header from './components/header'
-import { CardPage, RoadMapPage, RegPage } from './components/pages'
+import { CardPage, RoadMapPage, RegPage, LoginPage } from './components/pages'
 
 export const useRoutes = (isAuthenticated = true) => {
         if (isAuthenticated) {
@@ -29,7 +29,10 @@ export const useRoutes = (isAuthenticated = true) => {
                 <Route path="/register" exact>
                     <RegPage />
                 </Route>
-                <Redirect to="/register" />
+                <Route path="/login" exact>
+                    <LoginPage />
+                </Route>
+                <Redirect to="/login" />
             </Switch>
             </div>
         )

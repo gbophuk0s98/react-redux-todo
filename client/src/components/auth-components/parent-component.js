@@ -1,55 +1,43 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { ChildComponent } from './child-component'
 
-export const ParentComponent = ({ changeForm, mode }) => {
-    const [email, setEmail] = useState({
-        text: 'Почта', name: "email", type: "email", id: "inputEmail", placeholder: 'Почта'
-    })
-    const [password, setPassword] = useState({
-        text: 'Пароль', name: "password", type: "password", id: "inputPassword", placeholder: 'Пароль'
-    })
-    const [name, setName] = useState({
-        text: 'Имя', name: "name", type: "text", id: "inputName", placeholder: 'Имя'
-    })
-    const [isLogin, setIsLogin] = useState(false)
+const email = { text: 'Почта', name: "email", type: "email", id: "inputEmail", placeholder: 'Почта' }
+
+const name = { text: 'Имя', name: "name", type: "text", id: "inputName", placeholder: 'Имя' }
+
+const password = { text: 'Пароль', name: "password", type: "password", id: "inputPassword", placeholder: 'Пароль' }
+
+export const ParentComponent = ({ changeForm, isRegister }) => {
     
-    useEffect(() => {
-        setIsLogin(mode==='login')
-    }, [mode])
-    
+    if (!isRegister) {
+        return (
+            <>
+                <ChildComponent 
+                    changeForm={changeForm}
+                    props={email} 
+                />
+                <ChildComponent 
+                    changeForm={changeForm}
+                    props={password} 
+                />
+            </>
+        )
+    }
+
     return(
         <>
-            {
-                isLogin && 
-                <>
-                    <ChildComponent 
-                    changeForm={changeForm}
-                    props={email} 
-                    />
-                    <ChildComponent 
-                        changeForm={changeForm}
-                        props={password} 
-                    />
-                </>
-            }
-    
-            {
-                !isLogin && 
-                <>
-                    <ChildComponent 
-                        changeForm={changeForm}
-                        props={name} 
-                    />
-                    <ChildComponent 
-                    changeForm={changeForm}
-                    props={email} 
-                    />
-                    <ChildComponent 
-                        changeForm={changeForm}
-                        props={password} 
-                    />
-                </>
-            }
+            <ChildComponent 
+                changeForm={changeForm}
+                props={name} 
+            />
+            <ChildComponent 
+                changeForm={changeForm}
+                props={email} 
+            />
+            <ChildComponent 
+                changeForm={changeForm}
+                props={password} 
+            />
         </>
     )
 }

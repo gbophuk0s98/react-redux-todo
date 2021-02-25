@@ -5,15 +5,15 @@ import ParentComponent from '../auth-components'
 
 import './pages.css'
 
-export const RegPage = () => {
-    
+export const LoginPage = () => {
+
     const [form, setForm] = useState(null)
 
-    const registerHandler = async () => {
+    const loginHandler = async () => {
         try
         {
-            console.log('registerHandler()')
-            // const data = await request("/api/auth/register", 'POST', {...form})
+            console.log('loginHandler()')
+            // const data = await request("/api/auth/login", 'POST', {...form})
             // auth.login(data.token, data.userId)
         }
         catch {}
@@ -36,10 +36,10 @@ export const RegPage = () => {
 
                     <ParentComponent
                         changeForm={changeForm}
-                        isRegister={true}
+                        isRegister={false}
                     />
 
-                    <button className="form-btn w-100 btn btn-lg btn-primary" type="button" onClick={registerHandler}>Зарегистрироваться</button>
+                    <button className="form-btn w-100 btn btn-lg btn-primary" type="button" onClick={loginHandler}>Войти</button>
                     <Link to="/login">
                         <button type="button" className="btn btn-link">Авторизоваться</button>
                     </Link>
