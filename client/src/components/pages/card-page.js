@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import uuid from 'react-uuid'
+import React from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -7,85 +6,10 @@ import { connect } from 'react-redux'
 import Card from '../card'
 import * as actions from '../../actoins'
 
-const columnsFromBackend = {
-    [uuid()]: {
-        name: 'Задачи',
-        items: [
-            { id: uuid(), content: '1 task', columnType: 'TaskList' },
-            { id: uuid(), content: '2 task', columnType: 'TaskList' },
-            { id: uuid(), content: '3 task', columnType: 'TaskList' },
-            { id: uuid(), content: '4 task', columnType: 'TaskList' },
-            { id: uuid(), content: '5 task', columnType: 'TaskList' },
-        ],
-        columnType: 'TaskList',
-    },
-    [uuid()]: {
-        name: 'Выбрано для разработки',
-        items: [],
-        columnType: 'SelectedList',
-    },
-    [uuid()]: {
-        name: 'Выполняется',
-        items: [],
-        columnType: 'ProcessingList',
-    },
-    [uuid()]: {
-        name: 'Выполнено',
-        items: [],
-        columnType: 'DoneList',
-    }
-}
-
-const onDragEnd = (result, columns, setColumns) => {
-    if (!result.destination) return
-    const { source, destination } = result
-    if (source.droppableId !== destination.droppableId){
-        const sourceColumn = columns[source.droppableId]
-        const destColumn = columns[destination.droppableId]
-        const sourceItems = [...sourceColumn.items]
-        const destItems = [...destColumn.items]
-        const [removed] = sourceItems.splice(source.index, 1)
-        removed.columnType = destColumn.columnType
-        destItems.splice(destination.index, 0, removed)
-        setColumns({
-            ...columns,
-            [source.droppableId]: {
-                ...sourceColumn,
-                items: sourceItems
-            },
-            [destination.droppableId]: {
-                ...destColumn,
-                items: destItems
-            }
-        })
-    } else {
-        const column = columns[source.droppableId]
-        const copiedItems = [...column.items]
-        const [removed] = copiedItems.splice(source.index, 1)
-        copiedItems.splice(destination.index, 0, removed)
-        setColumns({
-            ...columns,
-            [source.droppableId]: {
-                ...column,
-                items: copiedItems
-            }
-        })
-    }
-}
-
-const CardPage = ({ cards }) => {
-
-    // const fetchedColumnsItems = useCallback(() => {
-    //     Object.entries(content).map(([ id, item]) => {
-    //         const findedItems = item.items.filter(colItem => colItem.columnType===item.columnType)
-    //         content[id].items = [...findedItems]
-    //         return item
-    //     })
-    // }, [content])
-
+const CardPage = ({ cards, transferCardsItems }) => {
     return (
         <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
-            <DragDropContext onDragEnd={result => console.log(result)}>
+            <DragDropContext onDragEnd={result => transferCardsItems(result)}>
                 <Card columns={cards} />
             </DragDropContext>
         </div>
@@ -97,7 +21,10 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { cardsRequested } = bindActionCreators(actions, dispatch)
+    const { transferCardsItems } = bindActionCreators(actions, dispatch)
+    return {
+        transferCardsItems
+    }
 }
 
-export default connect(mapStateToProps)(CardPage)
+export default connect(mapStateToProps, mapDispatchToProps)(CardPage)

@@ -4,6 +4,14 @@ const cardsRequested = () => {
     }
 }
 
+const transferCardsItems = (result) => {
+    return {
+        type: 'TRANFER_CARDS_ITEMS',
+        payload: result
+    }
+}
+
 export {
-    cardsRequested
+    cardsRequested,
+    transferCardsItems
 }
