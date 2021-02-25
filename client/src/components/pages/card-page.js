@@ -1,60 +1,95 @@
-import React, { useState } from 'react'
-
-import COLUMN_NAMES from '../../constants'
+import React, { useState, useEffect, useCallback } from 'react'
+import uuid from 'react-uuid'
+import { DragDropContext } from 'react-beautiful-dnd'
 import Card from '../card'
-import MovableItem from '../movable-item'
-import tasks from '../../tasks'
+
+const columnsFromBackend = {
+    [uuid()]: {
+        name: 'Задачи',
+        items: [
+            { id: uuid(), content: '1 task', columnType: 'TaskList' },
+            { id: uuid(), content: '2 task', columnType: 'TaskList' },
+            { id: uuid(), content: '3 task', columnType: 'TaskList' },
+            { id: uuid(), content: '4 task', columnType: 'TaskList' },
+            { id: uuid(), content: '5 task', columnType: 'TaskList' },
+        ],
+        columnType: 'TaskList',
+    },
+    [uuid()]: {
+        name: 'Выбрано для разработки',
+        items: [],
+        columnType: 'SelectedList',
+    },
+    [uuid()]: {
+        name: 'Выполняется',
+        items: [],
+        columnType: 'ProcessingList',
+    },
+    [uuid()]: {
+        name: 'Выполнено',
+        items: [],
+        columnType: 'DoneList',
+    }
+}
+
+const onDragEnd = (result, columns, setColumns) => {
+    if (!result.destination) return
+    const { source, destination } = result
+    if (source.droppableId !== destination.droppableId){
+        const sourceColumn = columns[source.droppableId]
+        const destColumn = columns[destination.droppableId]
+        const sourceItems = [...sourceColumn.items]
+        const destItems = [...destColumn.items]
+        const [removed] = sourceItems.splice(source.index, 1)
+        removed.columnType = destColumn.columnType
+        destItems.splice(destination.index, 0, removed)
+        setColumns({
+            ...columns,
+            [source.droppableId]: {
+                ...sourceColumn,
+                items: sourceItems
+            },
+            [destination.droppableId]: {
+                ...destColumn,
+                items: destItems
+            }
+        })
+    } else {
+        const column = columns[source.droppableId]
+        const copiedItems = [...column.items]
+        const [removed] = copiedItems.splice(source.index, 1)
+        copiedItems.splice(destination.index, 0, removed)
+        setColumns({
+            ...columns,
+            [source.droppableId]: {
+                ...column,
+                items: copiedItems
+            }
+        })
+    }
+}
 
 export const CardPage = () => {
+	const [columns, setColumns] = useState(columnsFromBackend)
 
-    const [items, setItems] = useState(tasks)
-	const { DO_IT, IN_PROGRESS, AWAITING_REVIEW, DONE } = COLUMN_NAMES
+    const fetchedColumnsItems = useCallback(() => {
+        const coppiedColumns = columns
+        Object.entries(coppiedColumns).map(( [id, item] ) => {
+            const findedItems = item.items.filter(colItem => colItem.columnType===item.columnType)
+            coppiedColumns[id].items = [...findedItems]
+            return item
+        })
+        setColumns(coppiedColumns)
+    }, [setColumns, columns])
 
-	const moveCardHandler = (dragIndex, hoverIndex, columnName) => {
-		const dragItem = items[dragIndex]
-		console.log('dragItem', dragItem)
+    useEffect(() => fetchedColumnsItems(), [fetchedColumnsItems])
 
-		if (dragItem && dragItem.column===columnName) {
-			setItems(prevState => {
-				const coppiedStateArray = [...prevState]
-				console.log(coppiedStateArray)
-				const prevItem = coppiedStateArray.splice(hoverIndex, 1, dragItem)
-				coppiedStateArray.splice(dragIndex, 1, prevItem[0])
-				return coppiedStateArray
-			})
-		}
-	}
-
-    const returnItemsForColumn = (columnName) => {
-		return items
-			.filter(item => item.column === columnName)
-			.map((item, index) => (
-				<MovableItem 
-					key={item.id}
-					name={item.name}
-					setItems={setItems}
-					index={index}
-					id={item.id}
-					currentColumnName={item.column}
-					moveCardHandler={moveCardHandler}
-				/>))
-	}
-	
-
-    return(
-		<>
-			<Card title={DO_IT}>
-				{returnItemsForColumn(DO_IT)}
-			</Card>
-			<Card title={IN_PROGRESS}>
-				{returnItemsForColumn(IN_PROGRESS)}
-			</Card>
-			<Card title={AWAITING_REVIEW}>
-				{returnItemsForColumn(AWAITING_REVIEW)}
-			</Card>
-			<Card title={DONE}>
-				{returnItemsForColumn(DONE)}
-			</Card>
-		</>
-    )
+    return (
+		<div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+            <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
+                <Card columns={columns} />
+                {console.log(columns)}
+            </DragDropContext>
+        </div>
+	)
 }

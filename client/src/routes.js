@@ -16,7 +16,7 @@ export const useRoutes = (isAuthenticated = true) => {
                 <Route path="/about" exact>
                     <AboutPage />
                 </Route>
-                <Redirect to="/home" />
+                <Redirect to="/cards" />
             </Switch>
         </div>
         </>

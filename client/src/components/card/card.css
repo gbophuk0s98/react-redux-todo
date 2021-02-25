@@ -1,6 +1,6 @@
 .card {
-    height: max-content;
     min-height: 100px;
+    height: max-content;
     max-width: 400px;
     width: 100%;
     margin: 10px;
@@ -10,12 +10,21 @@
     justify-content: center;
     flex-wrap: wrap;
     color: #201E1E;
+    display: 'flex';
+    flex-direction: 'column';
+    align-items: 'center';
 }
 
-.column-title {
+.card-title {
+    padding: 4px;
+    padding-left: 10px;
     width: 100%;
-    text-align: center;
+    text-align: left;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 14px;
     color: #fff;
+}
+
+.card-items-droppable{
+    height: max-content;
 }

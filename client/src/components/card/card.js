@@ -1,43 +1,42 @@
 import React from 'react'
-import { useDrop } from 'react-dnd'
-import COLUMN_NAMES from '../../constants'
+import { Droppable } from 'react-beautiful-dnd'
+import CardItems from '../card-items'
 
 import './card.css'
 
-export const Card = ({ children, title }) => {
+export const Card = ({ columns }) => {
 	
-	const [{ isOver, canDrop }, drop] = useDrop(() => ({
-		accept: 'Card',
-		drop: () => ({ name: title }),
-		collect: (monitor) => ({
-            isOver: monitor.isOver(),
-            canDrop: monitor.canDrop(),
-        }),
-		canDrop: (item) => {
-			const { DO_IT, IN_PROGRESS, AWAITING_REVIEW, DONE } = COLUMN_NAMES
-			const { currentColumnName } = item
-			return (currentColumnName === title) || 
-			(currentColumnName === DO_IT && title === IN_PROGRESS) ||
-			(currentColumnName === IN_PROGRESS && (title === DO_IT || title === AWAITING_REVIEW)) ||
-			(currentColumnName === AWAITING_REVIEW && (title === IN_PROGRESS || title === DONE)) ||
-			(currentColumnName === DONE && (title === AWAITING_REVIEW))
-		}
-	}))
-
-	const getBackgroundColor = () => {
-		if (isOver) {
-			if (canDrop) return 'rgb(0, 188, 140)'
-			return 'rgb(231, 76, 60)'
-		}
-		return ''
-	}
-
 	return (
-		<div ref={drop} className="card border-light mb-3" style={{backgroundColor: getBackgroundColor()}}>
-			<div className="card-header column-title">{title}</div>
-			<div className="card-body">
-				{children}
-			</div>
-		</div>
+		<>
+		{Object.entries(columns).map(([ id, column ]) => {
+			return (
+				<div className="card" key={id}>
+					<div className="card-title">{column.name}</div>
+					<div style={{ margin: 1 }}>
+						<Droppable droppableId={id} key={id}>
+							{(provided, snapshot) => {
+								return (
+									<div
+										className="card-items-droppable"
+										{...provided.droppableProps}
+										ref={provided.innerRef}
+										style={{
+											background: snapshot.isDraggingOver ? 'lightblue': '#303030',
+											padding: 4,
+											width: 250
+										}}
+									>
+										<CardItems items={column.items} />
+										{provided.placeholder}
+									</div>
+								)
+							}}
+						</Droppable>
+					</div>
+
+				</div>
+			)
+		})}
+		</>
 	)
 }
