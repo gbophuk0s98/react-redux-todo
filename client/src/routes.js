@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
 import Header from './components/header'
-import { CardPage, AboutPage } from './components/pages'
+import { CardPage, RoadMapPage } from './components/pages'
 
 export const useRoutes = (isAuthenticated = true) => {
     return (
@@ -13,8 +13,8 @@ export const useRoutes = (isAuthenticated = true) => {
                 <Route path="/cards" exact>
                     <CardPage />
                 </Route>
-                <Route path="/about" exact>
-                    <AboutPage />
+                <Route path="/roadmap" exact>
+                    <RoadMapPage />
                 </Route>
                 <Redirect to="/cards" />
             </Switch>

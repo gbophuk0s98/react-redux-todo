@@ -1,7 +1,7 @@
 import { CardPage } from './card-page'
-import { AboutPage } from './about-page'
+import { RoadMapPage } from './roadmap-page'
 
 export {
     CardPage,
-    AboutPage
+    RoadMapPage
 }

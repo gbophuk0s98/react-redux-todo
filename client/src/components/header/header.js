@@ -21,7 +21,7 @@ const Header = () => {
                     </Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to="/about">Об авторе</Link>
+                    <Link className="nav-link" to="/roadmap">Карта</Link>
                 </li>
                 </ul>
                 <form className="form-inline my-2 my-lg-0">
