@@ -2,23 +2,36 @@ import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
 import Header from './components/header'
-import { CardPage, RoadMapPage } from './components/pages'
+import { CardPage, RoadMapPage, RegPage } from './components/pages'
 
 export const useRoutes = (isAuthenticated = true) => {
-    return (
-        <>
-        <Header />
-        <div className="container">
+        if (isAuthenticated) {
+            return (
+                <>
+                <Header />
+                <div className="container">
+                    <Switch>
+                        <Route path="/cards" exact>
+                            <CardPage />
+                        </Route>
+                        <Route path="/roadmap" exact>
+                            <RoadMapPage />
+                        </Route>
+                        <Redirect to="/cards" />
+                    </Switch>
+                </div>
+                </>
+            )
+        }
+        return (
+            <div className="container">
             <Switch>
-                <Route path="/cards" exact>
-                    <CardPage />
+                <Route path="/register" exact>
+                    <RegPage />
                 </Route>
-                <Route path="/roadmap" exact>
-                    <RoadMapPage />
-                </Route>
-                <Redirect to="/cards" />
+                <Redirect to="/register" />
             </Switch>
-        </div>
-        </>
-    )
+            </div>
+        )
+
 }
