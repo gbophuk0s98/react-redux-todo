@@ -1,4 +1,3 @@
-import { STATES } from 'mongoose'
 import uuid from 'react-uuid'
 
 const initialState = {
@@ -17,7 +16,7 @@ const initialState = {
         [uuid()]: {
             name: 'Выбрано для разработки',
             items: [
-                { id: uuid(), content: '1 task', columnType: 'SelectedList' },
+                { id: uuid(), content: 'КАКОО-НИБУДЬ ДЛИННЫЙ НЕ ОЧЕНЬ ВАЖНЫЙ ТЕКСТКАКОО-НИБУДЬ ДЛИННЫЙ НЕ ОЧЕНЬ ВАЖНЫЙ ТЕКСТКАКОО-НИБУДЬ ДЛИННЫЙ НЕ ОЧЕНЬ ВАЖНЫЙ ТЕКСТКАКОО-НИБУДЬ ДЛИННЫЙ НЕ ОЧЕНЬ ВАЖНЫЙ ТЕКСТ', columnType: 'SelectedList' },
                 { id: uuid(), content: '2 task', columnType: 'SelectedList' },
                 { id: uuid(), content: '3 task', columnType: 'SelectedList' },
                 { id: uuid(), content: '4 task', columnType: 'SelectedList' },
@@ -83,7 +82,7 @@ const reducer = (state = initialState, action) => {
     switch (action.type){
         case 'FETCH_BOOKS_REQUEST':
             return state
-        case 'TRANFER_CARDS_ITEMS':
+        case 'TRANSFER_CARDS_ITEMS':
             return transferItems(action.payload, state)
         default:
             return state

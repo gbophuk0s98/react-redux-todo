@@ -1,7 +1,8 @@
 .card-items {
     user-select: 'none';
-    padding: 16;
+    cursor: move;
+    padding: 16px;
     margin: 0 0 8px 0;
-    color: 'white';
+    color: #252525;
     min-height: 50px;
 }

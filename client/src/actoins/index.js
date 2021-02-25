@@ -6,7 +6,7 @@ const cardsRequested = () => {
 
 const transferCardsItems = (result) => {
     return {
-        type: 'TRANFER_CARDS_ITEMS',
+        type: 'TRANSFER_CARDS_ITEMS',
         payload: result
     }
 }
