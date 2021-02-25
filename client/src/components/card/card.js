@@ -22,6 +22,7 @@ export const Card = ({ columns }) => {
 										ref={provided.innerRef}
 										style={{
 											background: snapshot.isDraggingOver ? 'lightblue': '#303030',
+											border: snapshot.isDraggingOver ? 2 + 'px dashed rgb(16,59,68)': '',
 											padding: 4,
 											width: 250
 										}}

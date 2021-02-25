@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import uuid from 'react-uuid'
 import { DragDropContext } from 'react-beautiful-dnd'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
 import Card from '../card'
+import * as actions from '../../actoins'
 
 const columnsFromBackend = {
     [uuid()]: {
@@ -69,27 +73,31 @@ const onDragEnd = (result, columns, setColumns) => {
     }
 }
 
-export const CardPage = () => {
-	const [columns, setColumns] = useState(columnsFromBackend)
+const CardPage = ({ cards }) => {
 
-    const fetchedColumnsItems = useCallback(() => {
-        const coppiedColumns = columns
-        Object.entries(coppiedColumns).map(( [id, item] ) => {
-            const findedItems = item.items.filter(colItem => colItem.columnType===item.columnType)
-            coppiedColumns[id].items = [...findedItems]
-            return item
-        })
-        setColumns(coppiedColumns)
-    }, [setColumns, columns])
-
-    useEffect(() => fetchedColumnsItems(), [fetchedColumnsItems])
+    // const fetchedColumnsItems = useCallback(() => {
+    //     Object.entries(content).map(([ id, item]) => {
+    //         const findedItems = item.items.filter(colItem => colItem.columnType===item.columnType)
+    //         content[id].items = [...findedItems]
+    //         return item
+    //     })
+    // }, [content])
 
     return (
-		<div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
-            <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
-                <Card columns={columns} />
-                {console.log(columns)}
+        <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+            <DragDropContext onDragEnd={result => console.log(result)}>
+                <Card columns={cards} />
             </DragDropContext>
         </div>
-	)
+    )
 }
+
+const mapStateToProps = (state) => {
+    return { cards: state.cards }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    const { cardsRequested } = bindActionCreators(actions, dispatch)
+}
+
+export default connect(mapStateToProps)(CardPage)

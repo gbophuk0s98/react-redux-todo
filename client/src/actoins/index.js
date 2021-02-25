@@ -1,9 +1,9 @@
-const testAction = () => {
+const cardsRequested = () => {
     return {
-        type: 'TEST_ACTION'
+        type: 'FETCH_BOOKS_REQUEST'
     }
 }
 
 export {
-    testAction
+    cardsRequested
 }
