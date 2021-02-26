@@ -1,14 +1,10 @@
-import React, { useState } from 'react'
-
-import ParentComponent from '../auth-components'
+import React from 'react'
 import { PageContainer } from '../auth-components/page-container'
 
 import './pages.css'
 
 export const RegPage = () => {
     
-    const [form, setForm] = useState(null)
-
     const registerHandler = async () => {
         try
         {
@@ -19,14 +15,6 @@ export const RegPage = () => {
         catch {}
     }
 
-    const changeForm = (event) => {
-        setForm({
-            ...form, 
-            [event.target.name]: event.target.value
-        })
-        console.log(form)
-    }
-
     return (
         <PageContainer 
             title={'Регистрация'}
@@ -34,11 +22,7 @@ export const RegPage = () => {
             btnText={'Зарегистрироваться'}
             link={'/login'}
             linkText={'Авторизоваться'}
-        >
-            <ParentComponent
-                        changeForm={changeForm}
-                        isRegister={true}
-                    />
-        </PageContainer>
+            isRegister={true}
+        />
     )
 }
