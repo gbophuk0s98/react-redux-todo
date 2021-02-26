@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 
 import ParentComponent from '../auth-components'
+import { PageContainer } from '../auth-components/page-container'
 
 import './pages.css'
 
@@ -28,24 +28,17 @@ export const RegPage = () => {
     }
 
     return (
-        <div className="d-flex form-container text-center align-items-center">
-            <div className="form-signin">
-                <form>
-                    <img className="mb-3 picture" src="favicon.png" alt="" width="80" height="80"/>
-                    <h1 className="h3 mb-3 fw-normal">Регистрация</h1>
-
-                    <ParentComponent
+        <PageContainer 
+            title={'Регистрация'}
+            btnHandler={registerHandler}
+            btnText={'Зарегистрироваться'}
+            link={'/login'}
+            linkText={'Авторизоваться'}
+        >
+            <ParentComponent
                         changeForm={changeForm}
                         isRegister={true}
                     />
-
-                    <button className="form-btn w-100 btn btn-lg btn-primary" type="button" onClick={registerHandler}>Зарегистрироваться</button>
-                    <Link to="/login">
-                        <button type="button" className="btn btn-link">Авторизоваться</button>
-                    </Link>
-                    <p className="mt-3 mb-3 text-muted">©gbophuk0s 2021</p>
-                </form>
-            </div>
-        </div>
+        </PageContainer>
     )
 }
