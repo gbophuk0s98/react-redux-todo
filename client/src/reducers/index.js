@@ -134,6 +134,8 @@ const reducer = (state = initialState, action) => {
         case 'REGISTER_FORM_ERROR':
             return setFormErrors(state, action.payload)
         case 'LOGIN_FORM_SUBMITED':
+            console.log('LOGIN_FORM_SUBMITED')
+            console.log(action.payload)
             return state
         case 'LOGIN_FORM_ERROR':
             return setFormErrors(state, action.payload)

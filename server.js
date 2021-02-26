@@ -1,7 +1,7 @@
 const express = require('express')
 const mongo = require('mongoose')
 const app = express()
-const PORT = process.env.PORT || 8080
+const PORT = 8080
 
 app.use(express.json({ extended: true }))
 app.use('/api/auth/', require('./routes/auth.routes'))

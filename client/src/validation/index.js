@@ -1,6 +1,7 @@
-import { validateAuthForm, validateRegForm} from './validateForm'
+import { validateAuthForm, validateRegForm, isEmptyObject } from './validateForm'
 
 export {
     validateAuthForm,
-    validateRegForm
+    validateRegForm,
+    isEmptyObject
 }

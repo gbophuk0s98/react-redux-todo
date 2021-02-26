@@ -30,7 +30,12 @@ const validateRegForm = (form) => {
     return errors
 }
 
+const isEmptyObject = obj => {
+    return JSON.stringify(obj) === '{}'
+}
+
 export {
     validateAuthForm,
-    validateRegForm
+    validateRegForm,
+    isEmptyObject
 }

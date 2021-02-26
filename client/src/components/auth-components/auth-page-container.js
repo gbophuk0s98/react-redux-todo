@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { ParentComponent } from './parent-component'
 
-const PageContainer = ({ form, errors, title, btnHandler, btnText, link, linkText, isRegister, changeForm }) => {
+const PageContainer = ({ errors, title, btnHandler, btnText, link, linkText, isRegister, changeForm }) => {
 
     return (
         <div className="d-flex mw-340 form-container text-center align-items-center">
