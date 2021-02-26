@@ -1,22 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
 import { ParentComponent } from './parent-component'
 
-export const PageContainer = ({ title, btnHandler, btnText, link, linkText, isRegister }) => {
-
-    const [form, setForm] = useState(null)
-
-    const changeForm = (event) => {
-        setForm({
-            ...form, 
-            [event.target.name]: event.target.value
-        })
-        console.log(form)
-    }
+export const PageContainer = ({ errors, title, btnHandler, btnText, link, linkText, isRegister, changeForm }) => {
 
     return (
-        <div className="d-flex form-container text-center align-items-center">
+        <div className="d-flex mw-340 form-container text-center align-items-center">
             <div className="form-signin">
                 <form>
                     <img className="mb-3 picture" src="favicon.png" alt="" width="80" height="80"/>
@@ -25,6 +15,7 @@ export const PageContainer = ({ title, btnHandler, btnText, link, linkText, isRe
                     </h1>
 
                     <ParentComponent
+                        errors={errors}
                         changeForm={changeForm}
                         isRegister={isRegister}
                     />

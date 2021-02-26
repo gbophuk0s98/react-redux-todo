@@ -4,6 +4,9 @@
     width: 115px;
 }
 
-.form-input {
-    margin-bottom: 5px;
+.alert {
+    width: 100%;
+    padding: 5px 10px;
+    margin: 5px 0 0;
+    font-size: 12px;
 }

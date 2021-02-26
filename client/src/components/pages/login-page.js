@@ -1,25 +1,20 @@
 import React from 'react'
 
-import { PageContainer } from '../auth-components/page-container'
+import { PageContainer } from '../auth-components/auth-page-container'
+import { useForm } from '../../hooks/useForm'
 
 import './pages.css'
 
 export const LoginPage = () => {
 
-    const loginHandler = async () => {
-        try
-        {
-            console.log('loginHandler()')
-            // const data = await request("/api/auth/login", 'POST', {...form})
-            // auth.login(data.token, data.userId)
-        }
-        catch {}
-    }
+    const { changeForm, loginHandler, errors } = useForm()
 
     return (
         <PageContainer 
-            title={'Авторизация'}
+            errors={errors}
             btnHandler={loginHandler}
+            changeForm={changeForm}
+            title={'Авторизация'}
             btnText={'Авторизоваться'}
             link={'/register'}
             linkText={'Регистрация'}

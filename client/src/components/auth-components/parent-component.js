@@ -1,24 +1,35 @@
 import React from 'react'
 import { ChildComponent } from './child-component'
 
-const email = { text: 'Почта', name: "email", type: "email", id: "inputEmail", placeholder: 'Почта' }
+const name = { name: "userName", type: "text", id: "inputName", placeholder: 'Имя' }
+const email = { name: "email", type: "email", id: "inputEmail", placeholder: 'Почта' }
+const password = { name: "password", type: "password", id: "inputPassword", placeholder: 'Пароль' }
+const matchPassword = { name: "matchPassword", type: "password", id: "inputMatchPassword", placeholder: 'Подтвердите пароль' }
 
-const name = { text: 'Имя', name: "name", type: "text", id: "inputName", placeholder: 'Имя' }
-
-const password = { text: 'Пароль', name: "password", type: "password", id: "inputPassword", placeholder: 'Пароль' }
-
-export const ParentComponent = ({ changeForm, isRegister }) => {
+export const ParentComponent = ({ errors, changeForm, isRegister }) => {
     
-    if (!isRegister) {
+    if (isRegister) {
         return (
             <>
+                <ChildComponent
+                    errors={errors.userName}
+                    changeForm={changeForm}
+                    props={name} 
+                />
                 <ChildComponent 
+                    errors={errors.email}
                     changeForm={changeForm}
                     props={email} 
                 />
-                <ChildComponent 
+                <ChildComponent
+                    errors={errors.password}
                     changeForm={changeForm}
                     props={password} 
+                />
+                <ChildComponent
+                    errors={errors.matchPassword} 
+                    changeForm={changeForm}
+                    props={matchPassword} 
                 />
             </>
         )
@@ -26,15 +37,13 @@ export const ParentComponent = ({ changeForm, isRegister }) => {
 
     return(
         <>
-            <ChildComponent 
-                changeForm={changeForm}
-                props={name} 
-            />
-            <ChildComponent 
+            <ChildComponent
+                errors={errors.email} 
                 changeForm={changeForm}
                 props={email} 
             />
-            <ChildComponent 
+            <ChildComponent
+                errors={errors.password} 
                 changeForm={changeForm}
                 props={password} 
             />

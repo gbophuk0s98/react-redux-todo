@@ -2,20 +2,24 @@ import React from 'react'
 
 import './auth-components.css'
 
-export const ChildComponent = ({ changeForm, props }) => {
+export const ChildComponent = ({ errors, changeForm, props }) => {
 
     return(
-        <div className="d-flex align-items-center mb-2">
-            {/* <label className="form-label" htmlFor={props.id}>{props.text}</label> */}
+        <div className="d-flex align-items-center mb-2 flex-column">
             <input 
-                className="form-input"
+                className="form-control"
                 name={props.name}
                 type={props.type}
                 id={props.id}
-                className="form-control"
                 placeholder={props.placeholder}
                 onChange={changeForm}
                 />
+            { 
+                errors && 
+                <div className="alert alert-secondary" role="alert">
+                    {errors}
+                </div>
+            }
         </div>
     )
 }
