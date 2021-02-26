@@ -12,7 +12,7 @@ export const ChildComponent = ({ errors, changeForm, props }) => {
                 type={props.type}
                 id={props.id}
                 placeholder={props.placeholder}
-                onChange={changeForm}
+                onChange={(e) => changeForm(e)}
                 />
             { 
                 errors && 

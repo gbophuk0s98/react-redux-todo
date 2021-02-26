@@ -1,18 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
-import { PageContainer } from '../auth-components/auth-page-container'
-import { useForm } from '../../hooks/useForm'
+import PageContainer from '../auth-components/auth-page-container'
+import * as actions from '../../actoins'
 
 import './pages.css'
 
-export const LoginPage = () => {
+const LoginPage = ({ errors, form, loginHandler, changeForm, clearErrors }) => {
 
-    const { changeForm, loginHandler, errors } = useForm()
+    useEffect(() => {
+        clearErrors()
+    }, [clearErrors])
 
     return (
-        <PageContainer 
+        <PageContainer
             errors={errors}
-            btnHandler={loginHandler}
+            btnHandler={() => loginHandler(form)}
             changeForm={changeForm}
             title={'Авторизация'}
             btnText={'Авторизоваться'}
@@ -22,3 +26,21 @@ export const LoginPage = () => {
         />
     )
 }
+
+const mapStateToProps = (state) => {
+    return {
+        form: state.form,
+        errors: state.formErrors
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    const { changeForm, loginHandler, clearErrors } = bindActionCreators(actions, dispatch)
+    return {
+        changeForm,
+        loginHandler,
+        clearErrors
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)

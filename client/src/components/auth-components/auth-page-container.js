@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { ParentComponent } from './parent-component'
 
-export const PageContainer = ({ errors, title, btnHandler, btnText, link, linkText, isRegister, changeForm }) => {
+const PageContainer = ({ form, errors, title, btnHandler, btnText, link, linkText, isRegister, changeForm }) => {
 
     return (
         <div className="d-flex mw-340 form-container text-center align-items-center">
@@ -31,6 +31,7 @@ export const PageContainer = ({ errors, title, btnHandler, btnText, link, linkTe
                         <button
                             type="button"
                             className="btn btn-link"
+                            onClick={() => errors={}}
                         >
                             {linkText}
                         </button>
@@ -42,3 +43,5 @@ export const PageContainer = ({ errors, title, btnHandler, btnText, link, linkTe
     )
 
 }
+
+export default PageContainer

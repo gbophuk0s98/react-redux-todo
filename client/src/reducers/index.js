@@ -34,10 +34,22 @@ const initialState = {
             items: [],
             columnType: 'DoneList',
         }
+    },
+    form: {
+        userName: '',
+        email: '',
+        password: '',
+        matchPassword: '',
+    },
+    formErrors: {
+        userName: '',
+        email: '',
+        password: '',
+        matchPassword: '',
     }
 }
 
-const transferItems = (payload, state) => {
+const transferItems = (state, payload) => {
     if (!payload.destination) return state
     const { source, destination } = payload
     if (source.droppableId !== destination.droppableId){
@@ -49,6 +61,7 @@ const transferItems = (payload, state) => {
         removed.columnType = destColumn.columnType
         destItems.splice(destination.index, 0, removed)
         return {
+            ...state,
             cards: {
                 ...state.cards,
                 [source.droppableId]: {
@@ -67,6 +80,7 @@ const transferItems = (payload, state) => {
         const [removed] = copiedItems.splice(source.index, 1)
         copiedItems.splice(destination.index, 0, removed)
         return {
+            ...state,
             cards:{
                 ...state.cards,
                 [source.droppableId]: {
@@ -78,12 +92,53 @@ const transferItems = (payload, state) => {
     }
 }
 
+const changeForm = (state, form, event) => {
+    return {
+        ...state,
+        form: {
+            ...form,
+            [event.target.name]: event.target.value
+        }
+    }
+}
+
+const setFormErrors = (state, payload) => {
+    return {
+        ...state,
+        formErrors: { ...payload }
+    }
+}
+
+const clearErrors = (state) => {
+    return {
+        ...state,
+        formErrors: {
+            userName: '',
+            email: '',
+            password: '',
+            matchPassword: '',
+        }
+    }
+}
+
 const reducer = (state = initialState, action) => {
     switch (action.type){
         case 'FETCH_BOOKS_REQUEST':
             return state
         case 'TRANSFER_CARDS_ITEMS':
-            return transferItems(action.payload, state)
+            return transferItems(state, action.payload)
+        case 'FORM_CHANGED':
+            return changeForm(state, state.form, action.payload)
+        case 'REGISTER_FORM_SUBMITED':
+            return state
+        case 'REGISTER_FORM_ERROR':
+            return setFormErrors(state, action.payload)
+        case 'LOGIN_FORM_SUBMITED':
+            return state
+        case 'LOGIN_FORM_ERROR':
+            return setFormErrors(state, action.payload)
+        case 'CLEAR_FORM_ERRORS':
+            return clearErrors(state)
         default:
             return state
     }
