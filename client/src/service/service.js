@@ -5,10 +5,10 @@ export default class ProjectService {
     async getResourses(url, method = 'GET', body = null, headers = {}){
         try
         {
-            // if (body) {
-            //     body = JSON.stringify(body)
-            //     headers['Content-Type'] = 'application/json'
-            // }
+            if (body) {
+                body = JSON.stringify(body)
+                headers['Content-Type'] = 'application/json'
+            }
             console.log(url, method, body)
 
             const response = await fetch(url, { method, body, headers })
@@ -23,4 +23,9 @@ export default class ProjectService {
     login = async (body, headers = {}) => {
         await this.getResourses(`${this._authBase}/login`, 'POST', { ...body })
     }
+
+    register = async (body, headers = {}) => {
+        await this.getResourses(`${this._authBase}/register`, 'POST', { ...body })
+    }
+
 }

@@ -13,8 +13,7 @@ app.listen(PORT, async () => {
         await mongo.connect('mongodb://127.0.0.1:27017/todo', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-        })
-        console.log(`Сервер работает на порту ${PORT}`)
+        }).then(() => console.log(`Сервер работает на порту ${PORT}`))
     }
     catch (e) 
     {

@@ -26,7 +26,9 @@ const changeForm = event => {
 const registerHandler = form => {
 
     const errors = validateRegForm(form)
+    
     if (isEmptyObject(errors)) {
+        service.register(form)
         return {
             type: 'REGISTER_FORM_SUBMITED',
             payload: form
@@ -39,7 +41,9 @@ const registerHandler = form => {
 }
 
 const loginHandler = form => {
+    
     const errors = validateAuthForm(form)
+
     if (isEmptyObject(errors)) {
         service.login(form)
         return {

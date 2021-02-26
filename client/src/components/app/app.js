@@ -8,7 +8,7 @@ import './app.css'
 import { BrowserRouter as Router} from 'react-router-dom'
 export const App = () => {
 
-	const routes = useRoutes(false)
+	const routes = useRoutes(true)
 	const isMobile = window.innerWidth < 600
 
 	return (
