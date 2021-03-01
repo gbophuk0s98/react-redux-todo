@@ -9,6 +9,7 @@ export const Card = ({ columns }) => {
 	return (
 		<>
 		{Object.entries(columns).map(([ id, column ]) => {
+			console.log('id', id)
 			return (
 				<div className="card" key={id}>
 					<div className="card-title">{column.name}</div>

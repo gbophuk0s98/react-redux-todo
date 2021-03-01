@@ -21,11 +21,10 @@ const updateCards = async (cards) => {
     const newCards = []
 
     for (const card of cards) {
-        const data = await Todo.find({ owner: card.id })
         const { id, columnType, name } = card
+        const data = await Todo.find({ owner: card.id })
         newCards.push({ id: id, name: name, columnType: columnType, items: data })
     }
-
     return newCards
 }
 

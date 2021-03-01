@@ -2,38 +2,38 @@ import uuid from 'react-uuid'
 
 const initialState = {
     cards: {
-        [uuid()]: {
-            name: 'Задачи',
-            items: [
-                { id: uuid(), content: '1 task' },
-                { id: uuid(), content: '2 task' },
-                { id: uuid(), content: '3 task' },
-                { id: uuid(), content: '4 task' },
-                { id: uuid(), content: '5 task' },
-            ],
-            columnType: 'TaskList',
-        },
-        [uuid()]: {
-            name: 'Выбрано для разработки',
-            items: [
-                { id: uuid(), content: '1 task' },
-                { id: uuid(), content: '2 task' },
-                { id: uuid(), content: '3 task' },
-                { id: uuid(), content: '4 task' },
-                { id: uuid(), content: '5 task' },
-            ],
-            columnType: 'SelectedList',
-        },
-        [uuid()]: {
-            name: 'Выполняется',
-            items: [],
-            columnType: 'ProcessingList',
-        },
-        [uuid()]: {
-            name: 'Выполнено',
-            items: [],
-            columnType: 'DoneList',
-        }
+        // [uuid()]: {
+        //     name: 'Задачи',
+        //     items: [
+        //         { id: uuid(), content: '1 task' },
+        //         { id: uuid(), content: '2 task' },
+        //         { id: uuid(), content: '3 task' },
+        //         { id: uuid(), content: '4 task' },
+        //         { id: uuid(), content: '5 task' },
+        //     ],
+        //     columnType: 'TaskList',
+        // },
+        // [uuid()]: {
+        //     name: 'Выбрано для разработки',
+        //     items: [
+        //         { id: uuid(), content: '1 task' },
+        //         { id: uuid(), content: '2 task' },
+        //         { id: uuid(), content: '3 task' },
+        //         { id: uuid(), content: '4 task' },
+        //         { id: uuid(), content: '5 task' },
+        //     ],
+        //     columnType: 'SelectedList',
+        // },
+        // [uuid()]: {
+        //     name: 'Выполняется',
+        //     items: [],
+        //     columnType: 'ProcessingList',
+        // },
+        // [uuid()]: {
+        //     name: 'Выполнено',
+        //     items: [],
+        //     columnType: 'DoneList',
+        // }
     },
     form: {
         userName: '',

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import Card from '../card'
@@ -15,6 +14,7 @@ const CardPage = ({ cards, transferCardsItems, fetchCards }) => {
     return (
         <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
             <DragDropContext onDragEnd={result => transferCardsItems(result)}>
+                { console.log('cards', cards)}
                 <Card columns={cards} />
             </DragDropContext>
         </div>
