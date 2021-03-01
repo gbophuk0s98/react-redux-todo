@@ -1,0 +1,9 @@
+input[type="date"] {
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+input[type="date" i] {
+    cursor: pointer;
+}
