@@ -1,7 +1,8 @@
 const { Schema, model } = require('mongoose')
 
 const schema = new Schema({
-    title: { type: String, required: true }
+    name: { type: String, required: true},
+    columnType: { type: String, required: true },
 })
 
 module.exports =  model('cards', schema)

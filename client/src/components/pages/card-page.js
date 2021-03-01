@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import Card from '../card'
-import * as actions from '../../actoins'
+import { transferCardsItems, fetchCards } from '../../actoins'
 
-const CardPage = ({ cards, transferCardsItems }) => {
+const CardPage = ({ cards, transferCardsItems, fetchCards }) => {
+
+    useEffect(() => {
+        fetchCards()
+    }, [fetchCards])
+
     return (
         <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
             <DragDropContext onDragEnd={result => transferCardsItems(result)}>
@@ -21,9 +26,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { transferCardsItems } = bindActionCreators(actions, dispatch)
     return {
-        transferCardsItems
+        transferCardsItems: (result) => dispatch(transferCardsItems(result)),
+        fetchCards: () => fetchCards(dispatch)
     }
 }
 

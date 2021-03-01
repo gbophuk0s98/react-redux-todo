@@ -5,22 +5,22 @@ const initialState = {
         [uuid()]: {
             name: 'Задачи',
             items: [
-                { id: uuid(), content: '1 task', columnType: 'TaskList' },
-                { id: uuid(), content: '2 task', columnType: 'TaskList' },
-                { id: uuid(), content: '3 task', columnType: 'TaskList' },
-                { id: uuid(), content: '4 task', columnType: 'TaskList' },
-                { id: uuid(), content: '5 task', columnType: 'TaskList' },
+                { id: uuid(), content: '1 task' },
+                { id: uuid(), content: '2 task' },
+                { id: uuid(), content: '3 task' },
+                { id: uuid(), content: '4 task' },
+                { id: uuid(), content: '5 task' },
             ],
             columnType: 'TaskList',
         },
         [uuid()]: {
             name: 'Выбрано для разработки',
             items: [
-                { id: uuid(), content: 'КАКОО-НИБУДЬ ДЛИННЫЙ НЕ ОЧЕНЬ ВАЖНЫЙ ТЕКСТКАКОО-НИБУДЬ ДЛИННЫЙ НЕ ОЧЕНЬ ВАЖНЫЙ ТЕКСТКАКОО-НИБУДЬ ДЛИННЫЙ НЕ ОЧЕНЬ ВАЖНЫЙ ТЕКСТКАКОО-НИБУДЬ ДЛИННЫЙ НЕ ОЧЕНЬ ВАЖНЫЙ ТЕКСТ', columnType: 'SelectedList' },
-                { id: uuid(), content: '2 task', columnType: 'SelectedList' },
-                { id: uuid(), content: '3 task', columnType: 'SelectedList' },
-                { id: uuid(), content: '4 task', columnType: 'SelectedList' },
-                { id: uuid(), content: '5 task', columnType: 'SelectedList' },
+                { id: uuid(), content: '1 task' },
+                { id: uuid(), content: '2 task' },
+                { id: uuid(), content: '3 task' },
+                { id: uuid(), content: '4 task' },
+                { id: uuid(), content: '5 task' },
             ],
             columnType: 'SelectedList',
         },
@@ -49,6 +49,15 @@ const initialState = {
     }
 }
 
+const setCards = (state, payload) => {
+    console.log('state.cards', state.cards)
+    console.log('payload', payload)
+    return {
+        ...state,
+        cards: payload
+    }
+}
+
 const transferItems = (state, payload) => {
     if (!payload.destination) return state
     const { source, destination } = payload
@@ -58,7 +67,6 @@ const transferItems = (state, payload) => {
         const sourceItems = [...sourceColumn.items]
         const destItems = [...destColumn.items]
         const [removed] = sourceItems.splice(source.index, 1)
-        removed.columnType = destColumn.columnType
         destItems.splice(destination.index, 0, removed)
         return {
             ...state,
@@ -123,7 +131,11 @@ const clearErrors = (state) => {
 
 const reducer = (state = initialState, action) => {
     switch (action.type){
-        case 'FETCH_BOOKS_REQUEST':
+        case 'FETCH_CARDS_REQUEST':
+            return state
+        case 'FETCH_CARDS_SUCCESS':
+            return setCards(state, action.payload)
+        case 'FETCH_CARDS_FAILURE':
             return state
         case 'TRANSFER_CARDS_ITEMS':
             return transferItems(state, action.payload)
@@ -134,8 +146,6 @@ const reducer = (state = initialState, action) => {
         case 'REGISTER_FORM_ERROR':
             return setFormErrors(state, action.payload)
         case 'LOGIN_FORM_SUBMITED':
-            console.log('LOGIN_FORM_SUBMITED')
-            console.log(action.payload)
             return state
         case 'LOGIN_FORM_ERROR':
             return setFormErrors(state, action.payload)

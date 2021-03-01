@@ -1,12 +1,46 @@
 import { validateAuthForm, validateRegForm, isEmptyObject } from '../validation'
 import ProjectService from '../service'
+import uuid from 'react-uuid'
 
 const service = new ProjectService()
 
 const cardsRequested = () => {
     return {
-        type: 'FETCH_BOOKS_REQUEST'
+        type: 'FETCH_CARDS_REQUEST',
     }
+}
+
+const cardsError = error => {
+    return {
+        type: 'FETCH_CARDS_FAILURE',
+        payload: error
+    }
+}
+
+const cardsLoaded = newCards => {
+    return {
+        type: 'FETCH_CARDS_SUCCESS',
+        payload: newCards
+    }
+}
+
+const dataFromBackendtoObject = (data) => {
+    let newObject = {}
+    data.forEach(item => {
+        newObject[uuid()] = item
+        item.items = [{id: uuid(), content: `${uuid()}+ !!!!!!!!!`}]
+    })
+    return newObject
+}
+
+const fetchCards = (dispatch) => {
+    dispatch(cardsRequested())
+    service.getCards()
+        .then( data => {
+            console.log('data', data)
+            dispatch(cardsLoaded(data))
+        })
+        .catch(err => dispatch(cardsError(err)))
 }
 
 const transferCardsItems = result => {
@@ -64,7 +98,7 @@ const clearErrors = () => {
 }
 
 export {
-    cardsRequested,
+    fetchCards,
     transferCardsItems,
     changeForm,
     registerHandler,
