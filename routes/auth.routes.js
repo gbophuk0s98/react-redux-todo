@@ -94,5 +94,18 @@ router.get('/getCards', async (req, res) => {
     }
 })
 
+router.get('/getTodos', async (req, res) => {
+    try
+    {
+        const todos = await Todo.find()
+        return res.status(200).json(todos)
+
+    }
+    catch (e)
+    {
+        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
+    }
+})
+
 
 module.exports = router

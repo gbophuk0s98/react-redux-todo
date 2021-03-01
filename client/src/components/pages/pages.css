@@ -6,3 +6,27 @@
     max-width: 310px;
     width: 100%;
 }
+
+.table {
+    border-radius: 5px;
+    border: 0;
+}
+
+.table-dark thead th {
+    border: 0;
+}
+
+.date-picker-list {
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.todo {
+    display: flex;
+}
+
+.todo-content {
+    max-width: 250px;
+    width: 100%;
+}

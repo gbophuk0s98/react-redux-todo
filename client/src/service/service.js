@@ -38,4 +38,8 @@ export default class ProjectService {
         return await this.getResourses(`${this._authBase}/getCards`, 'GET')
     }
 
+    getTodos = async (body = null, headers = {}) => {
+        return await this.getResourses(`${this._authBase}/getTodos`, 'GET')
+    }
+
 }

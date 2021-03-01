@@ -1,6 +1,5 @@
 import { validateAuthForm, validateRegForm, isEmptyObject } from '../validation'
 import ProjectService from '../service'
-import uuid from 'react-uuid'
 
 const service = new ProjectService()
 
@@ -24,36 +23,44 @@ const cardsLoaded = newCards => {
     }
 }
 
-const dataFromBackendtoObject = (data) => {
-    let newObject = {}
-    data.forEach(item => {
-        newObject[uuid()] = item
-        item.items = [{id: uuid(), content: `${uuid()}+ !!!!!!!!!`}]
-    })
-    return newObject
-}
-
 const fetchCards = (dispatch) => {
     dispatch(cardsRequested())
     service.getCards()
-        .then( data => {
-            console.log('data', data)
-            dispatch(cardsLoaded(data))
-        })
+        .then( data => dispatch(cardsLoaded(data)))
         .catch(err => dispatch(cardsError(err)))
+}
+
+const todosRequested = () => {
+    return {
+        type: 'FETCH_TODOS_REQUEST'
+    }
+}
+
+const todosError = error => {
+    return {
+        type: 'FETCH_TODOS_FAILURE',
+        payload: error
+    }
+}
+
+const todosLoaded = todos => {
+    return {
+        type: 'FETCH_TODOS_SUCCESS',
+        payload: todos
+    }
+}
+
+const fetchTodos = (dispatch) => {
+    dispatch(todosRequested())
+    service.getTodos()
+        .then(data => dispatch(todosLoaded(data)))
+        .catch(err => dispatch(todosError(err)))
 }
 
 const transferCardsItems = result => {
     return {
         type: 'TRANSFER_CARDS_ITEMS',
         payload: result
-    }
-}
-
-const changeForm = event => {
-    return {
-        type: 'FORM_CHANGED',
-        payload: event,
     }
 }
 
@@ -91,6 +98,13 @@ const loginHandler = form => {
     }
 }
 
+const changeForm = event => {
+    return {
+        type: 'FORM_CHANGED',
+        payload: event,
+    }
+}
+
 const clearErrors = () => {
     return {
         type: 'CLEAR_FORM_ERRORS'
@@ -103,5 +117,6 @@ export {
     changeForm,
     registerHandler,
     loginHandler,
-    clearErrors
+    clearErrors,
+    fetchTodos
 }

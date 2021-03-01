@@ -1,40 +1,8 @@
 import uuid from 'react-uuid'
 
 const initialState = {
-    cards: {
-        // [uuid()]: {
-        //     name: 'Задачи',
-        //     items: [
-        //         { id: uuid(), content: '1 task' },
-        //         { id: uuid(), content: '2 task' },
-        //         { id: uuid(), content: '3 task' },
-        //         { id: uuid(), content: '4 task' },
-        //         { id: uuid(), content: '5 task' },
-        //     ],
-        //     columnType: 'TaskList',
-        // },
-        // [uuid()]: {
-        //     name: 'Выбрано для разработки',
-        //     items: [
-        //         { id: uuid(), content: '1 task' },
-        //         { id: uuid(), content: '2 task' },
-        //         { id: uuid(), content: '3 task' },
-        //         { id: uuid(), content: '4 task' },
-        //         { id: uuid(), content: '5 task' },
-        //     ],
-        //     columnType: 'SelectedList',
-        // },
-        // [uuid()]: {
-        //     name: 'Выполняется',
-        //     items: [],
-        //     columnType: 'ProcessingList',
-        // },
-        // [uuid()]: {
-        //     name: 'Выполнено',
-        //     items: [],
-        //     columnType: 'DoneList',
-        // }
-    },
+    cards: {},
+    todos: [],
     form: {
         userName: '',
         email: '',
@@ -50,8 +18,6 @@ const initialState = {
 }
 
 const setCards = (state, payload) => {
-    console.log('state.cards', state.cards)
-    console.log('payload', payload)
     return {
         ...state,
         cards: payload
@@ -136,6 +102,15 @@ const reducer = (state = initialState, action) => {
         case 'FETCH_CARDS_SUCCESS':
             return setCards(state, action.payload)
         case 'FETCH_CARDS_FAILURE':
+            return state
+        case 'FETCH_TODOS_REQUEST':
+            return state
+        case 'FETCH_TODOS_SUCCESS':
+            return {
+                ...state,
+                todos: action.payload
+            }
+        case 'FETCH_TODOS_FAILURE':
             return state
         case 'TRANSFER_CARDS_ITEMS':
             return transferItems(state, action.payload)
