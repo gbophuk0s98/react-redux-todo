@@ -9,12 +9,11 @@ export const Card = ({ columns }) => {
 	return (
 		<>
 		{Object.entries(columns).map(([ id, column ]) => {
-			console.log('id', id)
 			return (
 				<div className="card" key={id}>
 					<div className="card-title">{column.name}</div>
 					<div style={{ margin: 1 }}>
-						<Droppable droppableId={id} key={id}>
+						<Droppable droppableId={id.toString()} key={id}>
 							{(provided, snapshot) => {
 								return (
 									<div

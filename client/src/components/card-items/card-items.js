@@ -1,6 +1,5 @@
 import React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
-import uuid from 'react-uuid'
 
 import './card-items.css'
 
@@ -9,9 +8,8 @@ export const CardItems = ({ items }) => {
     return (
         <>
         {items.map((item, index) => {
-            console.log('item', item)
             return (
-                <Draggable key={uuid()} draggableId={item._id} index={index}>
+                <Draggable key={item._id} draggableId={item._id} index={index}>
                     {(provided, snapshot) => {
                         return(
                             <div

@@ -23,7 +23,7 @@ const updateCards = async (cards) => {
     for (const card of cards) {
         const { id, columnType, name } = card
         const data = await Todo.find({ owner: card.id })
-        newCards.push({ id: id, name: name, columnType: columnType, items: data })
+        newCards.push({ id: id, name: name, columnType: columnType, items: [...data] })
     }
     return newCards
 }
@@ -33,7 +33,6 @@ const loginFormValidator = [
     check('email').isEmail().withMessage('Некорректный email'),
     check('password').isLength({ min: 3 }).withMessage('Пароль должен содержать минимум 3 символов')
 ]
-
 
 router.post('/login', loginFormValidator, async (req, res) => {
     try
@@ -100,6 +99,38 @@ router.get('/getTodos', async (req, res) => {
         const todos = await Todo.find()
         return res.status(200).json(todos)
 
+    }
+    catch (e)
+    {
+        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
+    }
+})
+
+router.post('/createTodo', async (req, res) => {
+    try
+    {
+        const { content, startDate, endDate } = req.body
+        const { _id } = await Card.findOne({ columnType: 'TaskList'})
+        const todo = new Todo({ content: content, startDate: startDate, endDate: endDate, owner: _id })
+        await todo.save()
+        return res.status(200).json({ message: 'Успешно создана!'})
+    }
+    catch (e)
+    {
+        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
+    }
+})
+
+router.put('/updateTodo', async (req, res) => {
+    try
+    {
+        let updateItem = {}
+        
+        if (req.body.hasOwnProperty('startDate')) updateItem = { startDate: req.body.startDate}
+        else if (req.body.hasOwnProperty('endDate')) updateItem = { endDate: req.body.endDate }
+
+        await Todo.updateOne({ _id: req.body.id }, updateItem, { upset: false })
+        return res.status(200).json({ message: 'Задача обновлена!'})
     }
     catch (e)
     {

@@ -42,4 +42,12 @@ export default class ProjectService {
         return await this.getResourses(`${this._authBase}/getTodos`, 'GET')
     }
 
+    createTodo = async (body, headers = {}) => {
+        return await this.getResourses(`${this._authBase}/createTodo`, 'POST', { ...body })
+    }
+
+    updateTodo = async (body, headers = {}) => {
+        return await this.getResourses(`${this._authBase}/updateTodo`, 'PUT', { ...body })
+    }
+
 }

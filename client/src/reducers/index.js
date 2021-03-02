@@ -112,6 +112,10 @@ const reducer = (state = initialState, action) => {
             }
         case 'FETCH_TODOS_FAILURE':
             return state
+        case 'TODO_CREATED':
+            return state
+        case 'TODO_UPDATED':
+            return state
         case 'TRANSFER_CARDS_ITEMS':
             return transferItems(state, action.payload)
         case 'FORM_CHANGED':

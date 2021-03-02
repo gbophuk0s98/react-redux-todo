@@ -26,7 +26,7 @@ const cardsLoaded = newCards => {
 const fetchCards = (dispatch) => {
     dispatch(cardsRequested())
     service.getCards()
-        .then( data => dispatch(cardsLoaded(data)))
+        .then(data => dispatch(cardsLoaded(data)))
         .catch(err => dispatch(cardsError(err)))
 }
 
@@ -47,6 +47,20 @@ const todosLoaded = todos => {
     return {
         type: 'FETCH_TODOS_SUCCESS',
         payload: todos
+    }
+}
+
+const todoCreated = (dispatch, todo) => {
+    service.createTodo(todo).then(res => fetchTodos(dispatch))
+    return {
+        type: 'TODO_CREATED',
+    }
+}
+
+const todoUpdate = (dispatch, todo) => {
+    service.updateTodo(todo)
+    return {
+        type: 'TODO_UPDATED'
     }
 }
 
@@ -118,5 +132,7 @@ export {
     registerHandler,
     loginHandler,
     clearErrors,
-    fetchTodos
+    fetchTodos,
+    todoCreated,
+    todoUpdate
 }
