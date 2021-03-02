@@ -31,7 +31,7 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate }) => {
     
     const changeHandler = e => setTodo({ ...todo, [e.target.name]: e.target.value })
     
-    const onDateBlur = (e, id) => todoUpdate({ id, [e.target.name]: e.target.value})
+    const onDateBlur = (e, id) => todoUpdate({ id, [e.target.name]: e.target.value })
 
     const onBlurHandler = () => {
         if (todo.content) {

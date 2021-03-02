@@ -1,4 +1,5 @@
 const { Router } = require('express')
+const uuid = require('uuid')
 const User = require('../models/User')
 const Card = require('../models/Card')
 const Todo = require('../models/Todo')
@@ -85,7 +86,8 @@ router.get('/getCards', async (req, res) => {
     {
         const cards = await Card.find()
         const newCards = await updateCards(cards)
-        return res.status(200).json(newCards)
+        // console.log(cards)
+        return res.status(200).json(cards)
     }
     catch (e)
     {
@@ -110,8 +112,10 @@ router.post('/createTodo', async (req, res) => {
     try
     {
         const { content, startDate, endDate } = req.body
-        const { _id } = await Card.findOne({ columnType: 'TaskList'})
-        const todo = new Todo({ content: content, startDate: startDate, endDate: endDate, owner: _id })
+        const { _id, items } = await Card.findOne({ columnType: 'TaskList'})
+        const customId = uuid.v4()
+        await Card.updateOne({ columnType: 'TaskList' }, { $push: {items : { customId: customId, content: content, startDate: startDate, endDate: endDate, posNumber: items.length} }})
+        const todo = new Todo({ customId: customId, content: content, startDate: startDate, endDate: endDate, owner: _id })
         await todo.save()
         return res.status(200).json({ message: 'Успешно создана!'})
     }

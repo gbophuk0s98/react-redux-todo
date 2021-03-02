@@ -9,8 +9,9 @@ export const CardItems = ({ items }) => {
         <>
         {items.map((item, index) => {
             return (
-                <Draggable key={item._id} draggableId={item._id} index={index}>
+                <Draggable key={item.customId} draggableId={item.customId} index={index}>
                     {(provided, snapshot) => {
+                        console.log('item', item)
                         return(
                             <div
                                 className="card-items"
