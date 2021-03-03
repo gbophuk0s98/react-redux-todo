@@ -30,3 +30,32 @@
     max-width: 250px;
     width: 100%;
 }
+
+.project-title-span {
+    font-size: 16px;
+}
+
+.project-page-container {
+    max-width: 320px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.form-project {
+    width: 100%;
+}
+
+.btn-container {
+    display: flex;
+}
+
+.btn-left + .btn-right {
+    margin-left: 15px;
+}
+
+.btn-left,
+.btn-right {
+    max-width: 49%;
+    width: 100%;
+}

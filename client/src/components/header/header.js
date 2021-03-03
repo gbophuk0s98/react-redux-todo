@@ -11,9 +11,9 @@ const Header = () => {
         return (
             <div class="my-dropdown">
                 <div 
-                        className="btn btn-secondary dropdown-toggle" 
-                        onClick={() => setOpen(!open)}>
-                        Проект
+                    className="btn btn-secondary dropdown-toggle" 
+                    onClick={() => setOpen(!open)}
+                >Проекты
                 </div>
 
                 {open && 
