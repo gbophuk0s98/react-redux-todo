@@ -1,7 +1,7 @@
 import uuid from 'react-uuid'
 
 const initialState = {
-    cards: {},
+    cards: [],
     todos: [],
     form: {
         userName: '',
@@ -24,6 +24,13 @@ const setCards = (state, payload) => {
     }
 }
 
+const updatePosNumbers = (arr) => {
+    return arr.map((el, index) => {
+        el.posNumber = index
+        return el
+    })
+}
+
 const transferItems = (state, payload) => {
     if (!payload.destination) return state
     const { source, destination } = payload
@@ -34,34 +41,31 @@ const transferItems = (state, payload) => {
         const destItems = [...destColumn.items]
         const [removed] = sourceItems.splice(source.index, 1)
         destItems.splice(destination.index, 0, removed)
+
+        const newCards = state.cards.map((el, index) => {
+            if (index.toString()===source.droppableId) return { ...el, items: updatePosNumbers(sourceItems) }
+            if (index.toString()===destination.droppableId) return { ...el, items: updatePosNumbers(destItems) }
+            return el
+        })
+
         return {
             ...state,
-            cards: {
-                ...state.cards,
-                [source.droppableId]: {
-                    ...sourceColumn,
-                    items: sourceItems
-                },
-                [destination.droppableId]: {
-                    ...destColumn,
-                    items: destItems
-                }
-            }
+            cards: newCards
         }
     } else {
         const column = state.cards[source.droppableId]
         const copiedItems = [...column.items]
         const [removed] = copiedItems.splice(source.index, 1)
         copiedItems.splice(destination.index, 0, removed)
+
+        const newCards = state.cards.map((el, index) => {
+            if (index.toString()===source.droppableId) return { ...el, items: updatePosNumbers(copiedItems) }
+            return el
+        })
+
         return {
             ...state,
-            cards:{
-                ...state.cards,
-                [source.droppableId]: {
-                    ...column,
-                    items: copiedItems
-                }
-            }
+            cards: newCards
         }
     }
 }

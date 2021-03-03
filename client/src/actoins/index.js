@@ -71,10 +71,17 @@ const fetchTodos = (dispatch) => {
         .catch(err => dispatch(todosError(err)))
 }
 
-const transferCardsItems = result => {
+const transferCardsItems = (result) => {
     return {
         type: 'TRANSFER_CARDS_ITEMS',
         payload: result
+    }
+}
+
+const saveCards = (cards) => {
+    service.saveCards(cards)
+    return {
+        type: 'CARDS_SAVED'
     }
 }
 
@@ -134,5 +141,6 @@ export {
     clearErrors,
     fetchTodos,
     todoCreated,
-    todoUpdate
+    todoUpdate,
+    saveCards
 }

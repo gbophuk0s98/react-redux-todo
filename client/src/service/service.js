@@ -50,4 +50,8 @@ export default class ProjectService {
         return await this.getResourses(`${this._authBase}/updateTodo`, 'PUT', { ...body })
     }
 
+    saveCards = async (body, headers = {}) => {
+        await this.getResourses(`${this._authBase}/saveCards`, 'POST', { ...body })
+    }
+
 }

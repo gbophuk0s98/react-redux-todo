@@ -86,7 +86,6 @@ router.get('/getCards', async (req, res) => {
     {
         const cards = await Card.find()
         const newCards = await updateCards(cards)
-        // console.log(cards)
         return res.status(200).json(cards)
     }
     catch (e)
@@ -135,6 +134,23 @@ router.put('/updateTodo', async (req, res) => {
 
         await Todo.updateOne({ _id: req.body.id }, updateItem, { upset: false })
         return res.status(200).json({ message: 'Задача обновлена!'})
+    }
+    catch (e)
+    {
+        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
+    }
+})
+
+router.post('/saveCards', async (req, res) => {
+    try
+    {
+        if (req.body) {
+            for (const key in req.body) {
+                await Card.updateOne({ _id: req.body[key]._id }, { items: req.body[key].items })
+            }
+        }
+
+        return res.status(200).json({ message: 'Успешно обновлены!' })
     }
     catch (e)
     {

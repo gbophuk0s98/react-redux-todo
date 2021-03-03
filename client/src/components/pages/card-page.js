@@ -3,17 +3,32 @@ import { DragDropContext } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
 
 import Card from '../card'
-import { transferCardsItems, fetchCards } from '../../actoins'
+import { transferCardsItems, fetchCards, saveCards } from '../../actoins'
 
-const CardPage = ({ cards, transferCardsItems, fetchCards }) => {
+const CardPage = ({ state, cards, transferCardsItems, fetchCards }) => {
 
     useEffect(() => {
         fetchCards()
     }, [fetchCards])
 
+    useEffect(() => {
+        console.log('Actual cards', cards)
+        saveCards(cards)
+    }, [cards])
+
+    const checkCard = (result) => {
+        const { source, destination } = result
+
+        if (!destination) return
+        if ((source.index === destination.index) && (source.droppableId === destination.droppableId)) return
+        transferCardsItems(result)
+    }
+
     return (
         <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
-            <DragDropContext onDragEnd={result => transferCardsItems(result)}>
+            <DragDropContext onDragEnd={result => {
+                checkCard(result)
+            }}>
                 <Card columns={cards} />
             </DragDropContext>
         </div>
@@ -21,13 +36,14 @@ const CardPage = ({ cards, transferCardsItems, fetchCards }) => {
 }
 
 const mapStateToProps = (state) => {
-    return { cards: state.cards }
+    return { cards: state.cards, state }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         transferCardsItems: (result) => dispatch(transferCardsItems(result)),
-        fetchCards: () => fetchCards(dispatch)
+        fetchCards: () => fetchCards(dispatch),
+        saveCards: (cards) => dispatch(saveCards(cards))
     }
 }
 
