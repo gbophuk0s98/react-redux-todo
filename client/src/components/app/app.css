@@ -16,4 +16,8 @@
 p {
     font-family: DavidLibre, serif;
     font-weight: bold;
-  }
+}
+
+:root {
+    --speed: 500ms;
+}

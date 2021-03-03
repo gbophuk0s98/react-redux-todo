@@ -19,10 +19,23 @@
     padding: 4px;
     padding-left: 10px;
     width: 100%;
-    text-align: left;
-    font-weight: 500;
-    font-size: 14px;
     color: #fff;
+    text-align: left;
+    display: flex;
+    font-size: 16px;
+    align-items: center;
+}
+
+.card-title-text + .card-title-count {
+    margin-left: 5px;
+}
+
+.card-title-text {
+}
+
+.card-title-count {
+    padding-top: 1px;
+    font-size: 14px;
 }
 
 .card-items-droppable{

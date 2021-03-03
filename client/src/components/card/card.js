@@ -11,7 +11,14 @@ export const Card = ({ columns }) => {
 		{Object.entries(columns).map(([ id, column ]) => {
 			return (
 				<div className="card" key={id}>
-					<div className="card-title">{column.name}</div>
+					<div className="card-title">
+						<div className="card-title-text">
+							{column.name}
+						</div>
+						<div className="card-title-count">
+							<span>{column.items.length}</span>
+						</div>
+					</div>
 					<div style={{ margin: 1 }}>
 						<Droppable droppableId={id.toString()} key={id}>
 							{(provided, snapshot) => {

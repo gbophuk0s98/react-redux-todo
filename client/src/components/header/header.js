@@ -1,9 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import './header.css'
 
 const Header = () => {
+
+    const [open, setOpen] = useState(false)
+
+    const DropDown = () => {
+        return (
+            <div class="my-dropdown">
+                <div 
+                        className="btn btn-secondary dropdown-toggle" 
+                        onClick={() => setOpen(!open)}>
+                        Проект
+                </div>
+
+                {open && 
+                    <div className="my-dropdown-menu">
+                        <button className="dropdown-item">Все проекты</button>
+                        <button className="dropdown-item">Создать...</button>
+                    </div>
+                }
+            </div>
+        )
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
 
@@ -15,14 +37,17 @@ const Header = () => {
 
             <div className="collapse navbar-collapse" id="navbarColor03">
                 <ul className="navbar-nav mr-auto">
-                <li className="nav-item active">
-                    <Link className="nav-link" to="/cards">Главная
-                        <span className="sr-only">(current)</span>
-                    </Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="/roadmap">Карта</Link>
-                </li>
+                    <li className="nav-item active">
+                        <Link className="nav-link" to="/cards">Главная
+                            <span className="sr-only">(current)</span>
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/roadmap">Карта</Link>
+                    </li>
+                    <li>
+                        <DropDown />
+                    </li>
                 </ul>
                 <form className="form-inline my-2 my-lg-0">
                 <button className="btn btn-secondary my-2 my-sm-0" type="submit">Выход</button>
