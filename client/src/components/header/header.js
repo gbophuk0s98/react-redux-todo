@@ -17,9 +17,9 @@ const Header = () => {
                 </div>
 
                 {open && 
-                    <div className="my-dropdown-menu">
-                        <button className="dropdown-item">Все проекты</button>
-                        <button className="dropdown-item">Создать...</button>
+                    <div className="my-dropdown-menu"  onClick={() => setOpen(!open)}>
+                        <Link className="dropdown-item">Все проекты</Link>
+                        <Link className="dropdown-item" to="/createProject">Создать...</Link>
                     </div>
                 }
             </div>
