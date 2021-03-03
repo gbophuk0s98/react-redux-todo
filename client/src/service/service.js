@@ -1,6 +1,7 @@
 export default class ProjectService {
 
     _authBase = '/api/auth'
+    _todoBase = '/api/todo'
 
     async getResourses(url, method = 'GET', body = null, headers = {}){
         try
@@ -35,23 +36,23 @@ export default class ProjectService {
     }
 
     getCards = async (body = null, headers = {}) => {
-        return await this.getResourses(`${this._authBase}/getCards`, 'GET')
+        return await this.getResourses(`${this._todoBase}/getCards`, 'GET')
     }
 
     getTodos = async (body = null, headers = {}) => {
-        return await this.getResourses(`${this._authBase}/getTodos`, 'GET')
+        return await this.getResourses(`${this._todoBase}/getTodos`, 'GET')
     }
 
     createTodo = async (body, headers = {}) => {
-        return await this.getResourses(`${this._authBase}/createTodo`, 'POST', { ...body })
+        return await this.getResourses(`${this._todoBase}/createTodo`, 'POST', { ...body })
     }
 
     updateTodo = async (body, headers = {}) => {
-        return await this.getResourses(`${this._authBase}/updateTodo`, 'PUT', { ...body })
+        return await this.getResourses(`${this._todoBase}/updateTodo`, 'PUT', { ...body })
     }
 
     saveCards = async (body, headers = {}) => {
-        await this.getResourses(`${this._authBase}/saveCards`, 'POST', { ...body })
+        await this.getResourses(`${this._todoBase}/saveCards`, 'POST', { ...body })
     }
 
 }
