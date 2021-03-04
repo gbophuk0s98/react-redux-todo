@@ -9,7 +9,7 @@ const Header = () => {
 
     const DropDown = () => {
         return (
-            <div class="my-dropdown">
+            <div className="my-dropdown">
                 <div 
                     className="btn btn-secondary dropdown-toggle" 
                     onClick={() => setOpen(!open)}
