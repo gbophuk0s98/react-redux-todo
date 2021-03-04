@@ -35,12 +35,17 @@ router.post('/login', loginFormValidator, async (req, res) => {
         if (!user) return res.status(400).json({ message: 'Пользователь не найден!' })
 
         const isMatch = await bcrypt.compare(password, user.password)
-        if (!isMatch) return res.status(400).json({ message: 'Неверный пароль!' })
-
-        console.log(req.body)
+        if (!isMatch) return res.status(400).json({ message: 'Неверный пароль!' })        
         
-        console.log('login')
-        res.status(200).json({ message: 'login !!!!!!' })
+        const secretKey = Date.now().toString()
+        await User.updateOne({ email: user.email, token: generateToken(user.id, secretKey) })
+        const userToFront = await User.findOne({ _id: user.id })
+
+        console.log(userToFront)
+
+        res.status(200).json({
+            id: userToFront.id, userName: userToFront.userName, email: userToFront.email, token: userToFront.token
+        })
     }
     catch (e)
     {

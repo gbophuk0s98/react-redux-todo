@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
@@ -6,8 +6,11 @@ import PageContainer from '../auth-components/auth-page-container'
 import * as actions from '../../actoins'
 
 import './pages.css'
+import AuthContext from '../context'
 
-const LoginPage = ({ authError, errors, form, loginHandler, changeForm, clearErrors, clearAuthError }) => {
+const LoginPage = ({ user, authError, errors, form, loginHandler, changeForm, clearErrors, clearAuthError }) => {
+
+    const auth = useContext(AuthContext)
 
     useEffect(() => clearErrors(), [clearErrors])
     useEffect(() => clearAuthError(), [clearAuthError])
@@ -16,7 +19,10 @@ const LoginPage = ({ authError, errors, form, loginHandler, changeForm, clearErr
         <PageContainer
             errorFromBackend={authError}
             errors={errors}
-            btnHandler={() => loginHandler(form)}
+            btnHandler={() => {
+                loginHandler(form)
+                auth.login(user.id, user.token)
+            }}
             changeForm={changeForm}
             title={'Авторизация'}
             btnText={'Авторизоваться'}
@@ -32,6 +38,7 @@ const mapStateToProps = (state) => {
         form: state.form,
         errors: state.formErrors,
         authError: state.authError,
+        user: state.user
     }
 }
 

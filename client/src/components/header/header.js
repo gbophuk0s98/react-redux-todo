@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import AuthContext from '../context'
 
 import './header.css'
 
-const Header = () => {
+const Header = ({ user }) => {
 
     const [open, setOpen] = useState(false)
+    const auth = useContext(AuthContext)
 
     const DropDown = () => {
         return (
@@ -50,11 +53,21 @@ const Header = () => {
                     </li>
                 </ul>
                 <form className="form-inline my-2 my-lg-0">
-                <button className="btn btn-secondary my-2 my-sm-0" type="submit">Выход</button>
+                <button
+                    className="btn btn-secondary my-2 my-sm-0" 
+                    type="submit"
+                    onClick={() => auth.logout(user.id, user.token)}
+                    >Выход</button>
                 </form>
             </div>
         </nav>
     )
 }
 
-export default Header
+const mapStateToProps = (state) => {
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps)(Header)

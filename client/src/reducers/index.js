@@ -99,7 +99,7 @@ const clearErrors = (state) => {
 }
 
 const setUser = (state, payload) => {
-    console.log('FromBackend', payload)
+    console.log('FromBackend ( reducer.setUser() )', payload)
     return {
         ...state,
         user: { ...payload }

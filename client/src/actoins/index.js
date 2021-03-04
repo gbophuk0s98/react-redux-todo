@@ -7,18 +7,18 @@ const registerHandler = (dispatch, form) => {
 
     const errors = validateRegForm(form)
     
-    if (isEmptyObject(errors)) {
-        service.register(form)
-        .then(user => dispatch(setUser(user)) )
-        .catch(error => dispatch(setUserError(error.message)) )
+    if (!isEmptyObject(errors)) {
         return {
-            type: 'REGISTER_FORM_SUBMITED',
-            payload: form
+            type: 'REGISTER_FORM_ERROR',
+            payload: errors
         }
     }
+    service.register(form)
+    .then(user => dispatch(setUser(user)) )
+    .catch(error => dispatch(setUserError(error.message)) )
     return {
-        type: 'REGISTER_FORM_ERROR',
-        payload: errors
+        type: 'REGISTER_FORM_SUBMITED',
+        payload: form
     }
 }
 
@@ -26,18 +26,18 @@ const loginHandler = (dispatch, form) => {
     
     const errors = validateAuthForm(form)
 
-    if (isEmptyObject(errors)) {
-        service.login(form)
-        .then(user => console.log('user', user))
-        .catch(error => dispatch(setUserError(error.message)) )
+    if (!isEmptyObject(errors)) {
         return {
-            type: 'LOGIN_FORM_SUBMITED',
-            payload: form
+            type: 'LOGIN_FORM_ERROR',
+            payload: errors
         }
     }
+    service.login(form)
+    .then(user => dispatch(setUser(user)))
+    .catch(error => dispatch(setUserError(error.message)) )
     return {
-        type: 'LOGIN_FORM_ERROR',
-        payload: errors
+        type: 'LOGIN_FORM_SUBMITED',
+        payload: form
     }
 }
 
