@@ -7,14 +7,14 @@ import * as actions from '../../actoins'
 
 import './pages.css'
 
-const LoginPage = ({ errors, form, loginHandler, changeForm, clearErrors }) => {
+const LoginPage = ({ authError, errors, form, loginHandler, changeForm, clearErrors, clearAuthError }) => {
 
-    useEffect(() => {
-        clearErrors()
-    }, [clearErrors])
+    useEffect(() => clearErrors(), [clearErrors])
+    useEffect(() => clearAuthError(), [clearAuthError])
 
     return (
         <PageContainer
+            errorFromBackend={authError}
             errors={errors}
             btnHandler={() => loginHandler(form)}
             changeForm={changeForm}
@@ -30,16 +30,18 @@ const LoginPage = ({ errors, form, loginHandler, changeForm, clearErrors }) => {
 const mapStateToProps = (state) => {
     return {
         form: state.form,
-        errors: state.formErrors
+        errors: state.formErrors,
+        authError: state.authError,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { changeForm, loginHandler, clearErrors } = bindActionCreators(actions, dispatch)
+    const { changeForm, loginHandler, clearErrors, clearAuthError } = bindActionCreators(actions, dispatch)
     return {
         changeForm,
-        loginHandler,
-        clearErrors
+        loginHandler: (form) => loginHandler(dispatch, form),
+        clearErrors,
+        clearAuthError
     }
 }
 

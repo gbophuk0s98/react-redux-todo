@@ -1,5 +1,3 @@
-import uuid from 'react-uuid'
-
 const initialState = {
     cards: [],
     todos: [],
@@ -14,7 +12,13 @@ const initialState = {
         email: '',
         password: '',
         matchPassword: '',
-    }
+    },
+    authError: '',
+    user: {
+        name: '',
+        email: '',
+        userId: '',
+    },
 }
 
 const setCards = (state, payload) => {
@@ -33,6 +37,7 @@ const updatePosNumbers = (arr) => {
 
 const transferItems = (state, payload) => {
     if (!payload.destination) return state
+    let newCards = []
     const { source, destination } = payload
     if (source.droppableId !== destination.droppableId){
         const sourceColumn = state.cards[source.droppableId]
@@ -42,31 +47,25 @@ const transferItems = (state, payload) => {
         const [removed] = sourceItems.splice(source.index, 1)
         destItems.splice(destination.index, 0, removed)
 
-        const newCards = state.cards.map((el, index) => {
+        newCards = state.cards.map((el, index) => {
             if (index.toString()===source.droppableId) return { ...el, items: updatePosNumbers(sourceItems) }
             if (index.toString()===destination.droppableId) return { ...el, items: updatePosNumbers(destItems) }
             return el
         })
-
-        return {
-            ...state,
-            cards: newCards
-        }
     } else {
         const column = state.cards[source.droppableId]
         const copiedItems = [...column.items]
         const [removed] = copiedItems.splice(source.index, 1)
         copiedItems.splice(destination.index, 0, removed)
 
-        const newCards = state.cards.map((el, index) => {
+        newCards = state.cards.map((el, index) => {
             if (index.toString()===source.droppableId) return { ...el, items: updatePosNumbers(copiedItems) }
             return el
         })
-
-        return {
-            ...state,
-            cards: newCards
-        }
+    }
+    return {
+        ...state,
+        cards: newCards
     }
 }
 
@@ -99,8 +98,32 @@ const clearErrors = (state) => {
     }
 }
 
+const setUser = (state, payload) => {
+    console.log('FromBackend', payload)
+    return {
+        ...state,
+        user: { ...payload }
+    }
+}
+
+const setUserError = (state, payload) => {
+    return {
+        ...state,
+        authError: payload
+    }
+}
+
 const reducer = (state = initialState, action) => {
     switch (action.type){
+        case 'USER_CREATED_SUCCESS':
+            return setUser(state, action.payload)
+        case 'USER_CREATED_FAILURE':
+            return setUserError(state, action.payload)
+        case 'AUTH_ERROR_CLEAR':
+            return {
+                ...state,
+                authError: ''
+            }
         case 'FETCH_CARDS_REQUEST':
             return state
         case 'FETCH_CARDS_SUCCESS':

@@ -20,11 +20,11 @@ export default class ProjectService {
     }
 
     login = async (body, headers = {}) => {
-        await this.getResourses(`${this._authBase}/login`, 'POST', { ...body })
+        return await this.getResourses(`${this._authBase}/login`, 'POST', { ...body })
     }
 
     register = async (body, headers = {}) => {
-        await this.getResourses(`${this._authBase}/register`, 'POST', { ...body })
+        return await this.getResourses(`${this._authBase}/register`, 'POST', { ...body })
     }
 
     logout = async (body, headers = {}) => {

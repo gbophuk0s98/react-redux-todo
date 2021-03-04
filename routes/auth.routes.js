@@ -27,15 +27,15 @@ router.post('/login', loginFormValidator, async (req, res) => {
     try
     {
         const errors = validationResult(req)
-        if (!errors.isEmpty()) return res.status(200).json({ errors: errors.array(), message: 'Проверьте правильность вводимых данных!'})
+        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array(), message: 'Проверьте правильность вводимых данных!'})
 
         const { email, password } = req.body
 
         const user = await User.findOne({ email })
-        if (!user) return res.status(200).json({ message: 'Пользователь не найден!' })
+        if (!user) return res.status(400).json({ message: 'Пользователь не найден!' })
 
         const isMatch = await bcrypt.compare(password, user.password)
-        if (!isMatch) return res.status(200).json({ message: 'Неверный пароль!' })
+        if (!isMatch) return res.status(400).json({ message: 'Неверный пароль!' })
 
         console.log(req.body)
         
@@ -54,14 +54,21 @@ router.post('/register', async (req, res) => {
         const { userName, email, password } = req.body
 
         const candidate = await User.findOne({ email })
-        if (candidate) return res.status(200).json({ message: 'Такой пользователь уже существует!' })
+        if (candidate) return res.status(400).json({ message: 'Такой пользователь уже существует!' })
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
         const user = new User({ userName, email, password: hashedPassword })
         await user.save()
 
-        return res.status(200).json(user)
+        const secretKey = Date.now().toString()
+        await User.updateOne({ email: user.email, token: generateToken(user.id, secretKey) })
+
+        const userToFront = await User.findOne({ _id: user.id })
+
+        return res.status(200).json({
+            id: userToFront.id, userName: userToFront.userName, email: userToFront.email, token: userToFront.token
+        })
     }
     catch (e)
     {

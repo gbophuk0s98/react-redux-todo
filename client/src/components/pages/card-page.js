@@ -5,16 +5,10 @@ import { connect } from 'react-redux'
 import Card from '../card'
 import { transferCardsItems, fetchCards, saveCards } from '../../actoins'
 
-const CardPage = ({ state, cards, transferCardsItems, fetchCards }) => {
+const CardPage = ({ cards, transferCardsItems, fetchCards }) => {
 
-    useEffect(() => {
-        fetchCards()
-    }, [fetchCards])
-
-    useEffect(() => {
-        console.log('Actual cards', cards)
-        saveCards(cards)
-    }, [cards])
+    useEffect(() => fetchCards(), [fetchCards])
+    useEffect(() => saveCards(cards), [cards])
 
     const checkCard = (result) => {
         const { source, destination } = result
@@ -26,9 +20,7 @@ const CardPage = ({ state, cards, transferCardsItems, fetchCards }) => {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
-            <DragDropContext onDragEnd={result => {
-                checkCard(result)
-            }}>
+            <DragDropContext onDragEnd={result => checkCard(result)}>
                 <Card columns={cards} />
             </DragDropContext>
         </div>
@@ -36,7 +28,7 @@ const CardPage = ({ state, cards, transferCardsItems, fetchCards }) => {
 }
 
 const mapStateToProps = (state) => {
-    return { cards: state.cards, state }
+    return { cards: state.cards }
 }
 
 const mapDispatchToProps = (dispatch) => {

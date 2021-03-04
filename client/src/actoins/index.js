@@ -3,6 +3,64 @@ import ProjectService from '../service'
 
 const service = new ProjectService()
 
+const registerHandler = (dispatch, form) => {
+
+    const errors = validateRegForm(form)
+    
+    if (isEmptyObject(errors)) {
+        service.register(form)
+        .then(user => dispatch(setUser(user)) )
+        .catch(error => dispatch(setUserError(error.message)) )
+        return {
+            type: 'REGISTER_FORM_SUBMITED',
+            payload: form
+        }
+    }
+    return {
+        type: 'REGISTER_FORM_ERROR',
+        payload: errors
+    }
+}
+
+const loginHandler = (dispatch, form) => {
+    
+    const errors = validateAuthForm(form)
+
+    if (isEmptyObject(errors)) {
+        service.login(form)
+        .then(user => console.log('user', user))
+        .catch(error => dispatch(setUserError(error.message)) )
+        return {
+            type: 'LOGIN_FORM_SUBMITED',
+            payload: form
+        }
+    }
+    return {
+        type: 'LOGIN_FORM_ERROR',
+        payload: errors
+    }
+}
+
+const setUser = user => {
+    return {
+        type: 'USER_CREATED_SUCCESS',
+        payload: user,
+    }
+}
+
+const setUserError = error => {
+    return {
+        type: 'USER_CREATED_FAILURE',
+        payload: error
+    }
+}
+
+const clearAuthError = () => {
+    return {
+        type: 'AUTH_ERROR_CLEAR'
+    }
+}
+
 const cardsRequested = () => {
     return {
         type: 'FETCH_CARDS_REQUEST',
@@ -85,40 +143,6 @@ const saveCards = (cards) => {
     }
 }
 
-const registerHandler = form => {
-
-    const errors = validateRegForm(form)
-    
-    if (isEmptyObject(errors)) {
-        service.register(form)
-        return {
-            type: 'REGISTER_FORM_SUBMITED',
-            payload: form
-        }
-    }
-    return {
-        type: 'REGISTER_FORM_ERROR',
-        payload: errors
-    }
-}
-
-const loginHandler = form => {
-    
-    const errors = validateAuthForm(form)
-
-    if (isEmptyObject(errors)) {
-        service.login(form)
-        return {
-            type: 'LOGIN_FORM_SUBMITED',
-            payload: form
-        }
-    }
-    return {
-        type: 'LOGIN_FORM_ERROR',
-        payload: errors
-    }
-}
-
 const changeForm = event => {
     return {
         type: 'FORM_CHANGED',
@@ -142,5 +166,6 @@ export {
     fetchTodos,
     todoCreated,
     todoUpdate,
-    saveCards
+    saveCards,
+    clearAuthError
 }
