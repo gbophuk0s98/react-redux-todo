@@ -41,6 +41,13 @@ const loginHandler = (dispatch, form) => {
     }
 }
 
+const logoutHandler = () => {
+    console.log('logoutHandler')
+    return {
+        type: 'USER_LOGOUT_SUCCESS'
+    }
+}
+
 const setUser = user => {
     return {
         type: 'USER_CREATED_SUCCESS',
@@ -58,6 +65,20 @@ const setUserError = error => {
 const clearAuthError = () => {
     return {
         type: 'AUTH_ERROR_CLEAR'
+    }
+}
+
+const createProject = (dispatch, project) => {
+    service.createProject(project).then(res => dispatch(setProject(res)))
+    return {
+        type: 'USER_PROJECT_CREATED',
+    }
+}
+
+const setProject = (project) => {
+    return {
+        type: 'PROJECT_CREATED_SUCCESS',
+        payload: project, 
     }
 }
 
@@ -81,9 +102,9 @@ const cardsLoaded = newCards => {
     }
 }
 
-const fetchCards = (dispatch) => {
+const fetchCards = (dispatch, projectId) => {
     dispatch(cardsRequested())
-    service.getCards()
+    service.getCards(projectId)
         .then(data => dispatch(cardsLoaded(data)))
         .catch(err => dispatch(cardsError(err)))
 }
@@ -162,10 +183,12 @@ export {
     changeForm,
     registerHandler,
     loginHandler,
+    logoutHandler,
     clearErrors,
     fetchTodos,
     todoCreated,
     todoUpdate,
     saveCards,
-    clearAuthError
+    clearAuthError,
+    createProject
 }

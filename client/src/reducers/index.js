@@ -19,6 +19,12 @@ const initialState = {
         email: '',
         userId: '',
     },
+    project: {
+        id: '',
+        title: '',
+        description: '',
+        key: '',
+    }
 }
 
 const setCards = (state, payload) => {
@@ -98,6 +104,30 @@ const clearErrors = (state) => {
     }
 }
 
+const clearUser = (state) => {
+    return {
+        ...state,
+        user: {
+            name: '',
+            email: '',
+            userId: '',
+        },
+    }
+}
+
+const setProject = (state, project) => {
+    const { _id, title, description, key } = project
+    return {
+        ...state,
+        project: {
+             id: _id,
+             title: title,
+             description: description,
+             key: key,
+        }
+    }
+}
+
 const setUser = (state, payload) => {
     console.log('FromBackend ( reducer.setUser() )', payload)
     return {
@@ -124,6 +154,12 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 authError: ''
             }
+        case 'USER_LOGOUT_SUCCESS':
+            return clearUser(state)
+        case 'USER_PROJECT_CREATED':
+            return { ...state }
+        case 'PROJECT_CREATED_SUCCESS':
+            return setProject(state, action.payload)
         case 'FETCH_CARDS_REQUEST':
             return state
         case 'FETCH_CARDS_SUCCESS':

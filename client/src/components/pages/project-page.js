@@ -1,31 +1,44 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as actions from '../../actoins'
+import AuthContext from '../context'
 
 import './pages.css'
 
-const ProjectPage = () => {
+const ProjectPage = ({ projectInfo, createProject }) => {
 
-    const [name, setName] = useState('')
-    const [projectKey, setProjectKey] = useState('')
+    const auth = useContext(AuthContext)
 
-    const makeid = () => {
-        var text = ""
-        var possible = "abcdefghijklmnopqrstuvwxyz"
+    const [project, setProject] = useState({
+        projectName: '',
+        projectKey: '',
+    })
 
-        for( var i=0; i < 4; i++ )
+    useEffect(() => {
+        if (!!projectInfo.id) {
+            console.log('auth', auth)
+            auth.login(auth.userId, auth.token, projectInfo.id)
+        }
+    }, [auth, projectInfo])
+
+    const makeId = () => {
+        let text = ""
+        let possible = "abcdefghijklmnopqrstuvwxyz"
+
+        for( let i=0; i < 4; i++ )
             text += possible.charAt(Math.floor(Math.random() * possible.length))
 
         return text.toUpperCase()
     }
 
     const onChangeHandler = (e) => {
-        if (e.target.value.length > 2) setProjectKey(makeid())
-        if (/[а-я]/i.test(e.target.value)) setProjectKey(makeid())
-        setName(e.target.value)
-        if (e.target.value.length <= 2) setProjectKey('')
+        const { name, value } = e.target
+
+        if (project.projectName.length >= 2 && value.length > 2) {
+            setProject({ [name]: value, projectKey: makeId() })
+        } else setProject({ [name]: value, projectKey: '' })
     }
 
     return (
@@ -39,7 +52,7 @@ const ProjectPage = () => {
                         <input 
                             className="form-control mb-1"
                             name="projectName"
-                            value={name}
+                            value={project.projectName}
                             type="text"
                             id="projectId"
                             onChange={onChangeHandler}
@@ -55,7 +68,7 @@ const ProjectPage = () => {
                             name="projectKey"
                             type="text"
                             id="porjectKey"
-                            defaultValue={projectKey}
+                            defaultValue={project.projectKey}
                             placeholder="Ключ"
                             />
                     </div>
@@ -64,7 +77,8 @@ const ProjectPage = () => {
                             <button 
                                 className="form-btn w-100 btn btn-primary" 
                                 type="button"
-                                disabled={name.length > 2 ? false : true}
+                                disabled={project.projectName.length > 2 ? false : true}
+                                onClick={() => createProject({ ...project, userId: auth.userId})}
                             >
                             Создать
                             </button>
@@ -86,16 +100,17 @@ const ProjectPage = () => {
 
 const mapStateToProps = (state) => {
     return {
-        state
+        projectInfo: state.project
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { changeForm, loginHandler, clearErrors } = bindActionCreators(actions, dispatch)
+    const { changeForm, loginHandler, clearErrors, createProject } = bindActionCreators(actions, dispatch)
     return {
         changeForm,
         loginHandler,
-        clearErrors
+        clearErrors,
+        createProject: (project) => createProject(dispatch, project)
     }
 }
 

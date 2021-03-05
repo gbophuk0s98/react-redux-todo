@@ -1,11 +1,13 @@
 import React, { useContext, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import AuthContext from '../context'
+import { bindActionCreators } from 'redux'
 
+import AuthContext from '../context'
+import * as actions from '../../actoins'
 import './header.css'
 
-const Header = ({ user }) => {
+const Header = ({ user, logoutHandler }) => {
 
     const [open, setOpen] = useState(false)
     const auth = useContext(AuthContext)
@@ -21,7 +23,7 @@ const Header = ({ user }) => {
 
                 {open && 
                     <div className="my-dropdown-menu"  onClick={() => setOpen(!open)}>
-                        <Link className="dropdown-item">Все проекты</Link>
+                        <Link className="dropdown-item" to="/createProject">Все проекты</Link>
                         <Link className="dropdown-item" to="/createProject">Создать...</Link>
                     </div>
                 }
@@ -56,7 +58,10 @@ const Header = ({ user }) => {
                 <button
                     className="btn btn-secondary my-2 my-sm-0" 
                     type="submit"
-                    onClick={() => auth.logout(user.id, user.token)}
+                    onClick={() => {
+                        auth.logout(user.id, user.token)
+                        logoutHandler()
+                    }}
                     >Выход</button>
                 </form>
             </div>
@@ -70,4 +75,11 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(Header)
+const mapDispatchToProps = (dispatch) => {
+    const { logoutHandler } = bindActionCreators(actions, dispatch)
+    return {
+        logoutHandler
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

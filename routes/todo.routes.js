@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const Todo = require('../models/Todo')
 const Card = require('../models/Card')
+const Project = require('../models/Project')
 const router = Router()
 const uuid = require('uuid')
 
@@ -15,19 +16,6 @@ const updateCards = async (cards) => {
     }
     return newCards
 }
-
-router.get('/getCards', async (req, res) => {
-    try
-    {
-        const cards = await Card.find()
-        const newCards = await updateCards(cards)
-        return res.status(200).json(cards)
-    }
-    catch (e)
-    {
-        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })   
-    }
-})
 
 router.get('/getTodos', async (req, res) => {
     try
@@ -76,6 +64,21 @@ router.put('/updateTodo', async (req, res) => {
     }
 })
 
+router.get('/getCards', async (req, res) => {
+    try
+    {
+        const projectId = req.headers.project.split(' ')[1]
+        console.log(projectId)
+        const cards = await Card.find({ project: projectId })
+        const newCards = await updateCards(cards)
+        return res.status(200).json(cards)
+    }
+    catch (e)
+    {
+        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })   
+    }
+})
+
 router.post('/saveCards', async (req, res) => {
     try
     {
@@ -86,6 +89,34 @@ router.post('/saveCards', async (req, res) => {
         }
 
         return res.status(200).json({ message: 'Успешно обновлены!' })
+    }
+    catch (e)
+    {
+        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
+    }
+})
+
+router.post('/createProject', async (req, res) => {
+    try
+    {
+        const { projectName, projectKey, userId } = req.body
+        
+        const project = new Project({ title: projectName, description: '', key: projectKey, owner: userId })
+        await project.save()
+
+        const tasksCard = new Card({ name: 'Задачи', columnType: 'TaskList', items: [], project: project.id })
+        await tasksCard.save()
+
+        const selectedCard = new Card({ name: 'Выбрано для разработки', columnType: 'SelectedList', items: [], project: project.id })
+        await selectedCard.save()
+
+        const processingCard = new Card({ name: 'Выполняется', columnType: 'ProcessingList', items: [], project: project.id })
+        await processingCard.save()
+
+        const doneCard = new Card({ name: 'Выполнено', columnType: 'DoneList', items: [], project: project.id })
+        await doneCard.save()
+        
+        return res.status(200).json(project)
     }
     catch (e)
     {

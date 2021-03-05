@@ -35,8 +35,11 @@ export default class ProjectService {
         await this.getResourses(`${this._authBase}/getToken`, 'POST', { ...body })
     }
 
-    getCards = async (body = null, headers = {}) => {
-        return await this.getResourses(`${this._todoBase}/getCards`, 'GET')
+    getCards = async (body = null) => {
+        const headers = {
+            Project: `Id ${body}`
+        }
+        return await this.getResourses(`${this._todoBase}/getCards`, 'GET', null, headers)
     }
 
     getTodos = async (body = null, headers = {}) => {
@@ -53,6 +56,10 @@ export default class ProjectService {
 
     saveCards = async (body, headers = {}) => {
         await this.getResourses(`${this._todoBase}/saveCards`, 'POST', { ...body })
+    }
+
+    createProject = async(body, headers = {}) => {
+        return await this.getResourses(`${this._todoBase}/createProject`, 'POST', { ...body })
     }
 
 }

@@ -14,15 +14,15 @@ const LoginPage = ({ user, authError, errors, form, loginHandler, changeForm, cl
 
     useEffect(() => clearErrors(), [clearErrors])
     useEffect(() => clearAuthError(), [clearAuthError])
+    useEffect(() => {
+        if (!!user.token) auth.login(user.id, user.token, '')
+    }, [user.token, auth, user.id])
 
     return (
         <PageContainer
             errorFromBackend={authError}
             errors={errors}
-            btnHandler={() => {
-                loginHandler(form)
-                auth.login(user.id, user.token)
-            }}
+            btnHandler={() => loginHandler(form)}
             changeForm={changeForm}
             title={'Авторизация'}
             btnText={'Авторизоваться'}
@@ -46,9 +46,9 @@ const mapDispatchToProps = (dispatch) => {
     const { changeForm, loginHandler, clearErrors, clearAuthError } = bindActionCreators(actions, dispatch)
     return {
         changeForm,
-        loginHandler: (form) => loginHandler(dispatch, form),
         clearErrors,
-        clearAuthError
+        clearAuthError,
+        loginHandler: (form) => loginHandler(dispatch, form)
     }
 }
 

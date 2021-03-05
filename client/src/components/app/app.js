@@ -2,7 +2,6 @@ import React from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { TouchBackend } from 'react-dnd-touch-backend'
-import { connect } from 'react-redux'
 import { BrowserRouter as Router} from 'react-router-dom'
 
 import { useRoutes } from '../../routes'
@@ -11,14 +10,14 @@ import { useAuth } from '../hooks'
 
 import './app.css'
 
-const App = ({ user }) => {
+const App = () => {
 
-	const { token, login, userId, logout } = useAuth()
+	const { token, login, userId, logout, projectId, addProject } = useAuth()
 	const routes = useRoutes(!!token)
 	const isMobile = window.innerWidth < 600
 
 	return (
-		<AuthContext.Provider value = { {token, userId, login, logout} }>
+		<AuthContext.Provider value = { { token, userId, login, logout, projectId, addProject } }>
 			<DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
 				<Router>
 					{routes}
@@ -28,16 +27,5 @@ const App = ({ user }) => {
 	)
 }
 
-const mapStateToProps = (state) => {
-	return {
-		user: state.user
-	}
-}
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-
-	}
-}
-
-export default connect(mapStateToProps)(App)
+export default App

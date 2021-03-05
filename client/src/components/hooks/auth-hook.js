@@ -6,28 +6,43 @@ export const useAuth = () => {
     
     const [token, setToken] = useState(null)
     const [userId, setUserId] = useState(null)
+    const [projectId, setProjectId] = useState(null)
 
-    const login = useCallback((id, jwtToken) => {
+    const login = useCallback((id, jwtToken, projectId) => {
         setUserId(id)
         setToken(jwtToken)
+        setProjectId(projectId)
 
         localStorage.setItem(storageName, JSON.stringify({
-            token: jwtToken, userId: id
+            token: jwtToken, userId: id, projectId: projectId
         }))
     }, [])
 
     const logout = useCallback((id, jwtToken) => {
         setToken(null)
         setUserId(null)
+        setProjectId(null)
         localStorage.removeItem(storageName)
+    }, [])
+
+    const addProject = useCallback((id, jwtToken, project) => {
+        console.log('id', id)
+        console.log('jwtToken', jwtToken)
+        console.log('project', project)
+        setUserId(id)
+        setToken(jwtToken)
+        setProjectId(project)
+
+        localStorage.setItem(storageName, JSON.stringify({
+            token: jwtToken, userId: id, projectId: project
+        }))
     }, [])
 
     useEffect(() => {
         const data = JSON.parse(localStorage.getItem(storageName))
-        
-        if (data && data.token) login(data.token, data.userId)
+        if (data && data.token) login(data.userId, data.token, data.projectId)
         
     }, [login])
 
-    return { login, logout, token, userId }
+    return { login, logout, addProject, token, userId, projectId }
 }
