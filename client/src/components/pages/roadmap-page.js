@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { connect } from 'react-redux'
 
 import { fetchTodos, todoCreated, todoUpdate } from '../../actoins'
+import AuthContext from '../../context'
 
 import './pages.css'
 
 const getDate = (endDate = false) => {
     const date = new Date()
-    const days = date.getDay() < 10 ? '0' + date.getDay(): date.getDay()
-
+    const days = date.getDate()  < 10 ? '0' + date.getDate(): date.getDate()
+    let months
     if (!endDate) {
-        const months = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1): date.getMonth() + 1
-        return `${date.getFullYear()}-${months}-${days}`
+        months = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1): date.getMonth() + 1
+    } else {
+        months = date.getMonth() + 2 < 10 ? '0' + (date.getMonth() + 2): date.getMonth() + 2
     }
-    const months = date.getMonth() + 2 < 10 ? '0' + (date.getMonth() + 2): date.getMonth() + 2
     return `${date.getFullYear()}-${months}-${days}`
 }
 
 const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate }) => {
+
+    const auth = useContext(AuthContext)
 
     const [todo, setTodo] = useState({
         content: '',
@@ -26,6 +29,8 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate }) => {
     })
 
     const [showInput, setShowInput] = useState(false)
+
+    useEffect(() => fetchTodos(auth.projectId), [fetchTodos])
     
     const addTableRow = () => showInput ? setShowInput(false) : setShowInput(true)
     
@@ -35,7 +40,7 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate }) => {
 
     const onBlurHandler = () => {
         if (todo.content) {
-            todoCreated(todo)
+            todoCreated(todo, auth.projectId)
             setTodo({
                 ...todo, content: ''
             })
@@ -96,8 +101,6 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate }) => {
         )
     }
 
-    useEffect(() => fetchTodos(), [fetchTodos])
-
     return (
         <>
         <table className="table table-striped table-dark">
@@ -139,8 +142,8 @@ const mapStateTopProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchTodos: () => fetchTodos(dispatch),
-        todoCreated: (todo) => todoCreated(dispatch, todo),
+        fetchTodos: (projectId) => fetchTodos(dispatch, projectId),
+        todoCreated: (todo, projectId) => todoCreated(dispatch, todo, projectId),
         todoUpdate: (todo) => todoUpdate(dispatch, todo) 
     }
 }

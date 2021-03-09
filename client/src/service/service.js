@@ -36,18 +36,18 @@ export default class ProjectService {
     }
 
     getCards = async (body = null) => {
-        const headers = {
-            Project: `Id ${body}`
-        }
+        const headers = { Project: `Id ${body}` }
         return await this.getResourses(`${this._todoBase}/getCards`, 'GET', null, headers)
     }
 
-    getTodos = async (body = null, headers = {}) => {
-        return await this.getResourses(`${this._todoBase}/getTodos`, 'GET')
+    getTodos = async (headersToBackend = null) => {
+        const headers = { Project: `Id ${headersToBackend}` }
+        return await this.getResourses(`${this._todoBase}/getTodos`, 'GET', null, headers)
     }
 
-    createTodo = async (body, headers = {}) => {
-        return await this.getResourses(`${this._todoBase}/createTodo`, 'POST', { ...body })
+    createTodo = async (body, headersToBackend = null) => {
+        const headers = { Project: `Id ${headersToBackend}` }
+        return await this.getResourses(`${this._todoBase}/createTodo`, 'POST', { ...body }, headers)
     }
 
     updateTodo = async (body, headers = {}) => {
@@ -58,8 +58,13 @@ export default class ProjectService {
         await this.getResourses(`${this._todoBase}/saveCards`, 'POST', { ...body })
     }
 
-    createProject = async(body, headers = {}) => {
+    createProject = async (body, headers = {}) => {
         return await this.getResourses(`${this._todoBase}/createProject`, 'POST', { ...body })
     }
+
+    getProjects = async (body = null) => {
+        const headers = { User: `Id ${body}` }
+        return await this.getResourses(`${this._todoBase}/getProjects`, 'GET', null, headers)
+    } 
 
 }

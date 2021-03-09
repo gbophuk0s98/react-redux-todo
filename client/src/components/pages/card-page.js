@@ -4,15 +4,13 @@ import { connect } from 'react-redux'
 
 import Card from '../card'
 import { transferCardsItems, fetchCards, saveCards } from '../../actoins'
-import AuthContext from '../context'
+import AuthContext from '../../context'
 
 const CardPage = ({ cards, transferCardsItems, fetchCards }) => {
 
     const { projectId } = useContext(AuthContext)
 
-    useEffect(() => {
-        fetchCards(projectId)
-    }, [fetchCards, projectId])
+    useEffect(() => fetchCards(projectId), [fetchCards, projectId])
     useEffect(() => saveCards(cards), [cards])
 
     const checkCard = (result) => {

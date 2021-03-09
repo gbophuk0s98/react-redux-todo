@@ -5,8 +5,8 @@ import { TouchBackend } from 'react-dnd-touch-backend'
 import { BrowserRouter as Router} from 'react-router-dom'
 
 import { useRoutes } from '../../routes'
-import AuthContext from '../context'
-import { useAuth } from '../hooks'
+import AuthContext from '../../context'
+import { useAuth } from '../../hooks'
 
 import './app.css'
 

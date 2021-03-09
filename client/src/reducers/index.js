@@ -1,6 +1,7 @@
 const initialState = {
     cards: [],
     todos: [],
+    projects: [],
     form: {
         userName: '',
         email: '',
@@ -24,7 +25,7 @@ const initialState = {
         title: '',
         description: '',
         key: '',
-    }
+    },
 }
 
 const setCards = (state, payload) => {
@@ -128,6 +129,13 @@ const setProject = (state, project) => {
     }
 }
 
+const setProjects = (state, projects) => {
+    return {
+        ...state,
+        projects : projects
+    }
+}
+
 const setUser = (state, payload) => {
     console.log('FromBackend ( reducer.setUser() )', payload)
     return {
@@ -160,6 +168,12 @@ const reducer = (state = initialState, action) => {
             return { ...state }
         case 'PROJECT_CREATED_SUCCESS':
             return setProject(state, action.payload)
+        case 'FETCH_PROJECTS_REQUEST':
+            return state
+        case 'FETCH_PROJECTS_FAILURE':
+            return state
+        case 'FETCH_PROJECTS_SUCCESS':
+            return setProjects(state, action.payload)
         case 'FETCH_CARDS_REQUEST':
             return state
         case 'FETCH_CARDS_SUCCESS':

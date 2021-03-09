@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 
 import PageContainer from '../auth-components/auth-page-container'
 import * as actions from '../../actoins'
-import AuthContext from '../context'
+import AuthContext from '../../context'
 
 import './pages.css'
 

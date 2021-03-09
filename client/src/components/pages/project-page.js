@@ -1,15 +1,17 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router'
 import { bindActionCreators } from 'redux'
 
 import * as actions from '../../actoins'
-import AuthContext from '../context'
+import AuthContext from '../../context'
 
 import './pages.css'
 
 const ProjectPage = ({ projectInfo, createProject }) => {
 
     const auth = useContext(AuthContext)
+    const history = useHistory()
 
     const [project, setProject] = useState({
         projectName: '',
@@ -17,10 +19,7 @@ const ProjectPage = ({ projectInfo, createProject }) => {
     })
 
     useEffect(() => {
-        if (!!projectInfo.id) {
-            console.log('auth', auth)
-            auth.login(auth.userId, auth.token, projectInfo.id)
-        }
+        if (!!projectInfo.id) auth.login(auth.userId, auth.token, projectInfo.id)
     }, [auth, projectInfo])
 
     const makeId = () => {
@@ -39,6 +38,12 @@ const ProjectPage = ({ projectInfo, createProject }) => {
         if (project.projectName.length >= 2 && value.length > 2) {
             setProject({ [name]: value, projectKey: makeId() })
         } else setProject({ [name]: value, projectKey: '' })
+    }
+
+    const onCreateHandler = e => {
+        e.preventDefault()
+        createProject({ ...project, userId: auth.userId})
+        history.push('/cards')
     }
 
     return (
@@ -78,7 +83,7 @@ const ProjectPage = ({ projectInfo, createProject }) => {
                                 className="form-btn w-100 btn btn-primary" 
                                 type="button"
                                 disabled={project.projectName.length > 2 ? false : true}
-                                onClick={() => createProject({ ...project, userId: auth.userId})}
+                                onClick={e => onCreateHandler(e)}
                             >
                             Создать
                             </button>

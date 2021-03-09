@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 
-import AuthContext from '../context'
+import AuthContext from '../../context'
 import * as actions from '../../actoins'
 import './header.css'
 
@@ -23,7 +23,7 @@ const Header = ({ user, logoutHandler }) => {
 
                 {open && 
                     <div className="my-dropdown-menu"  onClick={() => setOpen(!open)}>
-                        <Link className="dropdown-item" to="/createProject">Все проекты</Link>
+                        <Link className="dropdown-item" to="/projectList">Все проекты</Link>
                         <Link className="dropdown-item" to="/createProject">Создать...</Link>
                     </div>
                 }

@@ -1,8 +1,8 @@
 import React from 'react'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Switch, Route, Redirect, Router } from 'react-router-dom'
 
 import Header from './components/header'
-import { CardPage, RoadMapPage, RegPage, LoginPage, ProjectPage } from './components/pages'
+import { CardPage, RoadMapPage, RegPage, LoginPage, ProjectPage, ProjectListPage } from './components/pages'
 
 export const useRoutes = (isAuthenticated = true) => {
         if (isAuthenticated) {
@@ -19,6 +19,9 @@ export const useRoutes = (isAuthenticated = true) => {
                         </Route>
                         <Route path="/createProject" exact>
                             <ProjectPage />
+                        </Route>
+                        <Route path="/projectList" exact>
+                            <ProjectListPage />
                         </Route>
                         <Redirect to="/cards" />
                     </Switch>

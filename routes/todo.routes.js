@@ -20,7 +20,8 @@ const updateCards = async (cards) => {
 router.get('/getTodos', async (req, res) => {
     try
     {
-        const todos = await Todo.find()
+        const projectId = req.headers.project.split(' ')[1]
+        const todos = await Todo.find({ owner: projectId })
         return res.status(200).json(todos)
 
     }
@@ -33,12 +34,24 @@ router.get('/getTodos', async (req, res) => {
 router.post('/createTodo', async (req, res) => {
     try
     {
+        const projectId = req.headers.project.split(' ')[1]
+
         const { content, startDate, endDate } = req.body
-        const { _id, items } = await Card.findOne({ columnType: 'TaskList'})
         const customId = uuid.v4()
-        await Card.updateOne({ columnType: 'TaskList' }, { $push: {items : { customId: customId, content: content, startDate: startDate, endDate: endDate, posNumber: items.length} }})
-        const todo = new Todo({ customId: customId, content: content, startDate: startDate, endDate: endDate, owner: _id })
+    
+        const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
+
+        await Card.updateOne(
+            { _id: _id }, 
+            { 
+                $push: { 
+                    items: { customId: customId, content: content, startDate: startDate, endDate: endDate, posNumber: items.length } 
+                }
+            })
+
+        const todo = new Todo({ customId: customId, content: content, startDate: startDate, endDate: endDate, owner: projectId })
         await todo.save()
+
         return res.status(200).json({ message: 'Успешно создана!'})
     }
     catch (e)
@@ -68,7 +81,6 @@ router.get('/getCards', async (req, res) => {
     try
     {
         const projectId = req.headers.project.split(' ')[1]
-        console.log(projectId)
         const cards = await Card.find({ project: projectId })
         const newCards = await updateCards(cards)
         return res.status(200).json(cards)
@@ -117,6 +129,19 @@ router.post('/createProject', async (req, res) => {
         await doneCard.save()
         
         return res.status(200).json(project)
+    }
+    catch (e)
+    {
+        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
+    }
+})
+
+router.get('/getProjects', async (req, res) => {
+    try
+    {
+        const userId = req.headers.user.split(' ')[1]
+        const projects = await Project.find({ owner: userId })
+        return res.status(200).json(projects)
     }
     catch (e)
     {

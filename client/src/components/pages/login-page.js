@@ -6,7 +6,7 @@ import PageContainer from '../auth-components/auth-page-container'
 import * as actions from '../../actoins'
 
 import './pages.css'
-import AuthContext from '../context'
+import AuthContext from '../../context'
 
 const LoginPage = ({ user, authError, errors, form, loginHandler, changeForm, clearErrors, clearAuthError }) => {
 

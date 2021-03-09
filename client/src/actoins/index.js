@@ -69,17 +69,37 @@ const clearAuthError = () => {
 }
 
 const createProject = (dispatch, project) => {
-    service.createProject(project).then(res => dispatch(setProject(res)))
+    service.createProject(project)
     return {
         type: 'USER_PROJECT_CREATED',
     }
 }
 
-const setProject = (project) => {
+const projectsRequested = () => {
     return {
-        type: 'PROJECT_CREATED_SUCCESS',
-        payload: project, 
+        type: 'FETCH_PROJECTS_REQUEST'
     }
+}
+
+const projectsError = error => {
+    return {
+        type: 'FETCH_PROJECTS_FAILURE',
+        payload: error
+    }
+}
+
+const projectsLoaded = projects => {
+    return {
+        type: 'FETCH_PROJECTS_SUCCESS',
+        payload: projects
+    }
+}
+
+const fetchProjects = (dispatch, userId) => {
+    dispatch(projectsRequested())
+    service.getProjects(userId)
+    .then(projects => dispatch(projectsLoaded(projects)) )
+    .catch(error => dispatch(projectsError(error)) )
 }
 
 const cardsRequested = () => {
@@ -129,8 +149,8 @@ const todosLoaded = todos => {
     }
 }
 
-const todoCreated = (dispatch, todo) => {
-    service.createTodo(todo).then(res => fetchTodos(dispatch))
+const todoCreated = (dispatch, todo, projectId) => {
+    service.createTodo(todo, projectId).then(() => fetchTodos(dispatch, projectId))
     return {
         type: 'TODO_CREATED',
     }
@@ -143,9 +163,9 @@ const todoUpdate = (dispatch, todo) => {
     }
 }
 
-const fetchTodos = (dispatch) => {
+const fetchTodos = (dispatch, projectId) => {
     dispatch(todosRequested())
-    service.getTodos()
+    service.getTodos(projectId)
         .then(data => dispatch(todosLoaded(data)))
         .catch(err => dispatch(todosError(err)))
 }
@@ -190,5 +210,6 @@ export {
     todoUpdate,
     saveCards,
     clearAuthError,
-    createProject
+    createProject,
+    fetchProjects
 }
