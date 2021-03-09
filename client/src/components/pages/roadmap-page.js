@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import { fetchTodos, todoCreated, todoUpdate } from '../../actoins'
 import AuthContext from '../../context'
+import Spinner from '../spinner'
 
 import './pages.css'
 
@@ -18,7 +19,7 @@ const getDate = (endDate = false) => {
     return `${date.getFullYear()}-${months}-${days}`
 }
 
-const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate }) => {
+const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate, loading }) => {
 
     const auth = useContext(AuthContext)
 
@@ -100,6 +101,8 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate }) => {
             </tr>
         )
     }
+
+    if (loading) return <Spinner />
 
     return (
         <>

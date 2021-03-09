@@ -185,11 +185,22 @@ const reducer = (state = initialState, action) => {
         case 'FETCH_CARDS_FAILURE':
             return state
         case 'FETCH_TODOS_REQUEST':
-            return state
+            return {
+                ...state,
+                todos: {
+                    items: [],
+                    loading: true,
+                    error: null,
+                }
+            }
         case 'FETCH_TODOS_SUCCESS':
             return {
                 ...state,
-                todos: action.payload
+                todos: {
+                    items: action.payload,
+                    loading: true,
+                    error: null,
+                }
             }
         case 'FETCH_TODOS_FAILURE':
             return state
