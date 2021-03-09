@@ -4,7 +4,8 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import Header from './components/header'
 import { CardPage, RoadMapPage, RegPage, LoginPage, ProjectPage, ProjectListPage } from './components/pages'
 
-export const useRoutes = (isAuthenticated = true) => {
+export const useRoutes = (isAuthenticated = true, location = null) => {
+    console.log(location)
 
         if (isAuthenticated) {
             return (
@@ -16,6 +17,7 @@ export const useRoutes = (isAuthenticated = true) => {
                                 <CardPage />
                             </Route>
                             <Route path="/roadmap" exact>
+                                
                                 <RoadMapPage />
                             </Route>
                             <Route path="/createProject" exact>
@@ -24,7 +26,7 @@ export const useRoutes = (isAuthenticated = true) => {
                             <Route path="/projectList" exact>
                                 <ProjectListPage />
                             </Route>
-                            {/* <Redirect to='/cards' /> */}
+                            <Redirect to='/projectList' />
                         </Switch>
                     </div>
                 </>
@@ -39,7 +41,7 @@ export const useRoutes = (isAuthenticated = true) => {
                     <Route path="/login" exact>
                         <LoginPage />
                     </Route>
-                    {/* <Redirect to='/login' /> */}
+                    <Redirect to='/login' />
                 </Switch>
             </div>
         )

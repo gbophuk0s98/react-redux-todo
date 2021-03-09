@@ -7,6 +7,7 @@ export const useAuth = () => {
     const [token, setToken] = useState(null)
     const [userId, setUserId] = useState(null)
     const [projectId, setProjectId] = useState(null)
+    const [currentLocation, setCurrentLocation] = useState(null)
 
     const login = useCallback((id, jwtToken, projectId) => {
         setUserId(id)
@@ -41,5 +42,5 @@ export const useAuth = () => {
         
     }, [login])
 
-    return { login, logout, addProject, token, userId, projectId }
+    return { login, logout, addProject, token, userId, projectId, setCurrentLocation, currentLocation }
 }

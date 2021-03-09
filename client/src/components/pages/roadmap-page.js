@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { fetchTodos, todoCreated, todoUpdate } from '../../actoins'
 import AuthContext from '../../context'
 import Spinner from '../spinner'
+import TodoDetail from '../todo-detail'
 
 import './pages.css'
 
@@ -102,38 +103,52 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate, loading }) =>
         )
     }
 
+
     if (loading) return <Spinner />
 
     return (
-        <>
-        <table className="table table-striped table-dark">
-            <tbody>
-            {
-                todos.map((todo, index) => {
-                    const { content, startDate, endDate } = todo
-                    return (
-                        <tr className="todo" key={todo._id}>
-                            <td className="todo-content">{content}</td>
-                            <td>
-                                <div className="date-picker-list">
-                                    <div className="date-picker-item">
-                                        <input type="date" onBlur={(e) => onDateBlur(e, todo._id)} name="startDate" defaultValue={startDate}/>
+        <div className="roadmap-container">
+            <TodoDetail />
+            <table className="table table-striped table-dark">
+                <thead>
+                    <tr className="todo">
+                        <th className="todo-content">
+                            Задача
+                        </th>
+                        <th>
+                            Срок выполнения
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                {
+                    todos.map(todo => {
+                        const { content, startDate, endDate } = todo
+                        return (
+                            <tr className="todo" key={todo._id}>
+                                <td className="todo-content">
+                                    <span>{content}</span>
+                                </td>
+                                <td>
+                                    <div className="date-picker-list">
+                                        <div className="date-picker-item">
+                                            <input type="date" onBlur={(e) => onDateBlur(e, todo._id)} name="startDate" defaultValue={startDate}/>
+                                        </div>
+                                        <span>→</span>
+                                        <div className="date-picker-item">
+                                            <input type="date" onBlur={(e) => onDateBlur(e, todo._id)} name="endDate" defaultValue={endDate}/>
+                                        </div>
                                     </div>
-                                    <span>→</span>
-                                    <div className="date-picker-item">
-                                        <input type="date" onBlur={(e) => onDateBlur(e, todo._id)} name="endDate" defaultValue={endDate}/>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    )
-                })
-            }
-            { showInput && <InputRow /> }
-            { !showInput && <BtnRow />}
-            </tbody>
-        </table>
-        </>
+                                </td>
+                            </tr>
+                        )
+                    })
+                }
+                { showInput && <InputRow /> }
+                { !showInput && <BtnRow />}
+                </tbody>
+            </table>
+        </div>
     )
 }
 

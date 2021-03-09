@@ -8,15 +8,16 @@ import AuthContext from '../../context'
 import { useAuth } from '../../hooks'
 
 import './app.css'
+import { withRouter } from 'react-router'
 
-const App = () => {
+const App = (props) => {
 
-	const { token, login, userId, logout, projectId, addProject } = useAuth()
-	const routes = useRoutes(!!token)
+	const { token, projectId, userId, login, logout, addProject } = useAuth()
+	const routes = useRoutes(!!token, props.location)
 	const isMobile = window.innerWidth < 600
 
 	return (
-		<AuthContext.Provider value = { { token, userId, login, logout, projectId, addProject } }>
+		<AuthContext.Provider value = { { token, userId, projectId, login, logout, addProject } }>
 			<DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
 				{routes}
 			</DndProvider>
@@ -25,4 +26,4 @@ const App = () => {
 }
 
 
-export default App
+export default withRouter(App) 
