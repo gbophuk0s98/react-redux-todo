@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 
 import Card from '../card'
 import { transferCardsItems, fetchCards, saveCards } from '../../actoins'
@@ -10,11 +11,13 @@ import Spinner from '../spinner'
 const CardPage = ({ cards, loading, transferCardsItems, fetchCards }) => {
 
     const { projectId } = useContext(AuthContext)
+    const location = useLocation()
 
     useEffect(() => fetchCards(projectId), [fetchCards, projectId])
     useEffect(() => saveCards(cards), [cards])
 
     const checkCard = (result) => {
+        console.log('location.pathname', location.pathname)
         const { source, destination } = result
 
         if (!destination) return
