@@ -1,23 +1,26 @@
 const initialState = {
-    cards: [],
+    cards: {
+        items: [],
+        loading: true,
+        error: null,
+    },
     todos: {
         items: [],
         loading: true,
         error: null,
     },
-    projects: [],
+    projects: {
+        items: [],
+        loading: true,
+        error: null,
+    },
     form: {
         userName: '',
         email: '',
         password: '',
         matchPassword: '',
     },
-    formErrors: {
-        userName: '',
-        email: '',
-        password: '',
-        matchPassword: '',
-    },
+    formErrors: {},
     authError: '',
     user: {
         name: '',
@@ -29,13 +32,19 @@ const initialState = {
         title: '',
         description: '',
         key: '',
+        loading: false,
+        error: null,
     },
 }
 
 const setCards = (state, payload) => {
     return {
         ...state,
-        cards: payload
+        cards: {
+            items: payload,
+            loading: false,
+            error: null,
+        }
     }
 }
 
@@ -51,14 +60,14 @@ const transferItems = (state, payload) => {
     let newCards = []
     const { source, destination } = payload
     if (source.droppableId !== destination.droppableId){
-        const sourceColumn = state.cards[source.droppableId]
-        const destColumn = state.cards[destination.droppableId]
+        const sourceColumn = state.cards.items[source.droppableId]
+        const destColumn = state.cards.items[destination.droppableId]
         const sourceItems = [...sourceColumn.items]
         const destItems = [...destColumn.items]
         const [removed] = sourceItems.splice(source.index, 1)
         destItems.splice(destination.index, 0, removed)
 
-        newCards = state.cards.map((el, index) => {
+        newCards = state.cards.items.map((el, index) => {
             if (index.toString()===source.droppableId) return { ...el, items: updatePosNumbers(sourceItems) }
             if (index.toString()===destination.droppableId) return { ...el, items: updatePosNumbers(destItems) }
             return el
@@ -69,14 +78,18 @@ const transferItems = (state, payload) => {
         const [removed] = copiedItems.splice(source.index, 1)
         copiedItems.splice(destination.index, 0, removed)
 
-        newCards = state.cards.map((el, index) => {
+        newCards = state.cards.items.map((el, index) => {
             if (index.toString()===source.droppableId) return { ...el, items: updatePosNumbers(copiedItems) }
             return el
         })
     }
     return {
         ...state,
-        cards: newCards
+        cards: {
+            items: newCards,
+            loading: false,
+            error: null
+        }
     }
 }
 
@@ -100,12 +113,7 @@ const setFormErrors = (state, payload) => {
 const clearErrors = (state) => {
     return {
         ...state,
-        formErrors: {
-            userName: '',
-            email: '',
-            password: '',
-            matchPassword: '',
-        }
+        formErrors: {}
     }
 }
 
@@ -120,8 +128,9 @@ const clearUser = (state) => {
     }
 }
 
-const setProject = (state, project) => {
+const setProjectSuccess = (state, project) => {
     const { _id, title, description, key } = project
+    console.log('project', project)
     return {
         ...state,
         project: {
@@ -129,6 +138,36 @@ const setProject = (state, project) => {
              title: title,
              description: description,
              key: key,
+             loading: false,
+             error: null,
+        }
+    }
+}
+
+const setProjectLoading = (state) => {
+    return {
+        ...state,
+        project: {
+             id: '',
+             title: '',
+             description: '',
+             key: '',
+             loading: true,
+             error: null,
+        }
+    }
+}
+
+const setProjectError = (state, error) => {
+    return {
+        ...state,
+        project: {
+             id: '',
+             title: '',
+             description: '',
+             key: '',
+             loading: false,
+             error: error,
         }
     }
 }
@@ -136,7 +175,11 @@ const setProject = (state, project) => {
 const setProjects = (state, projects) => {
     return {
         ...state,
-        projects : projects
+        projects : {
+            items: projects,
+            loading: false,
+            error: null
+        }
     }
 }
 
@@ -168,22 +211,52 @@ const reducer = (state = initialState, action) => {
             }
         case 'USER_LOGOUT_SUCCESS':
             return clearUser(state)
-        case 'USER_PROJECT_CREATED':
-            return { ...state }
-        case 'PROJECT_CREATED_SUCCESS':
-            return setProject(state, action.payload)
+        case 'CREATE_PROJECT_REQUESTED':
+            return setProjectLoading(state)
+        case 'CREATE_PROJECT_SUCCESS':
+            return setProjectSuccess(state, action.payload)
+        case 'CREATE_PROJECT_FAILURE':
+            return setProjectError(state, action.payload)
         case 'FETCH_PROJECTS_REQUEST':
-            return state
+            return {
+                ...state,
+                projects: {
+                    items: [],
+                    loading: true,
+                    error: null
+                }
+            }
         case 'FETCH_PROJECTS_FAILURE':
-            return state
+            return {
+                ...state,
+                projects: {
+                    items: [],
+                    loading: false,
+                    error: action.payload
+                }
+            }
         case 'FETCH_PROJECTS_SUCCESS':
             return setProjects(state, action.payload)
         case 'FETCH_CARDS_REQUEST':
-            return state
+            return {
+                ...state,
+                cards: {
+                    items: [],
+                    loading: true,
+                    error: null,
+                }
+            }
         case 'FETCH_CARDS_SUCCESS':
             return setCards(state, action.payload)
         case 'FETCH_CARDS_FAILURE':
-            return state
+            return {
+                ...state,
+                cards: {
+                    items: [],
+                    loading: false,
+                    error: action.payload,
+                }
+            }
         case 'FETCH_TODOS_REQUEST':
             return {
                 ...state,
@@ -198,12 +271,19 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 todos: {
                     items: action.payload,
-                    loading: true,
+                    loading: false,
                     error: null,
                 }
             }
         case 'FETCH_TODOS_FAILURE':
-            return state
+            return {
+                ...state,
+                todos: {
+                    items: [],
+                    loading: false,
+                    error: action.payload,
+                }
+            }
         case 'TODO_CREATED':
             return state
         case 'TODO_UPDATED':
@@ -215,6 +295,7 @@ const reducer = (state = initialState, action) => {
         case 'REGISTER_FORM_SUBMITED':
             return state
         case 'REGISTER_FORM_ERROR':
+            console.log('action.payload', action.payload)
             return setFormErrors(state, action.payload)
         case 'LOGIN_FORM_SUBMITED':
             return state

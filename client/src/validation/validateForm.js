@@ -11,6 +11,7 @@ const validateAuthForm = (form) => {
     }
     if (!form.password) errors.password = 'Пароль обязателен'
     else if (!rePassword.test(form.password)) errors.password = `Минимум 6 символов, буквы (латиница) в верхнем и нижнем регистре`
+    console.log('errors', errors)
     return errors
 }
 
@@ -27,6 +28,7 @@ const validateRegForm = (form) => {
     else if (!rePassword.test(form.password)) errors.password = 'Минимум 6 символов, буквы (латиница) в верхнем и нижнем регистре'
     if (!form.matchPassword) errors.matchPassword = 'Пароль обязателен'
     else if (form.password !== form.matchPassword) errors.matchPassword = 'Пароли не совпадают!'
+    console.log('val err', errors)
     return errors
 }
 

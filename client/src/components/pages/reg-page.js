@@ -15,14 +15,19 @@ const RegPage = ({ user, authError, errors, form, changeForm, registerHandler, c
     useEffect(() => clearErrors(), [clearErrors])
     useEffect(() => clearAuthError(), [clearAuthError])
     useEffect(() => {
-        if (!!user.token) auth.login(user.id, user.token, '')
+        if (!!user.token) auth.login(user.id, user.token, null)
     }, [user, auth])
 
     return (
         <PageContainer
             errorFromBackend={authError}
             errors={errors} 
-            btnHandler={() => registerHandler(form)}
+            btnHandler={
+                () => {
+                    if (JSON.stringify(errors) === '{}')
+                        registerHandler(form)
+                }
+            }
             changeForm={changeForm}
             title={'Регистрация'}
             btnText={'Зарегистрироваться'}

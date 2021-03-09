@@ -4,8 +4,9 @@ import { useHistory } from 'react-router-dom'
 
 import { fetchProjects } from '../../actoins'
 import AuthContext from '../../context'
+import Spinner from '../spinner'
 
-const ProjectListPage = ({ projects, fetchProjects }) => {
+const ProjectListPage = ({ projects, loading, fetchProjects }) => {
 
     const auth = useContext(AuthContext)
     const history = useHistory()
@@ -17,6 +18,8 @@ const ProjectListPage = ({ projects, fetchProjects }) => {
         auth.login(auth.userId, auth.token, projectId)
         history.push('/cards')
     }
+
+    if (loading) return <Spinner />
 
     return (
         <table className="table table-dark table-hover">
@@ -52,7 +55,8 @@ const ProjectListPage = ({ projects, fetchProjects }) => {
 
 const mapStateToProps = (state) => {
     return {
-        projects: state.projects
+        projects: state.projects.items,
+        loading: state.projects.loading
     }
 }
 

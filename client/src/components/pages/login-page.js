@@ -15,7 +15,7 @@ const LoginPage = ({ user, authError, errors, form, loginHandler, changeForm, cl
     useEffect(() => clearErrors(), [clearErrors])
     useEffect(() => clearAuthError(), [clearAuthError])
     useEffect(() => {
-        if (!!user.token) auth.login(user.id, user.token, '')
+        if (!!user.token) auth.login(user.id, user.token, null)
     }, [user.token, auth, user.id])
 
     return (

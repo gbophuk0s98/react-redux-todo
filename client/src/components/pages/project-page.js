@@ -8,7 +8,7 @@ import AuthContext from '../../context'
 
 import './pages.css'
 
-const ProjectPage = ({ projectInfo, createProject }) => {
+const ProjectPage = ({ projectInfo, createProject, loading }) => {
 
     const auth = useContext(AuthContext)
     const history = useHistory()
@@ -19,8 +19,12 @@ const ProjectPage = ({ projectInfo, createProject }) => {
     })
 
     useEffect(() => {
-        if (!!projectInfo.id) auth.login(auth.userId, auth.token, projectInfo.id)
-    }, [auth, projectInfo])
+        console.log('projectInfo', projectInfo)
+        if (!!projectInfo.id && !auth.projectId) {
+            auth.login(auth.userId, auth.token, projectInfo.id)
+            history.push('/projectList')
+        }
+    }, [auth, projectInfo, history])
 
     const makeId = () => {
         let text = ""
@@ -43,7 +47,10 @@ const ProjectPage = ({ projectInfo, createProject }) => {
     const onCreateHandler = e => {
         e.preventDefault()
         createProject({ ...project, userId: auth.userId})
-        history.push('/projectList')
+        if (!loading && !!projectInfo.id) {
+            auth.login(auth.userId, auth.token, projectInfo.id)
+            history.push('/cards')
+        }
     }
 
     return (
@@ -74,6 +81,7 @@ const ProjectPage = ({ projectInfo, createProject }) => {
                             type="text"
                             id="porjectKey"
                             defaultValue={project.projectKey}
+                            disabled={true}
                             placeholder="Ключ"
                             />
                     </div>
@@ -85,7 +93,8 @@ const ProjectPage = ({ projectInfo, createProject }) => {
                                 disabled={project.projectName.length > 2 ? false : true}
                                 onClick={e => onCreateHandler(e)}
                             >
-                            Создать
+                                <span className="btn-text">Создать</span>
+                                { loading && <span className="spinner-border spinner-border-sm"></span> }
                             </button>
                         </div>
                         <div className="btn-right">
@@ -105,17 +114,19 @@ const ProjectPage = ({ projectInfo, createProject }) => {
 
 const mapStateToProps = (state) => {
     return {
-        projectInfo: state.project
+        projectInfo: state.project,
+        loading: state.project.loading,
+        error: state.project.error
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { changeForm, loginHandler, clearErrors, createProject } = bindActionCreators(actions, dispatch)
+    const { changeForm, loginHandler, clearErrors } = bindActionCreators(actions, dispatch)
     return {
         changeForm,
         loginHandler,
         clearErrors,
-        createProject: (project) => createProject(dispatch, project)
+        createProject: (project) => actions.createProject(dispatch, project)
     }
 }
 

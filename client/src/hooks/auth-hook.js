@@ -26,9 +26,6 @@ export const useAuth = () => {
     }, [])
 
     const addProject = useCallback((id, jwtToken, project) => {
-        console.log('id', id)
-        console.log('jwtToken', jwtToken)
-        console.log('project', project)
         setUserId(id)
         setToken(jwtToken)
         setProjectId(project)

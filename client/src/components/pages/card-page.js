@@ -5,8 +5,9 @@ import { connect } from 'react-redux'
 import Card from '../card'
 import { transferCardsItems, fetchCards, saveCards } from '../../actoins'
 import AuthContext from '../../context'
+import Spinner from '../spinner'
 
-const CardPage = ({ cards, transferCardsItems, fetchCards }) => {
+const CardPage = ({ cards, loading, transferCardsItems, fetchCards }) => {
 
     const { projectId } = useContext(AuthContext)
 
@@ -21,6 +22,8 @@ const CardPage = ({ cards, transferCardsItems, fetchCards }) => {
         transferCardsItems(result)
     }
 
+    if (loading) return <Spinner />
+
     return (
         <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
             <DragDropContext onDragEnd={result => checkCard(result)}>
@@ -31,7 +34,10 @@ const CardPage = ({ cards, transferCardsItems, fetchCards }) => {
 }
 
 const mapStateToProps = (state) => {
-    return { cards: state.cards }
+    return {
+        cards: state.cards.items,
+        loading: state.cards.loading
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {

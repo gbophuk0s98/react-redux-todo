@@ -42,7 +42,6 @@ const loginHandler = (dispatch, form) => {
 }
 
 const logoutHandler = () => {
-    console.log('logoutHandler')
     return {
         type: 'USER_LOGOUT_SUCCESS'
     }
@@ -68,11 +67,33 @@ const clearAuthError = () => {
     }
 }
 
-const createProject = (dispatch, project) => {
-    service.createProject(project)
+const createProjectRequested = () => {
     return {
-        type: 'USER_PROJECT_CREATED',
+        type: 'CREATE_PROJECT_REQUESTED'
     }
+}
+
+const createProjectSuccess = (project) => {
+    console.log('success', project)
+    return {
+        type: 'CREATE_PROJECT_SUCCESS',
+        payload: project
+    }
+}
+
+const createProjectFailure = (error) => {
+    return {
+        type: 'CREATE_PROJECT_FAILURE',
+        payload: error
+    }
+}
+
+const createProject = (dispatch, project) => {
+    console.log('createProject', project)
+    dispatch(createProjectRequested())
+    service.createProject(project)
+    .then(res => dispatch(createProjectSuccess(res)) )
+    .catch(error => dispatch(createProjectFailure(error)) )
 }
 
 const projectsRequested = () => {
