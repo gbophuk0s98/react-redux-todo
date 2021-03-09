@@ -1,6 +1,10 @@
 const initialState = {
     cards: [],
-    todos: [],
+    todos: {
+        items: [],
+        loading: true,
+        error: null,
+    },
     projects: [],
     form: {
         userName: '',

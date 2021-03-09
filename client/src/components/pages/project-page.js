@@ -26,7 +26,7 @@ const ProjectPage = ({ projectInfo, createProject }) => {
         let text = ""
         let possible = "abcdefghijklmnopqrstuvwxyz"
 
-        for( let i=0; i < 4; i++ )
+        for( let i = 0; i < 4; i++ )
             text += possible.charAt(Math.floor(Math.random() * possible.length))
 
         return text.toUpperCase()
@@ -43,7 +43,7 @@ const ProjectPage = ({ projectInfo, createProject }) => {
     const onCreateHandler = e => {
         e.preventDefault()
         createProject({ ...project, userId: auth.userId})
-        history.push('/cards')
+        history.push('/projectList')
     }
 
     return (

@@ -30,7 +30,7 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate }) => {
 
     const [showInput, setShowInput] = useState(false)
 
-    useEffect(() => fetchTodos(auth.projectId), [fetchTodos])
+    useEffect(() => fetchTodos(auth.projectId), [fetchTodos, auth])
     
     const addTableRow = () => showInput ? setShowInput(false) : setShowInput(true)
     
@@ -136,7 +136,9 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate }) => {
 
 const mapStateTopProps = (state) => {
     return {
-        todos: state.todos
+        todos: state.todos.items,
+        loading: state.todos.loading,
+        error: state.todos.error
     }
 }
 
