@@ -177,8 +177,9 @@ const todoCreated = (dispatch, todo, projectId) => {
     }
 }
 
-const todoUpdate = (dispatch, todo, projectId) => {
-    service.updateTodo(todo).then(() => fetchTodos(dispatch, projectId))
+const todoDateUpdate = (dispatch, todo, projectId) => {
+    service.updateTodo(todo)
+    .then(() => fetchTodos(dispatch, projectId))
     return {
         type: 'TODO_UPDATED'
     }
@@ -186,6 +187,14 @@ const todoUpdate = (dispatch, todo, projectId) => {
 
 const todoSelected = (dispatch, id) => {
     service.getTodo(id).then(todo => dispatch({ type: 'TODO_SELECTED', payload: todo }) )
+}
+
+const todoColorUpdate = (dispatch, id, color) => {
+    service.updateTodoColor({ id, color })
+    .then(() => todoSelected(dispatch, id))
+    return {
+        type: 'TODO_UPDATED'
+    }
 }
 
 const fetchTodos = (dispatch, projectId) => {
@@ -232,10 +241,11 @@ export {
     clearErrors,
     fetchTodos,
     todoCreated,
-    todoUpdate,
+    todoDateUpdate,
     saveCards,
     clearAuthError,
     createProject,
     fetchProjects,
-    todoSelected
+    todoSelected,
+    todoColorUpdate,
 }

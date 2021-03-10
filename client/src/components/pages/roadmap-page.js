@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { connect } from 'react-redux'
 
-import { fetchTodos, todoCreated, todoUpdate, todoSelected } from '../../actoins'
+import { fetchTodos, todoCreated, todoSelected } from '../../actoins'
 import AuthContext from '../../context'
 import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'
@@ -146,7 +146,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchTodos: (projectId) => fetchTodos(dispatch, projectId),
         todoCreated: (todo, projectId) => todoCreated(dispatch, todo, projectId),
-        todoUpdate: (todo) => todoUpdate(dispatch, todo),
         todoSelected: (id) => todoSelected(dispatch, id),
     }
 }

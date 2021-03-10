@@ -39,12 +39,14 @@ router.get('/getTodo', async (req, res) => {
         const [todo] = await Todo.find({ _id: id })
         const project = await Project.findOne({ _id: todo.owner })
         const user = await User.findOne({ _id: project.owner })
-        const todoToFront = { 
+        const todoToFront = {
+            _id: todo._id,
             content: todo.content,
             startDate: todo.startDate,
             endDate: todo.endDate,
             owner: user.userName,
-            ownerEmail: user.email
+            ownerEmail: user.email,
+            background: todo.background,
          }
         return res.status(200).json(todoToFront)
     }
@@ -68,11 +70,11 @@ router.post('/createTodo', async (req, res) => {
             { _id: _id }, 
             { 
                 $push: { 
-                    items: { customId: customId, content: content, startDate: startDate, endDate: endDate, posNumber: items.length } 
+                    items: { customId: customId, content: content, startDate: startDate, endDate: endDate, posNumber: items.length, background: '' } 
                 }
             })
 
-        const todo = new Todo({ customId: customId, content: content, startDate: startDate, endDate: endDate, owner: projectId })
+        const todo = new Todo({ customId: customId, content: content, startDate: startDate, endDate: endDate, owner: projectId, background: ''})
         await todo.save()
 
         return res.status(200).json({ message: 'Успешно создана!'})
@@ -89,6 +91,19 @@ router.put('/updateTodo', async (req, res) => {
         const { todoId, startDate, endDate } = req.body
 
         await Todo.updateOne({ _id: todoId }, { startDate, endDate }, { upset: false })
+        return res.status(200).json({ message: 'Задача обновлена!'})
+    }
+    catch (e)
+    {
+        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
+    }
+})
+
+router.put('/updateTodoColor', async (req, res) => {
+    try
+    {
+        const { id, color } = req.body
+        await Todo.updateOne({ _id: id }, { background: color }, { upset: false })
         return res.status(200).json({ message: 'Задача обновлена!'})
     }
     catch (e)
@@ -162,7 +177,6 @@ router.get('/getProjects', async (req, res) => {
         const userId = req.headers.user.split(' ')[1]
         const projects = await Project.find({ owner: userId })
         const [{ userName }] = await User.find({ _id: userId })
-        console.log(userName)
         const newProjects = projects.map(project => {
             return { _id: project._id, title: project.title, description: project.description, key: project.key, owner: userName }
         })

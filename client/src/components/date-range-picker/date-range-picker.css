@@ -41,16 +41,9 @@
 }
 
 .btn-content {
-    position: relative;
-}
-
-.content-arrow {
-    position: absolute;
-    top: -1px;
-    left: 78px;
-}
-
-.content-endDate {
-    position: absolute;
-    left: 100px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
 }

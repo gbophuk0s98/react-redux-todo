@@ -8,7 +8,7 @@ import * as actions from '../../actoins'
 import 'bootstrap-daterangepicker/daterangepicker.css'
 import './date-range-picker.css'
 
-const CustomDateRangePicker = ({ todoId, startDate, endDate, projectId, todoUpdate }) => {
+const CustomDateRangePicker = ({ todoId, startDate, endDate, projectId, todoDateUpdate }) => {
 
     const getDateFromPicker = picker => `${picker.getMonth() + 1}/${picker.getDate()}/${picker.getFullYear()}`
 
@@ -16,7 +16,7 @@ const CustomDateRangePicker = ({ todoId, startDate, endDate, projectId, todoUpda
         const startDate = getDateFromPicker(picker.startDate._d)
         const endDate = getDateFromPicker(picker.endDate._d)
         if ( picker.oldStartDate._i !== startDate || picker.oldEndDate._i !== endDate) {
-            todoUpdate({todoId, startDate, endDate}, projectId)
+            todoDateUpdate({todoId, startDate, endDate}, projectId)
         }
     }
 
@@ -28,8 +28,8 @@ const CustomDateRangePicker = ({ todoId, startDate, endDate, projectId, todoUpda
             <button className="btn btn-primary btn-container">
                 <div className="btn-content">
                     <span>{startDate}</span>
-                    <span className="content-arrow">→</span>
-                    <span className="content-endDate">{endDate}</span>
+                    <span>→</span>
+                    <span>{endDate}</span>
                 </div>
             </button>
         </DateRangePicker>
@@ -41,9 +41,9 @@ const mapStateTopProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { todoUpdate } = bindActionCreators(actions, dispatch)
+    const { todoDateUpdate } = bindActionCreators(actions, dispatch)
     return {
-        todoUpdate: (todo, projectId) => todoUpdate(dispatch, todo, projectId)
+        todoDateUpdate: (todo, projectId) => todoDateUpdate(dispatch, todo, projectId)
     }
 }
 

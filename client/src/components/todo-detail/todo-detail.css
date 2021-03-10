@@ -12,8 +12,14 @@
 }
 
 .todo-title {
+    display: flex;
+    flex-direction: row;
     font-size: 23px;
     margin-bottom: 15px;
+}
+
+.todo-title-color + .todo-title-input {
+    margin-left: 10px;
 }
 
 .todo-title > input {

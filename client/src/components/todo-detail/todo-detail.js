@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import ColorPicker from '../color-picker/color-picker'
 
 import './todo-detail.css'
 
 const TodoDetail = ({ todo }) => {
 
-    const [title, setTitle] = useState('')
+    const [title, setTitle] = useState('Todo content')
 
     useEffect(() => setTitle(todo.content), [setTitle, todo])
 
     const onTitleChange = e => setTitle(e.target.value)
 
+    if (JSON.stringify(todo) === '{}') return <div className="todo-detail-container">Выберите тудушку</div>
+    console.log(todo)
     return (
         <div className="todo-detail-container">
             <div className="todo-title">
-                {
-                    JSON.stringify(todo) === '{}' ? 
-                    'Выберите тудушку': 
-                    <input type="text" value={title} onChange={onTitleChange} />
-                }
+                <div className="todo-title-color">
+                    <ColorPicker />
+                </div>
+                <div className="todo-title-input">
+                    <input type="text" value={title || ''} onChange={onTitleChange} />  
+                </div>
             </div>
             <div className="users-info-list">
                 <div className="users-info-item">
