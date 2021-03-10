@@ -191,6 +191,7 @@ const todoSelected = (dispatch, id) => {
 
 const todoColorUpdate = (dispatch, id, color) => {
     service.updateTodoColor({ id, color })
+    .then(() => service.updateCardItem({ id, color }))
     .then(() => todoSelected(dispatch, id))
     return {
         type: 'TODO_UPDATED'

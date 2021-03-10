@@ -5,7 +5,7 @@ import CardItems from '../card-items'
 import './card.css'
 
 export const Card = ({ columns }) => {
-	
+	console.log(columns)	
 	return (
 		<>
 		{Object.entries(columns).map(([ id, column ]) => {

@@ -4,10 +4,10 @@ import { Draggable } from 'react-beautiful-dnd'
 import './card-items.css'
 
 export const CardItems = ({ items }) => {
-
     return (
         <>
         {items.map(item => {
+        console.log(item)
             return (
                 <Draggable key={item.customId} draggableId={item.customId} index={item.posNumber}>
                     {(provided, snapshot) => {
@@ -18,7 +18,8 @@ export const CardItems = ({ items }) => {
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                                 style={{
-                                    backgroundColor: snapshot.isDragging ? '#263B4A': '#456C86',
+                                    // #456C86
+                                    backgroundColor: snapshot.isDragging ? '#263B4A': item.background,
                                     ...provided.draggableProps.style
                                 }}
                             >

@@ -18,6 +18,13 @@ const updateCards = async (cards) => {
     return newCards
 }
 
+const updateCardItemColor = (items, id, color) => {
+    return items.map(item => {
+        if (item._id === id) return { ...item, background: color }
+        return item
+    })
+} 
+
 router.get('/getTodos', async (req, res) => {
     try
     {
@@ -66,16 +73,18 @@ router.post('/createTodo', async (req, res) => {
     
         const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
 
+        const todo = new Todo({ customId: customId, content: content, startDate: startDate, endDate: endDate, owner: projectId, background: ''})
+        await todo.save()
+
         await Card.updateOne(
             { _id: _id }, 
             { 
                 $push: { 
-                    items: { customId: customId, content: content, startDate: startDate, endDate: endDate, posNumber: items.length, background: '' } 
+                    items: { _id: todo._id, customId: customId, content: content, startDate: startDate, endDate: endDate, posNumber: items.length, background: '' } 
                 }
             })
 
-        const todo = new Todo({ customId: customId, content: content, startDate: startDate, endDate: endDate, owner: projectId, background: ''})
-        await todo.save()
+        
 
         return res.status(200).json({ message: 'Успешно создана!'})
     }
@@ -136,6 +145,25 @@ router.post('/saveCards', async (req, res) => {
         }
 
         return res.status(200).json({ message: 'Успешно обновлены!' })
+    }
+    catch (e)
+    {
+        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
+    }
+})
+
+router.put('/updateCards', async (req, res) => {
+    try
+    {
+        const { id, color } = req.body
+        console.log('todoId', id)
+        const [ { _id, items } ] = await Card.find(
+            {items: {"$elemMatch": {_id: id}}}
+            )
+        console.log('cardId', _id)
+        const newItems = updateCardItemColor(items, id, color)
+        await Card.updateOne({ _id: _id }, { items: newItems }, {upsert: true})
+        res.status(200).json({ message: 'Карточки успешно обновлены!' })
     }
     catch (e)
     {

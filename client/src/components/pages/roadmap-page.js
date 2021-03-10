@@ -71,7 +71,7 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
                     style={{ padding: '1px 10px' }}
                     onClick={addTableRow}
                 >
-                        Добавить задачу...
+                        Создать Epic...
                 </button>
                 </td>
             </tr>
@@ -89,7 +89,7 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
                     <thead>
                         <tr className="todo">
                             <th className="todo-content">
-                                Задача
+                                Epic
                             </th>
                             <th>
                                 Срок выполнения
