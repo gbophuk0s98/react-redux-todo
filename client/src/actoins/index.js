@@ -177,8 +177,8 @@ const todoCreated = (dispatch, todo, projectId) => {
     }
 }
 
-const todoUpdate = (dispatch, todo) => {
-    service.updateTodo(todo)
+const todoUpdate = (dispatch, todo, projectId) => {
+    service.updateTodo(todo).then(() => fetchTodos(dispatch, projectId))
     return {
         type: 'TODO_UPDATED'
     }

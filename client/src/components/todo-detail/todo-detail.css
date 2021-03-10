@@ -1,4 +1,7 @@
 .todo-detail-container {
     position: absolute;
     right: 500px;
+    height: 100%;
+    z-index: 99;
+    overflow: auto;
 }

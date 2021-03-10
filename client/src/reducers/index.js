@@ -73,7 +73,7 @@ const transferItems = (state, payload) => {
             return el
         })
     } else {
-        const column = state.cards[source.droppableId]
+        const column = state.cards.items[source.droppableId]
         const copiedItems = [...column.items]
         const [removed] = copiedItems.splice(source.index, 1)
         copiedItems.splice(destination.index, 0, removed)

@@ -38,6 +38,8 @@ router.post('/createTodo', async (req, res) => {
 
         const { content, startDate, endDate } = req.body
         const customId = uuid.v4()
+
+        console.log(req.body)
     
         const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
 
@@ -63,12 +65,9 @@ router.post('/createTodo', async (req, res) => {
 router.put('/updateTodo', async (req, res) => {
     try
     {
-        let updateItem = {}
-        
-        if (req.body.hasOwnProperty('startDate')) updateItem = { startDate: req.body.startDate}
-        else if (req.body.hasOwnProperty('endDate')) updateItem = { endDate: req.body.endDate }
+        const { todoId, startDate, endDate } = req.body
 
-        await Todo.updateOne({ _id: req.body.id }, updateItem, { upset: false })
+        await Todo.updateOne({ _id: todoId }, { startDate, endDate }, { upset: false })
         return res.status(200).json({ message: 'Задача обновлена!'})
     }
     catch (e)

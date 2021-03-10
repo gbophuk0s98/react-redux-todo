@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import * as actions from '../../actoins'
 import AuthContext from '../../context'
 
-import './pages.css'
+import './pages-css/project-page.css'
 
 const ProjectPage = ({ projectInfo, createProject, loading }) => {
 

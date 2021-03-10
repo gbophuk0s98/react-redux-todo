@@ -5,47 +5,36 @@ import { fetchTodos, todoCreated, todoUpdate } from '../../actoins'
 import AuthContext from '../../context'
 import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'
+import CustomDateRangePicker from '../date-range-picker'
+import CreateProjectLink from '../create-project-link'
 
-import './pages.css'
+import './pages-css/roadmap-page.css'
 
-const getDate = (endDate = false) => {
-    const date = new Date()
-    const days = date.getDate()  < 10 ? '0' + date.getDate(): date.getDate()
-    let months
-    if (!endDate) {
-        months = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1): date.getMonth() + 1
-    } else {
-        months = date.getMonth() + 2 < 10 ? '0' + (date.getMonth() + 2): date.getMonth() + 2
-    }
-    return `${date.getFullYear()}-${months}-${days}`
-}
+const getDate = (plusMonth = 0) => `${(new Date().getMonth() + 1) + plusMonth }/${new Date().getDate()}/${new Date().getFullYear()}`
 
-const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate, loading }) => {
+const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate, loading, projectListIsEmpty }) => {
 
     const auth = useContext(AuthContext)
 
+    const [showInput, setShowInput] = useState(false)
     const [todo, setTodo] = useState({
         content: '',
         startDate: getDate(),
-        endDate: getDate(true),
+        endDate: getDate(1),
     })
 
-    const [showInput, setShowInput] = useState(false)
-
-    useEffect(() => fetchTodos(auth.projectId), [fetchTodos, auth])
+    useEffect(() => {
+        if (auth.projectId) fetchTodos(auth.projectId)
+    }, [fetchTodos, auth])
     
     const addTableRow = () => showInput ? setShowInput(false) : setShowInput(true)
     
     const changeHandler = e => setTodo({ ...todo, [e.target.name]: e.target.value })
     
-    const onDateBlur = (e, id) => todoUpdate({ id, [e.target.name]: e.target.value })
-
     const onBlurHandler = () => {
         if (todo.content) {
             todoCreated(todo, auth.projectId)
-            setTodo({
-                ...todo, content: ''
-            })
+            setTodo({ ...todo, content: '' })
         }
         setShowInput(false)
     }
@@ -55,7 +44,8 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate, loading }) =>
             <tr className="todo" onBlur={onBlurHandler}>
                 <td className="todo-content">
                     <input 
-                        type="text" id="inputTodo" 
+                        type="text" 
+                        id="inputTodo" 
                         ref={input => input ? input.focus() : null}
                         name="content"
                         onChange={changeHandler}
@@ -63,25 +53,10 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate, loading }) =>
                     />
                 </td>
                 <td>
-                    <div className="date-picker-list">
-                        <div className="date-picker-item">
-                        <input 
-                            type="date"
-                            name="startDate"
-                            onChange={changeHandler}
-                            defaultValue={todo.startDate}
-                        />
-                        </div>
-                        <span>→</span>
-                        <div className="date-picker-item">
-                        <input
-                            type="date"
-                            name="endDate"
-                            onChange={changeHandler}
-                            defaultValue={todo.endDate}
-                        />
-                        </div>
-                    </div>
+                    <CustomDateRangePicker
+                        startDate={getDate()}
+                        endDate={getDate(1)}
+                    />
                 </td>
             </tr>
         )
@@ -103,60 +78,62 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate, loading }) =>
         )
     }
 
-
     if (loading) return <Spinner />
+    if (projectListIsEmpty) return <CreateProjectLink />
 
     return (
         <div className="roadmap-container">
             <TodoDetail />
-            <table className="table table-striped table-dark">
-                <thead>
-                    <tr className="todo">
-                        <th className="todo-content">
-                            Задача
-                        </th>
-                        <th>
-                            Срок выполнения
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                {
-                    todos.map(todo => {
-                        const { content, startDate, endDate } = todo
-                        return (
-                            <tr className="todo" key={todo._id}>
-                                <td className="todo-content">
-                                    <span>{content}</span>
-                                </td>
-                                <td>
-                                    <div className="date-picker-list">
-                                        <div className="date-picker-item">
-                                            <input type="date" onBlur={(e) => onDateBlur(e, todo._id)} name="startDate" defaultValue={startDate}/>
-                                        </div>
-                                        <span>→</span>
-                                        <div className="date-picker-item">
-                                            <input type="date" onBlur={(e) => onDateBlur(e, todo._id)} name="endDate" defaultValue={endDate}/>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        )
-                    })
-                }
-                { showInput && <InputRow /> }
-                { !showInput && <BtnRow />}
-                </tbody>
-            </table>
+            <div className="scroll-table">
+                <table className="table table-striped table-dark">
+                    <thead>
+                        <tr className="todo">
+                            <th className="todo-content">
+                                Задача
+                            </th>
+                            <th>
+                                Срок выполнения
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        todos.map(todo => {
+                            const { content, startDate, endDate } = todo
+                            return (
+                                <tr className="todo" key={todo._id}>
+                                    <td className="todo-content">
+                                        <span>{content}</span>
+                                    </td>
+                                    <td className="todo-content">
+                                        <CustomDateRangePicker
+                                            startDate={startDate}
+                                            endDate={endDate}
+                                            todoId={todo._id}
+                                            projectId={auth.projectId}
+                                        />
+                                    </td>
+                                </tr>
+                            )
+                        })
+                    }
+                    { showInput && <InputRow /> }
+                    { !showInput && <BtnRow />}
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 }
 
 const mapStateTopProps = (state) => {
+
+    const projectListIsEmpty = state.projects.items.length === 0 ? true: false
     return {
         todos: state.todos.items,
         loading: state.todos.loading,
-        error: state.todos.error
+        error: state.todos.error,
+        projectListIsEmpty
     }
 }
 

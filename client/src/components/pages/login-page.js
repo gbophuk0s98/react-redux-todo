@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import PageContainer from '../auth-components/auth-page-container'
 import * as actions from '../../actoins'
 
-import './pages.css'
+import './pages-css/auth-pages.css'
 import AuthContext from '../../context'
 
 const LoginPage = ({ user, authError, errors, form, loginHandler, changeForm, clearErrors, clearAuthError }) => {

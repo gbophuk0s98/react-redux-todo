@@ -7,13 +7,16 @@ import Card from '../card'
 import { transferCardsItems, fetchCards, saveCards } from '../../actoins'
 import AuthContext from '../../context'
 import Spinner from '../spinner'
+import CreateProjectLink from '../create-project-link'
 
 const CardPage = ({ cards, loading, transferCardsItems, fetchCards }) => {
 
     const { projectId } = useContext(AuthContext)
     const location = useLocation()
 
-    useEffect(() => fetchCards(projectId), [fetchCards, projectId])
+    useEffect(() => {
+        if (projectId) fetchCards(projectId)
+    }, [fetchCards, projectId])
     useEffect(() => saveCards(cards), [cards])
 
     const checkCard = (result) => {
@@ -26,6 +29,7 @@ const CardPage = ({ cards, loading, transferCardsItems, fetchCards }) => {
     }
 
     if (loading) return <Spinner />
+    if (cards.length===0) return <CreateProjectLink />
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>

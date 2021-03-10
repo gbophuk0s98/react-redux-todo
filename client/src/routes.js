@@ -17,7 +17,6 @@ export const useRoutes = (isAuthenticated = true, location = null) => {
                                 <CardPage />
                             </Route>
                             <Route path="/roadmap" exact>
-                                
                                 <RoadMapPage />
                             </Route>
                             <Route path="/createProject" exact>

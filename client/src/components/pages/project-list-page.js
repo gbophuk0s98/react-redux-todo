@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { fetchProjects } from '../../actoins'
 import AuthContext from '../../context'
 import Spinner from '../spinner'
+import CreateProjectLink from '../create-project-link'
 
 const ProjectListPage = ({ projects, loading, fetchProjects }) => {
 
@@ -20,6 +21,7 @@ const ProjectListPage = ({ projects, loading, fetchProjects }) => {
     }
 
     if (loading) return <Spinner />
+    if (projects.length===0) return <CreateProjectLink />
 
     return (
         <table className="table table-dark table-hover">
