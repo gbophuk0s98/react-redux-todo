@@ -78,8 +78,8 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
         )
     }
 
-    if (loading) return <Spinner />
     if (projectListIsEmpty) return <CreateProjectLink />
+    if (loading) return <Spinner />
 
     return (
         <div className="roadmap-container">

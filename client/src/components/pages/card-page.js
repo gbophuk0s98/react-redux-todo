@@ -28,8 +28,8 @@ const CardPage = ({ cards, loading, transferCardsItems, fetchCards }) => {
         transferCardsItems(result)
     }
 
-    if (loading) return <Spinner />
     if (cards.length===0) return <CreateProjectLink />
+    if (loading) return <Spinner />
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
