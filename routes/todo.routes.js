@@ -161,7 +161,12 @@ router.get('/getProjects', async (req, res) => {
     {
         const userId = req.headers.user.split(' ')[1]
         const projects = await Project.find({ owner: userId })
-        return res.status(200).json(projects)
+        const [{ userName }] = await User.find({ _id: userId })
+        console.log(userName)
+        const newProjects = projects.map(project => {
+            return { _id: project._id, title: project.title, description: project.description, key: project.key, owner: userName }
+        })
+        return res.status(200).json(newProjects)
     }
     catch (e)
     {
