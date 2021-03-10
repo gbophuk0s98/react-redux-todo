@@ -130,10 +130,9 @@ const clearUser = (state) => {
 }
 
 const setSelectedTodo = (state, payload) => {
-    const [todo] = payload
     return {
         ...state,
-        selectedTodo: { ...todo }
+        selectedTodo: { ...payload }
     }
 }
 
@@ -306,7 +305,6 @@ const reducer = (state = initialState, action) => {
         case 'REGISTER_FORM_SUBMITED':
             return state
         case 'REGISTER_FORM_ERROR':
-            console.log('action.payload', action.payload)
             return setFormErrors(state, action.payload)
         case 'LOGIN_FORM_SUBMITED':
             return state

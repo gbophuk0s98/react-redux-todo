@@ -68,7 +68,7 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
                 <td colSpan={2}>
                 <button 
                     className="btn btn-primary"
-                    style={{padding: '1px 10px'}}
+                    style={{ padding: '1px 10px' }}
                     onClick={addTableRow}
                 >
                         Добавить задачу...

@@ -2,6 +2,7 @@ const { Router } = require('express')
 const Todo = require('../models/Todo')
 const Card = require('../models/Card')
 const Project = require('../models/Project')
+const User = require('../models/User')
 const router = Router()
 const uuid = require('uuid')
 
@@ -35,8 +36,17 @@ router.get('/getTodo', async (req, res) => {
     try
     {
         const id = req.headers.todo.split(' ')[1]
-        const todo = await Todo.find({ _id: id })
-        return res.status(200).json(todo)
+        const [todo] = await Todo.find({ _id: id })
+        const project = await Project.findOne({ _id: todo.owner })
+        const user = await User.findOne({ _id: project.owner })
+        const todoToFront = { 
+            content: todo.content,
+            startDate: todo.startDate,
+            endDate: todo.endDate,
+            owner: user.userName,
+            ownerEmail: user.email
+         }
+        return res.status(200).json(todoToFront)
     }
     catch (e)
     {
@@ -51,8 +61,6 @@ router.post('/createTodo', async (req, res) => {
 
         const { content, startDate, endDate } = req.body
         const customId = uuid.v4()
-
-        console.log(req.body)
     
         const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
 
