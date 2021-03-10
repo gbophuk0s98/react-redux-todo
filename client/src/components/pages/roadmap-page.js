@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { connect } from 'react-redux'
 
-import { fetchTodos, todoCreated, todoUpdate } from '../../actoins'
+import { fetchTodos, todoCreated, todoUpdate, todoSelected } from '../../actoins'
 import AuthContext from '../../context'
 import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'
@@ -12,7 +12,7 @@ import './pages-css/roadmap-page.css'
 
 const getDate = (plusMonth = 0) => `${(new Date().getMonth() + 1) + plusMonth }/${new Date().getDate()}/${new Date().getFullYear()}`
 
-const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate, loading, projectListIsEmpty }) => {
+const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, projectListIsEmpty }) => {
 
     const auth = useContext(AuthContext)
 
@@ -83,7 +83,7 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate, loading, proj
 
     return (
         <div className="roadmap-container">
-            <TodoDetail />
+            <TodoDetail/>
             <div className="scroll-table">
                 <table className="table table-striped table-dark">
                     <thead>
@@ -103,7 +103,12 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoUpdate, loading, proj
                             return (
                                 <tr className="todo" key={todo._id}>
                                     <td className="todo-content">
-                                        <span>{content}</span>
+                                        <button
+                                            className="btn btn-dark text-info font-weight-bold"
+                                            onClick={() => todoSelected(todo._id)}
+                                        >
+                                            {content}
+                                        </button>
                                     </td>
                                     <td className="todo-content">
                                         <CustomDateRangePicker
@@ -141,7 +146,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchTodos: (projectId) => fetchTodos(dispatch, projectId),
         todoCreated: (todo, projectId) => todoCreated(dispatch, todo, projectId),
-        todoUpdate: (todo) => todoUpdate(dispatch, todo) 
+        todoUpdate: (todo) => todoUpdate(dispatch, todo),
+        todoSelected: (id) => todoSelected(dispatch, id),
     }
 }
 

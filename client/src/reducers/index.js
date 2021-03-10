@@ -35,6 +35,7 @@ const initialState = {
         loading: false,
         error: null,
     },
+    selectedTodo: {}
 }
 
 const setCards = (state, payload) => {
@@ -125,6 +126,14 @@ const clearUser = (state) => {
             email: '',
             userId: '',
         },
+    }
+}
+
+const setSelectedTodo = (state, payload) => {
+    const [todo] = payload
+    return {
+        ...state,
+        selectedTodo: { ...todo }
     }
 }
 
@@ -288,6 +297,8 @@ const reducer = (state = initialState, action) => {
             return state
         case 'TODO_UPDATED':
             return state
+        case 'TODO_SELECTED':
+            return setSelectedTodo(state, action.payload)
         case 'TRANSFER_CARDS_ITEMS':
             return transferItems(state, action.payload)
         case 'FORM_CHANGED':

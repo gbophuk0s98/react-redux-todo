@@ -1,7 +1,11 @@
 .todo-detail-container {
     position: absolute;
-    right: 500px;
-    height: 100%;
+    right: 0px;
     z-index: 99;
+    width: 25%;
+    height: 100%;
     overflow: auto;
+    border: 1px solid pink;
+    background: pink;
+    padding: 1.5rem;
 }

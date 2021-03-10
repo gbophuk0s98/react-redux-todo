@@ -31,6 +31,19 @@ router.get('/getTodos', async (req, res) => {
     }
 })
 
+router.get('/getTodo', async (req, res) => {
+    try
+    {
+        const id = req.headers.todo.split(' ')[1]
+        const todo = await Todo.find({ _id: id })
+        return res.status(200).json(todo)
+    }
+    catch (e)
+    {
+        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
+    }
+})
+
 router.post('/createTodo', async (req, res) => {
     try
     {
@@ -115,16 +128,16 @@ router.post('/createProject', async (req, res) => {
         const project = new Project({ title: projectName, description: '', key: projectKey, owner: userId })
         await project.save()
 
-        const tasksCard = new Card({ name: 'Задачи', columnType: 'TaskList', items: [], project: project.id })
+        const tasksCard = new Card({ name: 'Бэклог', columnType: 'TaskList', items: [], project: project.id })
         await tasksCard.save()
 
         const selectedCard = new Card({ name: 'Выбрано для разработки', columnType: 'SelectedList', items: [], project: project.id })
         await selectedCard.save()
 
-        const processingCard = new Card({ name: 'Выполняется', columnType: 'ProcessingList', items: [], project: project.id })
+        const processingCard = new Card({ name: 'В работе', columnType: 'ProcessingList', items: [], project: project.id })
         await processingCard.save()
 
-        const doneCard = new Card({ name: 'Выполнено', columnType: 'DoneList', items: [], project: project.id })
+        const doneCard = new Card({ name: 'Готово', columnType: 'DoneList', items: [], project: project.id })
         await doneCard.save()
         
         return res.status(200).json(project)

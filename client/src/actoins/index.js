@@ -184,6 +184,10 @@ const todoUpdate = (dispatch, todo, projectId) => {
     }
 }
 
+const todoSelected = (dispatch, id) => {
+    service.getTodo(id).then(todo => dispatch({ type: 'TODO_SELECTED', payload: todo }) )
+}
+
 const fetchTodos = (dispatch, projectId) => {
     dispatch(todosRequested())
     service.getTodos(projectId)
@@ -232,5 +236,6 @@ export {
     saveCards,
     clearAuthError,
     createProject,
-    fetchProjects
+    fetchProjects,
+    todoSelected
 }

@@ -1,0 +1,36 @@
+.project-page-container {
+    max-width: 320px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.project-title-span {
+    font-size: 16px;
+}
+
+.form-project {
+    width: 100%;
+}
+
+.btn-container {
+    display: flex;
+}
+
+.btn-left + .btn-right {
+    margin-left: 15px;
+}
+
+.btn-left,
+.btn-right {
+    max-width: 49%;
+    width: 100%;
+}
+
+.btn-primary:disabled {
+    cursor: not-allowed;
+}
+
+.btn-text {
+    margin-right: 10px;
+}

@@ -19,8 +19,8 @@ const ProjectPage = ({ projectInfo, createProject, loading }) => {
     })
 
     useEffect(() => {
-        console.log('projectInfo', projectInfo)
         if (!!projectInfo.id && !auth.projectId) {
+            console.log('HELLO')
             auth.login(auth.userId, auth.token, projectInfo.id)
             history.push('/projectList')
         }
@@ -49,7 +49,7 @@ const ProjectPage = ({ projectInfo, createProject, loading }) => {
         createProject({ ...project, userId: auth.userId})
         if (!loading && !!projectInfo.id) {
             auth.login(auth.userId, auth.token, projectInfo.id)
-            history.push('/cards')
+            history.push('/projectList')
         }
     }
 
