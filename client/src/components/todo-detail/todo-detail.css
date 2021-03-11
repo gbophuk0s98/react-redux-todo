@@ -16,6 +16,7 @@
     flex-direction: row;
     font-size: 23px;
     margin-bottom: 15px;
+    padding: 2px 0;
 }
 
 .todo-title-color + .todo-title-input {
@@ -44,4 +45,16 @@
 
 .users-info-left + .users-info-right {
     margin-left: 15px;
+}
+
+.users-info-right {
+    width: 50%;
+}
+
+.select-option {
+    padding: 5px 10px;
+}
+
+.select-option:hover {
+    opacity: 0.8;
 }

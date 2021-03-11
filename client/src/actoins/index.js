@@ -201,6 +201,15 @@ const todoColorUpdate = (dispatch, id, color, projectId) => {
     return { type: 'TODO_UPDATED' }
 }
 
+const todoPriorityUpdate = (dispatch, id, priority, projectId) => {
+    console.log('id', id)
+    service.updateTodoPriority({ id, priority })
+        .then(() => service.updateCardItem({ id, priority }))
+        .then(() => todoSelected(dispatch, id))
+        .then(() => fetchTodos(dispatch, projectId))
+    return { type: 'TODO_UPDATED' }
+}
+
 const todoSelected = (dispatch, id) => {
     service.getTodo(id)
     .then(todo => dispatch({ type: 'TODO_SELECTED', payload: todo }) )
@@ -258,4 +267,5 @@ export {
     todoSelected,
     todoColorUpdate,
     todoTitleUpdate,
+    todoPriorityUpdate,
 }

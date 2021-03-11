@@ -17,7 +17,7 @@ const updateCards = async (cards) => {
     return newCards
 }
 
-const updateCardItem = (items, id, color = null, title = null) => {
+const updateCardItem = (items, id, color = null, title = null, priority = null) => {
     return items.map(item => {
         if (item._id === id) {
             if (color) {
@@ -25,6 +25,9 @@ const updateCardItem = (items, id, color = null, title = null) => {
             }
             if (title) {
                 return { ...item, content: title }
+            }
+            if (priority) {
+                return { ...item, priority: priority }
             }
         }
         return item
@@ -60,6 +63,7 @@ router.get('/getTodo', async (req, res) => {
             owner: user.userName,
             ownerEmail: user.email,
             background: todo.background,
+            priority: todo.priority,
          }
         return res.status(200).json(todoToFront)
     }
@@ -79,18 +83,33 @@ router.post('/createTodo', async (req, res) => {
     
         const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
 
-        const todo = new Todo({ customId: customId, content: content, startDate: startDate, endDate: endDate, owner: projectId, background: 'rgba(69, 108, 134, 1)'})
+        const todo = new Todo({ 
+            customId: customId,
+            content: content,
+            startDate: startDate,
+            endDate: endDate,
+            owner: projectId,
+            background: 'rgba(69, 108, 134, 1)',
+            priority: 'Средний'
+        })
         await todo.save()
 
         await Card.updateOne(
             { _id: _id }, 
             { 
                 $push: { 
-                    items: { _id: todo._id, customId: customId, content: content, startDate: startDate, endDate: endDate, posNumber: items.length, background: 'rgba(69, 108, 134, 1)' } 
+                    items: {
+                        _id: todo._id,
+                        customId: customId,
+                        content: content,
+                        startDate: startDate,
+                        endDate: endDate,
+                        posNumber: items.length,
+                        background: 'rgba(69, 108, 134, 1)',
+                        priority: 'Средний'
+                    } 
                 }
             })
-
-        
 
         return res.status(200).json({ message: 'Успешно создана!'})
     }
@@ -140,6 +159,19 @@ router.put('/updateTodoTitle', async (req, res) => {
     }
 })
 
+router.put('/updateTodoPriority', async (req, res) => {
+    try
+    {
+        const { id, priority } = req.body
+        await Todo.updateOne({ _id: id }, { priority: priority }, { upset: false })
+        return res.status(200).json({ message: 'Задача обновлена!'})
+    }
+    catch (e)
+    {
+        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
+    }
+})
+
 router.get('/getCards', async (req, res) => {
     try
     {
@@ -174,7 +206,7 @@ router.post('/saveCards', async (req, res) => {
 router.put('/updateCards', async (req, res) => {
     try
     {
-        const { id, color, title } = req.body
+        const { id, color, title, priority } = req.body
         const [{ _id, items }] = await Card.find(
             {items: {"$elemMatch": {_id: id}}}
             )
@@ -184,6 +216,9 @@ router.put('/updateCards', async (req, res) => {
         }
         else if (color) {
             newItems = updateCardItem(items, id, color, null)
+        }
+        else if (priority) {
+            newItems = updateCardItem(items, id, null, null, priority)
         }
         await Card.updateOne({ _id: _id }, { items: newItems }, { upsert: true })
         res.status(200).json({ message: 'Карточки успешно обновлены!' })

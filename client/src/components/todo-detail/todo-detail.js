@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import ColorPicker from '../color-picker/color-picker'
 
 import { todoTitleUpdate } from '../../actoins'
+import CustomSelect from '../custom-select'
 
 import './todo-detail.css'
 import AuthContext from '../../context'
@@ -20,7 +21,8 @@ const TodoDetail = ({ todo, todoTitleUpdate }) => {
         else {
             todoTitleUpdate(todo._id, title, auth.projectId)
         }
-    } 
+    }
+
 
     if (JSON.stringify(todo) === '{}') return <div className="todo-detail-container">Выберите тудушку</div>
     
@@ -72,9 +74,7 @@ const TodoDetail = ({ todo, todoTitleUpdate }) => {
                         </span>
                     </div>
                     <div className="users-info-right">
-                        <span>
-                            Medium
-                        </span>
+                        <CustomSelect id={todo._id} priority={todo.priority}/>
                     </div>
                 </div>
                 <div className="users-info-item">

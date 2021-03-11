@@ -1,0 +1,4 @@
+.color-picker-container:hover {
+    transition-duration: 0.8s;
+    opacity: 0.5;
+}

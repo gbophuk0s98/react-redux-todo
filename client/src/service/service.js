@@ -71,6 +71,10 @@ export default class ProjectService {
         await this.getResourses(`${this._todoBase}/updateTodoTitle`, 'PUT', { ...body })
     }
 
+    updateTodoPriority = async(body, headers = {}) => {
+        await this.getResourses(`${this._todoBase}/updateTodoPriority`, 'PUT', { ...body })
+    }
+
     saveCards = async (body, headers = {}) => {
         await this.getResourses(`${this._todoBase}/saveCards`, 'POST', { ...body })
     }
