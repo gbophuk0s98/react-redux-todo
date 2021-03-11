@@ -86,7 +86,6 @@ router.post('/createTodo', async (req, res) => {
     
         const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
         const card = await Card.findOne({ columnType: 'TaskList', project: projectId })
-        console.log(card.items.length)
 
         const todo = new Todo({ 
             customId: customId,
@@ -115,10 +114,8 @@ router.post('/createTodo', async (req, res) => {
                     } 
                 }
             })
-        const card2 = await Card.findOne({ columnType: 'TaskList', project: projectId })
-        console.log(card2.items.length)
 
-        return res.status(200).json({ message: 'Успешно создана!'})
+        return res.status(200).json(todo)
     }
     catch (e)
     {
@@ -182,10 +179,14 @@ router.put('/updateCards', async (req, res) => {
     try
     {
         const { id, startDate, endDate, color, title, priority } = req.body
-        console.log('id todo', id)
+        console.log('startDate', startDate)
+        console.log('endDate', endDate)
+        console.log('color', color)
+        console.log('title', title)
+        console.log('priority', priority)
+        const [todo] = await Todo.find({ _id: id })
         const [{ _id, items }] = await Card.find(
-            {items: {"$elemMatch": {_id: id}}},
-            {items: 1, items: { "$elemMatch": { _id: id } } }
+            {items: {"$elemMatch": { _id: todo._id }}}
             )
         let newItems = []
         if (startDate && endDate) {
@@ -200,11 +201,14 @@ router.put('/updateCards', async (req, res) => {
         else if (priority) {
             newItems = updateCardItem(items, id, null, null, null, null, priority)
         }
-        await Card.updateOne({ _id: _id }, { items: newItems }, { upsert: true })
+        newItems.map(item => console.log('item', item))
+        await Card.updateOne({ _id: _id }, { items: newItems })
         res.status(200).json({ message: 'Карточки успешно обновлены!' })
     }
     catch (e)
     {
+        console.log(e)
+        console.log(e.message)
         res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
     }
 })

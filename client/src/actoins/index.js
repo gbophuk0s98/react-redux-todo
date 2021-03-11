@@ -89,7 +89,6 @@ const createProjectFailure = (error) => {
 }
 
 const createProject = (dispatch, project) => {
-    console.log('createProject', project)
     dispatch(createProjectRequested())
     service.createProject(project)
     .then(res => dispatch(createProjectSuccess(res)) )
@@ -171,10 +170,11 @@ const todosLoaded = todos => {
 }
 
 const todoCreated = (dispatch, todo, projectId) => {
-    service.createTodo(todo, projectId).then(() => fetchTodos(dispatch, projectId))
-    return {
-        type: 'TODO_CREATED',
-    }
+    service.createTodo(todo, projectId)
+    .then(todo => todoSelected(dispatch, todo._id))
+    .then(() => fetchTodos(dispatch, projectId))
+
+    return { type: 'TODO_CREATED' }
 }
 
 const todoUpdate = (dispatch, id, projectId, startDate = null, endDate = null, color = null, title = null, priority = null) => {
@@ -184,12 +184,13 @@ const todoUpdate = (dispatch, id, projectId, startDate = null, endDate = null, c
     else if (color) objToUpdate = { id, color }
     else if (title) objToUpdate = { id, title }
     else if (priority) objToUpdate = { id, priority }
+
     console.log('objToUpdate', objToUpdate)
 
     service.updateTodo(objToUpdate)
-        .then(() => service.updateCardItem(objToUpdate))
-        .then(() => todoSelected(dispatch, id))
-        .then(() => fetchTodos(dispatch, projectId))
+    .then(() => service.updateCardItem(objToUpdate))
+    .then(() => todoSelected(dispatch, id))
+    .then(() => fetchTodos(dispatch, projectId))
         
     return { type: 'TODO_UPDATED' }
 }
