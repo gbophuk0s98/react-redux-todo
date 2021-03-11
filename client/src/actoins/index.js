@@ -187,17 +187,17 @@ const todoDateUpdate = (dispatch, todo, projectId) => {
 
 const todoTitleUpdate = (dispatch, id, title, projectId) => {
     service.updateTodoTitle({ id, title })
-    .then(() => service.updateCardItem({ id, title }))
-    .then(() => todoSelected(dispatch, id))
-    .then(() => fetchTodos(dispatch, projectId))
+        .then(() => service.updateCardItem({ id, title }))
+        .then(() => todoSelected(dispatch, id))
+        .then(() => fetchTodos(dispatch, projectId))
     return { type: 'TODO_UPDATED' }
 }
 
 const todoColorUpdate = (dispatch, id, color, projectId) => {
     service.updateTodoColor({ id, color })
-    .then(() => service.updateCardItem({ id, color }))
-    .then(() => todoSelected(dispatch, id))
-    .then(() => fetchTodos(dispatch, projectId))
+        .then(() => service.updateCardItem({ id, color }))
+        .then(() => todoSelected(dispatch, id))
+        .then(() => fetchTodos(dispatch, projectId))
     return { type: 'TODO_UPDATED' }
 }
 

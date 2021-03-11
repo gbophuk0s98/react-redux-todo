@@ -7,7 +7,6 @@ const router = Router()
 const uuid = require('uuid')
 
 const updateCards = async (cards) => {
-
     const newCards = []
 
     for (const card of cards) {
@@ -18,17 +17,15 @@ const updateCards = async (cards) => {
     return newCards
 }
 
-const updateCardItemColor = (items, id, color) => {
-    return items.map(item => {
-        if (item._id === id) return { ...item, background: color }
-        return item
-    })
-}
-
-const updateCardItemTitle = (items, id, title) => {
+const updateCardItem = (items, id, color = null, title = null) => {
     return items.map(item => {
         if (item._id === id) {
-            return { ...item, content: title }
+            if (color) {
+                return { ...item, background: color }
+            }
+            if (title) {
+                return { ...item, content: title }
+            }
         }
         return item
     })
@@ -181,13 +178,12 @@ router.put('/updateCards', async (req, res) => {
         const [{ _id, items }] = await Card.find(
             {items: {"$elemMatch": {_id: id}}}
             )
-        let newItems
+        let newItems = []
         if (title) {
-            newItems = updateCardItemTitle(items, id, title)   
-            console.log('newItems title', newItems)
+            newItems = updateCardItem(items, id, null, title)
         }
         else if (color) {
-            newItems = updateCardItemColor(items, id, color)
+            newItems = updateCardItem(items, id, color, null)
         }
         await Card.updateOne({ _id: _id }, { items: newItems }, { upsert: true })
         res.status(200).json({ message: 'Карточки успешно обновлены!' })

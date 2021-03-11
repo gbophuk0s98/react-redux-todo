@@ -56,17 +56,17 @@ const ColorPicker = ({ todoId, todoColor, todoColorUpdate }) => {
 		},
 	})
 
-    return (
-      <>
-        <div style={ styles.swatch } onClick={ handleClick }>
-          <div style={ styles.color } />
-        </div>
-        { displayColorPicker ? <div style={ styles.popover }>
-          <div style={ styles.cover } onClick={ handleClose }/>
-          <SketchPicker color={ color } onChange={ handleChange } />
-        </div> : null }
-
-      </>
+	return (
+		<>
+			<div style={ styles.swatch } onClick={ handleClick }>
+				<div style={ styles.color } />
+			</div>
+			{ displayColorPicker ? 
+				<div style={ styles.popover }>
+					<div style={ styles.cover } onClick={ handleClose }/>
+					<SketchPicker color={ color } onChange={ handleChange } />
+				</div> : null }
+		</>
     )
 }
 
