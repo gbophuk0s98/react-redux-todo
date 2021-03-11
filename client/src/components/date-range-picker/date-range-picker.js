@@ -16,7 +16,7 @@ const CustomDateRangePicker = ({ todoId, startDate, endDate, projectId, todoDate
         const startDate = getDateFromPicker(picker.startDate._d)
         const endDate = getDateFromPicker(picker.endDate._d)
         if ( picker.oldStartDate._i !== startDate || picker.oldEndDate._i !== endDate) {
-            todoDateUpdate({todoId, startDate, endDate}, projectId)
+            todoDateUpdate({id: todoId, startDate, endDate}, projectId)
         }
     }
 

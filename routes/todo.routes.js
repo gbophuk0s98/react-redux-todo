@@ -122,48 +122,16 @@ router.post('/createTodo', async (req, res) => {
 router.put('/updateTodo', async (req, res) => {
     try
     {
-        const { todoId, startDate, endDate } = req.body
+        const { id, color, title, priority, startDate, endDate } = req.body
 
-        await Todo.updateOne({ _id: todoId }, { startDate, endDate }, { upset: false })
-        return res.status(200).json({ message: 'Задача обновлена!'})
-    }
-    catch (e)
-    {
-        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
-    }
-})
+        let objToUpdate = {}
+        if (color) objToUpdate = { background: color } 
+        else if (title) objToUpdate = { content: title }
+        else if (priority) objToUpdate = { priority: priority }
+        else if (startDate && endDate) objToUpdate = { startDate, endDate }
 
-router.put('/updateTodoColor', async (req, res) => {
-    try
-    {
-        const { id, color } = req.body
-        await Todo.updateOne({ _id: id }, { background: color }, { upset: false })
-        return res.status(200).json({ message: 'Задача обновлена!'})
-    }
-    catch (e)
-    {
-        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
-    }
-})
+        await Todo.updateOne({ _id: id }, objToUpdate, { upset: false })
 
-router.put('/updateTodoTitle', async (req, res) => {
-    try
-    {
-        const { id, title } = req.body
-        await Todo.updateOne({ _id: id }, { content: title }, { upset: false })
-        return res.status(200).json({ message: 'Задача обновлена!'})
-    }
-    catch (e)
-    {
-        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
-    }
-})
-
-router.put('/updateTodoPriority', async (req, res) => {
-    try
-    {
-        const { id, priority } = req.body
-        await Todo.updateOne({ _id: id }, { priority: priority }, { upset: false })
         return res.status(200).json({ message: 'Задача обновлена!'})
     }
     catch (e)

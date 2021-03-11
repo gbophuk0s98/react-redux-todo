@@ -186,7 +186,7 @@ const todoDateUpdate = (dispatch, todo, projectId) => {
 }
 
 const todoTitleUpdate = (dispatch, id, title, projectId) => {
-    service.updateTodoTitle({ id, title })
+    service.updateTodo({ id, title })
         .then(() => service.updateCardItem({ id, title }))
         .then(() => todoSelected(dispatch, id))
         .then(() => fetchTodos(dispatch, projectId))
@@ -194,7 +194,7 @@ const todoTitleUpdate = (dispatch, id, title, projectId) => {
 }
 
 const todoColorUpdate = (dispatch, id, color, projectId) => {
-    service.updateTodoColor({ id, color })
+    service.updateTodo({ id, color })
         .then(() => service.updateCardItem({ id, color }))
         .then(() => todoSelected(dispatch, id))
         .then(() => fetchTodos(dispatch, projectId))
@@ -203,7 +203,7 @@ const todoColorUpdate = (dispatch, id, color, projectId) => {
 
 const todoPriorityUpdate = (dispatch, id, priority, projectId) => {
     console.log('id', id)
-    service.updateTodoPriority({ id, priority })
+    service.updateTodo({ id, priority })
         .then(() => service.updateCardItem({ id, priority }))
         .then(() => todoSelected(dispatch, id))
         .then(() => fetchTodos(dispatch, projectId))

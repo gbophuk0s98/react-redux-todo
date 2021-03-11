@@ -63,18 +63,6 @@ export default class ProjectService {
         return await this.getResourses(`${this._todoBase}/updateTodo`, 'PUT', { ...body })
     }
     
-    updateTodoColor = async (body, headers = {}) => {
-        await this.getResourses(`${this._todoBase}/updateTodoColor`, 'PUT', { ...body })
-    }
-
-    updateTodoTitle = async(body, headers = {}) => {
-        await this.getResourses(`${this._todoBase}/updateTodoTitle`, 'PUT', { ...body })
-    }
-
-    updateTodoPriority = async(body, headers = {}) => {
-        await this.getResourses(`${this._todoBase}/updateTodoPriority`, 'PUT', { ...body })
-    }
-
     saveCards = async (body, headers = {}) => {
         await this.getResourses(`${this._todoBase}/saveCards`, 'POST', { ...body })
     }
