@@ -177,36 +177,20 @@ const todoCreated = (dispatch, todo, projectId) => {
     }
 }
 
-const todoDateUpdate = (dispatch, todo, projectId) => {
-    service.updateTodo(todo)
-    .then(() => fetchTodos(dispatch, projectId))
-    return {
-        type: 'TODO_UPDATED'
-    }
-}
+const todoUpdate = (dispatch, id, projectId, startDate = null, endDate = null, color = null, title = null, priority = null) => {
+    let objToUpdate = {}
 
-const todoTitleUpdate = (dispatch, id, title, projectId) => {
-    service.updateTodo({ id, title })
-        .then(() => service.updateCardItem({ id, title }))
+    if (startDate && endDate) objToUpdate = { id, startDate, endDate }
+    else if (color) objToUpdate = { id, color }
+    else if (title) objToUpdate = { id, title }
+    else if (priority) objToUpdate = { id, priority }
+    console.log('objToUpdate', objToUpdate)
+
+    service.updateTodo(objToUpdate)
+        .then(() => service.updateCardItem(objToUpdate))
         .then(() => todoSelected(dispatch, id))
         .then(() => fetchTodos(dispatch, projectId))
-    return { type: 'TODO_UPDATED' }
-}
-
-const todoColorUpdate = (dispatch, id, color, projectId) => {
-    service.updateTodo({ id, color })
-        .then(() => service.updateCardItem({ id, color }))
-        .then(() => todoSelected(dispatch, id))
-        .then(() => fetchTodos(dispatch, projectId))
-    return { type: 'TODO_UPDATED' }
-}
-
-const todoPriorityUpdate = (dispatch, id, priority, projectId) => {
-    console.log('id', id)
-    service.updateTodo({ id, priority })
-        .then(() => service.updateCardItem({ id, priority }))
-        .then(() => todoSelected(dispatch, id))
-        .then(() => fetchTodos(dispatch, projectId))
+        
     return { type: 'TODO_UPDATED' }
 }
 
@@ -259,13 +243,10 @@ export {
     clearErrors,
     fetchTodos,
     todoCreated,
-    todoDateUpdate,
     saveCards,
     clearAuthError,
     createProject,
     fetchProjects,
     todoSelected,
-    todoColorUpdate,
-    todoTitleUpdate,
-    todoPriorityUpdate,
+    todoUpdate,
 }

@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import ColorPicker from '../color-picker/color-picker'
 
-import { todoTitleUpdate } from '../../actoins'
+import { todoUpdate } from '../../actoins'
 import CustomSelect from '../custom-select'
 
 import './todo-detail.css'
 import AuthContext from '../../context'
 
-const TodoDetail = ({ todo, todoTitleUpdate }) => {
+const TodoDetail = ({ todo, todoUpdate}) => {
 
     const auth = useContext(AuthContext)
     const [title, setTitle] = useState('Todo content')
@@ -19,7 +19,7 @@ const TodoDetail = ({ todo, todoTitleUpdate }) => {
     const onTitleBlurHandler = e => {
         if (title === '' || title === todo.content) setTitle(todo.content)
         else {
-            todoTitleUpdate(todo._id, title, auth.projectId)
+            todoUpdate(todo._id, auth.projectId, title)
         }
     }
 
@@ -102,7 +102,7 @@ const mapStateTopProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        todoTitleUpdate: (id, title, projectId) => todoTitleUpdate(dispatch, id, title, projectId)
+        todoUpdate: (id, projectId, title) => todoUpdate(dispatch, id, projectId, null, null, null, title)
     }
 }
 

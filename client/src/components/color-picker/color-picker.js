@@ -3,7 +3,7 @@ import reactCSS from 'reactcss'
 import { SketchPicker } from 'react-color'
 import { connect } from 'react-redux'
 
-import { todoColorUpdate } from '../../actoins'
+import { todoUpdate } from '../../actoins'
 import AuthContext from '../../context'
 
 import './color-picker.css'
@@ -12,7 +12,7 @@ const colorToRGBA = (color) => {
 	return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`
 }
 
-const ColorPicker = ({ todoId, todoColor, todoColorUpdate }) => {
+const ColorPicker = ({ todoId, todoColor, todoUpdate }) => {
 
 	const auth = useContext(AuthContext)
 
@@ -24,7 +24,7 @@ const ColorPicker = ({ todoId, todoColor, todoColorUpdate }) => {
 	const handleClose = () => {
 		setDisplayColorPicker(false)
 		if (JSON.stringify(colorToRGBA(color)) !== JSON.stringify(todoColor)) {
-			todoColorUpdate(todoId, colorToRGBA(color), auth.projectId)
+			todoUpdate(todoId, auth.projectId, colorToRGBA(color))
 		}
 	} 
 
@@ -84,7 +84,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return{
-		todoColorUpdate: (id, color, projectId) => todoColorUpdate(dispatch, id, color, projectId)
+		todoUpdate: (id, projectId, color) => todoUpdate(dispatch, id, projectId, null, null, color)
 	}
 }
 

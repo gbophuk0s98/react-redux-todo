@@ -17,9 +17,12 @@ const updateCards = async (cards) => {
     return newCards
 }
 
-const updateCardItem = (items, id, color = null, title = null, priority = null) => {
+const updateCardItem = (items, id, startDate = null, endDate = null, color = null, title = null, priority = null) => {
     return items.map(item => {
         if (item._id === id) {
+            if (startDate && endDate) {
+                return { ...item, startDate: startDate, endDate: endDate }
+            }
             if (color) {
                 return { ...item, background: color }
             }
@@ -82,6 +85,8 @@ router.post('/createTodo', async (req, res) => {
         const customId = uuid.v4()
     
         const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
+        const card = await Card.findOne({ columnType: 'TaskList', project: projectId })
+        console.log(card.items.length)
 
         const todo = new Todo({ 
             customId: customId,
@@ -110,6 +115,8 @@ router.post('/createTodo', async (req, res) => {
                     } 
                 }
             })
+        const card2 = await Card.findOne({ columnType: 'TaskList', project: projectId })
+        console.log(card2.items.length)
 
         return res.status(200).json({ message: 'Успешно создана!'})
     }
@@ -125,13 +132,13 @@ router.put('/updateTodo', async (req, res) => {
         const { id, color, title, priority, startDate, endDate } = req.body
 
         let objToUpdate = {}
-        if (color) objToUpdate = { background: color } 
+        if (startDate && endDate) objToUpdate = { startDate, endDate }
+        else if (color) objToUpdate = { background: color } 
         else if (title) objToUpdate = { content: title }
         else if (priority) objToUpdate = { priority: priority }
         else if (startDate && endDate) objToUpdate = { startDate, endDate }
 
         await Todo.updateOne({ _id: id }, objToUpdate, { upset: false })
-
         return res.status(200).json({ message: 'Задача обновлена!'})
     }
     catch (e)
@@ -157,7 +164,7 @@ router.get('/getCards', async (req, res) => {
 router.post('/saveCards', async (req, res) => {
     try
     {
-        if (req.body) {
+        if (JSON.stringify(req.body) !== '{}') {
             for (const key in req.body) {
                 await Card.updateOne({ _id: req.body[key]._id }, { items: req.body[key].items })
             }
@@ -174,19 +181,24 @@ router.post('/saveCards', async (req, res) => {
 router.put('/updateCards', async (req, res) => {
     try
     {
-        const { id, color, title, priority } = req.body
+        const { id, startDate, endDate, color, title, priority } = req.body
+        console.log('id todo', id)
         const [{ _id, items }] = await Card.find(
-            {items: {"$elemMatch": {_id: id}}}
+            {items: {"$elemMatch": {_id: id}}},
+            {items: 1, items: { "$elemMatch": { _id: id } } }
             )
         let newItems = []
-        if (title) {
-            newItems = updateCardItem(items, id, null, title)
+        if (startDate && endDate) {
+            newItems = updateCardItem(items, id, startDate, endDate)
         }
         else if (color) {
-            newItems = updateCardItem(items, id, color, null)
+            newItems = updateCardItem(items, id, null, null, color)
+        }
+        else if (title) {
+            newItems = updateCardItem(items, id, null, null, null, title)
         }
         else if (priority) {
-            newItems = updateCardItem(items, id, null, null, priority)
+            newItems = updateCardItem(items, id, null, null, null, null, priority)
         }
         await Card.updateOne({ _id: _id }, { items: newItems }, { upsert: true })
         res.status(200).json({ message: 'Карточки успешно обновлены!' })

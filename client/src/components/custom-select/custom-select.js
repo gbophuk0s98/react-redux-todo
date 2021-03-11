@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Select from 'react-select'
 import { FaArrowUp } from 'react-icons/fa'
 
-import { todoPriorityUpdate } from '../../actoins'
+import { todoUpdate } from '../../actoins'
 
 import './custom-select.css'
 import AuthContext from '../../context'
@@ -17,7 +17,7 @@ const CustomOption = ({ data, innerRef, innerProps }) => {
     )
 }
 
-const CustomSelect = ({ priority, id, todoPriorityUpdate }) => {
+const CustomSelect = ({ priority, id, todoUpdate }) => {
 
     const auth = useContext(AuthContext)
 
@@ -49,7 +49,7 @@ const CustomSelect = ({ priority, id, todoPriorityUpdate }) => {
     }
 
     const renderOption = () => options.filter(option => option.value === priority)
-    const changeHandler = data => todoPriorityUpdate(id, data.value, auth.projectId)
+    const changeHandler = data => todoUpdate(id, auth.projectId, data.value)
 
     return (
         <Select
@@ -69,7 +69,7 @@ const mapStateTopProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        todoPriorityUpdate: (id, priority, projectId) => todoPriorityUpdate(dispatch, id, priority, projectId)
+        todoUpdate: (id, projectId, priority) => todoUpdate(dispatch, id, projectId, null, null, null, null, priority)
     }
 }
 
