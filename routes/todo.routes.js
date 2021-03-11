@@ -23,7 +23,16 @@ const updateCardItemColor = (items, id, color) => {
         if (item._id === id) return { ...item, background: color }
         return item
     })
-} 
+}
+
+const updateCardItemTitle = (items, id, title) => {
+    return items.map(item => {
+        if (item._id === id) {
+            return { ...item, content: title }
+        }
+        return item
+    })
+}
 
 router.get('/getTodos', async (req, res) => {
     try
@@ -73,14 +82,14 @@ router.post('/createTodo', async (req, res) => {
     
         const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
 
-        const todo = new Todo({ customId: customId, content: content, startDate: startDate, endDate: endDate, owner: projectId, background: ''})
+        const todo = new Todo({ customId: customId, content: content, startDate: startDate, endDate: endDate, owner: projectId, background: 'rgba(69, 108, 134, 1)'})
         await todo.save()
 
         await Card.updateOne(
             { _id: _id }, 
             { 
                 $push: { 
-                    items: { _id: todo._id, customId: customId, content: content, startDate: startDate, endDate: endDate, posNumber: items.length, background: '' } 
+                    items: { _id: todo._id, customId: customId, content: content, startDate: startDate, endDate: endDate, posNumber: items.length, background: 'rgba(69, 108, 134, 1)' } 
                 }
             })
 
@@ -113,6 +122,19 @@ router.put('/updateTodoColor', async (req, res) => {
     {
         const { id, color } = req.body
         await Todo.updateOne({ _id: id }, { background: color }, { upset: false })
+        return res.status(200).json({ message: 'Задача обновлена!'})
+    }
+    catch (e)
+    {
+        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
+    }
+})
+
+router.put('/updateTodoTitle', async (req, res) => {
+    try
+    {
+        const { id, title } = req.body
+        await Todo.updateOne({ _id: id }, { content: title }, { upset: false })
         return res.status(200).json({ message: 'Задача обновлена!'})
     }
     catch (e)
@@ -155,14 +177,19 @@ router.post('/saveCards', async (req, res) => {
 router.put('/updateCards', async (req, res) => {
     try
     {
-        const { id, color } = req.body
-        console.log('todoId', id)
-        const [ { _id, items } ] = await Card.find(
+        const { id, color, title } = req.body
+        const [{ _id, items }] = await Card.find(
             {items: {"$elemMatch": {_id: id}}}
             )
-        console.log('cardId', _id)
-        const newItems = updateCardItemColor(items, id, color)
-        await Card.updateOne({ _id: _id }, { items: newItems }, {upsert: true})
+        let newItems
+        if (title) {
+            newItems = updateCardItemTitle(items, id, title)   
+            console.log('newItems title', newItems)
+        }
+        else if (color) {
+            newItems = updateCardItemColor(items, id, color)
+        }
+        await Card.updateOne({ _id: _id }, { items: newItems }, { upsert: true })
         res.status(200).json({ message: 'Карточки успешно обновлены!' })
     }
     catch (e)

@@ -1,19 +1,29 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import ColorPicker from '../color-picker/color-picker'
 
+import { todoTitleUpdate } from '../../actoins'
+
 import './todo-detail.css'
+import AuthContext from '../../context'
 
-const TodoDetail = ({ todo }) => {
+const TodoDetail = ({ todo, todoTitleUpdate }) => {
 
+    const auth = useContext(AuthContext)
     const [title, setTitle] = useState('Todo content')
 
     useEffect(() => setTitle(todo.content), [setTitle, todo])
 
     const onTitleChange = e => setTitle(e.target.value)
+    const onTitleBlurHandler = e => {
+        if (title === '' || title === todo.content) setTitle(todo.content)
+        else {
+            todoTitleUpdate(todo._id, title, auth.projectId)
+        }
+    } 
 
     if (JSON.stringify(todo) === '{}') return <div className="todo-detail-container">Выберите тудушку</div>
-    console.log(todo)
+    
     return (
         <div className="todo-detail-container">
             <div className="todo-title">
@@ -21,7 +31,13 @@ const TodoDetail = ({ todo }) => {
                     <ColorPicker />
                 </div>
                 <div className="todo-title-input">
-                    <input type="text" value={title || ''} onChange={onTitleChange} />  
+                    <input
+                        type="text"
+                        className="form-control"
+                        onChange={onTitleChange}
+                        value={title || ''}
+                        onBlur={onTitleBlurHandler}
+                    />
                 </div>
             </div>
             <div className="users-info-list">
@@ -84,4 +100,10 @@ const mapStateTopProps = (state) => {
     }
 }
 
-export default connect(mapStateTopProps)(TodoDetail)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        todoTitleUpdate: (id, title, projectId) => todoTitleUpdate(dispatch, id, title, projectId)
+    }
+}
+
+export default connect(mapStateTopProps, mapDispatchToProps)(TodoDetail)

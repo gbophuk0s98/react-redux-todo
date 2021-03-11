@@ -185,17 +185,25 @@ const todoDateUpdate = (dispatch, todo, projectId) => {
     }
 }
 
-const todoSelected = (dispatch, id) => {
-    service.getTodo(id).then(todo => dispatch({ type: 'TODO_SELECTED', payload: todo }) )
+const todoTitleUpdate = (dispatch, id, title, projectId) => {
+    service.updateTodoTitle({ id, title })
+    .then(() => service.updateCardItem({ id, title }))
+    .then(() => todoSelected(dispatch, id))
+    .then(() => fetchTodos(dispatch, projectId))
+    return { type: 'TODO_UPDATED' }
 }
 
-const todoColorUpdate = (dispatch, id, color) => {
+const todoColorUpdate = (dispatch, id, color, projectId) => {
     service.updateTodoColor({ id, color })
     .then(() => service.updateCardItem({ id, color }))
     .then(() => todoSelected(dispatch, id))
-    return {
-        type: 'TODO_UPDATED'
-    }
+    .then(() => fetchTodos(dispatch, projectId))
+    return { type: 'TODO_UPDATED' }
+}
+
+const todoSelected = (dispatch, id) => {
+    service.getTodo(id)
+    .then(todo => dispatch({ type: 'TODO_SELECTED', payload: todo }) )
 }
 
 const fetchTodos = (dispatch, projectId) => {
@@ -249,4 +257,5 @@ export {
     fetchProjects,
     todoSelected,
     todoColorUpdate,
+    todoTitleUpdate,
 }

@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import reactCSS from 'reactcss'
 import { SketchPicker } from 'react-color'
 import { connect } from 'react-redux'
 
 import { todoColorUpdate } from '../../actoins'
-import { compareSync } from 'bcryptjs'
+import AuthContext from '../../context'
 
 const colorToRGBA = (color) => {
 	return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`
@@ -12,15 +12,17 @@ const colorToRGBA = (color) => {
 
 const ColorPicker = ({ todoId, todoColor, todoColorUpdate }) => {
 
+	const auth = useContext(AuthContext)
+
 	const [displayColorPicker, setDisplayColorPicker] = useState(false)
 	const [color, setColor] = useState({ r: '241',g: '112',b: '19',a: '1', })
 
 	const handleClick = () => setDisplayColorPicker(!displayColorPicker)
 
 	const handleClose = () => {
-		setDisplayColorPicker(!displayColorPicker)
+		setDisplayColorPicker(false)
 		if (JSON.stringify(colorToRGBA(color)) !== JSON.stringify(todoColor)) {
-			todoColorUpdate(todoId, colorToRGBA(color))
+			todoColorUpdate(todoId, colorToRGBA(color), auth.projectId)
 		}
 	} 
 
@@ -32,7 +34,7 @@ const ColorPicker = ({ todoId, todoColor, todoColorUpdate }) => {
 				width: '25px',
 				height: '25px',
 				borderRadius: '2px',
-				background: todoColor != '' ? todoColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${ color.a })`,
+				background: todoColor !== '' ? todoColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${ color.a })`,
 			},
 			swatch: {
 				padding: '5px',
@@ -77,7 +79,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return{
-		todoColorUpdate: (id, color) => todoColorUpdate(dispatch, id, color)
+		todoColorUpdate: (id, color, projectId) => todoColorUpdate(dispatch, id, color, projectId)
 	}
 }
 
