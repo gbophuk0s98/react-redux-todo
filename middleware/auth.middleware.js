@@ -20,10 +20,10 @@ module.exports = async (req, res, next) => {
         const userId = req.headers.user.split(' ')[1]
         const token = req.headers.authorization.split(' ')[1]
         const [{ secretKey }] = await User.find({ _id: userId })
-        jwt.verify(token, secretKey, (err, payload) => {
-            if (err) next()
-            else if(payload) next()
-        })
+        // jwt.verify(token, secretKey, (err, payload) => {
+        //     if (err) next()
+        //     else if(payload) next()
+        // })
         next()
     }
     catch (e) 
