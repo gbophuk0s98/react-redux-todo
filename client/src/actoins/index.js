@@ -74,7 +74,6 @@ const createProjectRequested = () => {
 }
 
 const createProjectSuccess = (project) => {
-    console.log('success', project)
     return {
         type: 'CREATE_PROJECT_SUCCESS',
         payload: project

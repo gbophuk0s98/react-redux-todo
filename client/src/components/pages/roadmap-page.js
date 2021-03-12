@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { connect } from 'react-redux'
 
-import { fetchTodos, todoCreated, todoSelected } from '../../actoins'
+import { fetchTodos, todoCreated, todoSelected, fetchProject } from '../../actoins'
 import AuthContext from '../../context'
 import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'
@@ -12,7 +12,8 @@ import './pages-css/roadmap-page.css'
 
 const getDate = (plusMonth = 0) => `${(new Date().getMonth() + 1) + plusMonth }/${new Date().getDate()}/${new Date().getFullYear()}`
 
-const RoadMapPage = ({ todos, project, todoCreated, fetchTodos, todoSelected, loading, projectListIsEmpty }) => {
+const RoadMapPage = ({ todos, project, todoCreated, fetchTodos, todoSelected, loading, projectListIsEmpty, fetchProject }) => {
+
     const auth = useContext(AuthContext)
 
     const [showInput, setShowInput] = useState(false)
@@ -25,6 +26,10 @@ const RoadMapPage = ({ todos, project, todoCreated, fetchTodos, todoSelected, lo
     useEffect(() => {
         if (auth.projectId) fetchTodos(auth.projectId)
     }, [fetchTodos, auth])
+
+    useEffect(() => {
+        if (auth.projectId) fetchProject(auth.projectId)
+    }, [fetchProject, auth.projectId])
     
     const addTableRow = () => showInput ? setShowInput(false) : setShowInput(true)
     
@@ -151,6 +156,7 @@ const mapDispatchToProps = (dispatch) => {
         fetchTodos: (projectId) => fetchTodos(dispatch, projectId),
         todoCreated: (todo, projectId) => todoCreated(dispatch, todo, projectId),
         todoSelected: (id) => todoSelected(dispatch, id),
+        fetchProject: (projectId) => fetchProject(dispatch, projectId),
     }
 }
 

@@ -4,14 +4,14 @@ import { connect } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
 import Card from '../card'
-import { transferCardsItems, fetchCards, saveCards } from '../../actoins'
+import { transferCardsItems, fetchCards, saveCards, fetchProject } from '../../actoins'
 import AuthContext from '../../context'
 import Spinner from '../spinner'
 import CreateProjectLink from '../create-project-link'
 
 import './pages-css/card-page.css'
 
-const CardPage = ({ cards, loading, transferCardsItems, fetchCards }) => {
+const CardPage = ({ cards, loading, transferCardsItems, fetchCards, fetchProject }) => {
 
     const { projectId } = useContext(AuthContext)
     const location = useLocation()
@@ -20,6 +20,9 @@ const CardPage = ({ cards, loading, transferCardsItems, fetchCards }) => {
         if (projectId) fetchCards(projectId)
     }, [fetchCards, projectId])
     useEffect(() => saveCards(cards), [cards])
+    useEffect(() => {
+        if (projectId) fetchProject(projectId)
+    }, [fetchProject, projectId])
 
     const checkCard = (result) => {
         console.log('location.pathname', location.pathname)
@@ -53,7 +56,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         transferCardsItems: (result) => dispatch(transferCardsItems(result)),
         fetchCards: (projectId) => fetchCards(dispatch, projectId),
-        saveCards: (cards) => dispatch(saveCards(cards))
+        saveCards: (cards) => dispatch(saveCards(cards)),
+        fetchProject: (projectId) => fetchProject(dispatch, projectId)
     }
 }
 

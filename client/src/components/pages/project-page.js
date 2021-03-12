@@ -8,8 +8,8 @@ import AuthContext from '../../context'
 
 import './pages-css/project-page.css'
 
-const ProjectPage = ({ projectInfo, createProject, loading }) => {
-
+const ProjectPage = ({ projectInfo, createProject, loading, fetchProjects }) => {
+    console.log('projectInfo', projectInfo)
     const auth = useContext(AuthContext)
     const history = useHistory()
 
@@ -18,13 +18,13 @@ const ProjectPage = ({ projectInfo, createProject, loading }) => {
         projectKey: '',
     })
 
-    useEffect(() => {
-        if (!!projectInfo.id && !auth.projectId) {
-            console.log('HELLO')
-            auth.login(auth.userId, auth.token, projectInfo.id)
-            history.push('/projectList')
-        }
-    }, [auth, projectInfo, history])
+    // useEffect(() => {
+    //     if (!!projectInfo.id && !auth.projectId) {
+    //         console.log('HELLO')
+    //         auth.login(auth.userId, auth.token, projectInfo.id)
+    //         history.push('/projectList')
+    //     }
+    // }, [auth, projectInfo, history])
 
     const makeId = () => {
         let text = ""
@@ -47,8 +47,8 @@ const ProjectPage = ({ projectInfo, createProject, loading }) => {
     const onCreateHandler = e => {
         e.preventDefault()
         createProject({ ...project, userId: auth.userId})
-        if (!loading && !!projectInfo.id) {
-            auth.login(auth.userId, auth.token, projectInfo.id)
+        if (!!projectInfo.id) {
+            fetchProjects(auth.userId)
             history.push('/projectList')
         }
     }
@@ -126,7 +126,8 @@ const mapDispatchToProps = (dispatch) => {
         changeForm,
         loginHandler,
         clearErrors,
-        createProject: (project) => actions.createProject(dispatch, project)
+        createProject: (project) => actions.createProject(dispatch, project),
+        fetchProjects: (userId) => actions.fetchProjects(dispatch, userId),
     }
 }
 

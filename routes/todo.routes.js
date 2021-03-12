@@ -85,7 +85,7 @@ router.post('/createTodo', async (req, res) => {
         const customId = uuid.v4()
     
         const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
-        const allTodos = await Todo.find()
+        const allTodos = await Todo.find({ owner: projectId })
 
         const todo = new Todo({ 
             customId: customId,
