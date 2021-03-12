@@ -5,7 +5,7 @@ const generateToken = (userId, secretKey) => {
     return jwt.sign(
         { userId: userId },
         secretKey,
-        { expiresIn: 30 },
+        { expiresIn: '23h' },
     )
 }
 
@@ -21,8 +21,8 @@ module.exports = async (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1]
         const [{ secretKey }] = await User.find({ _id: userId })
         jwt.verify(token, secretKey, (err, payload) => {
-            if (err) console.log(err)
-            else if(payload) console.log(payload)
+            if (err) next()
+            else if(payload) next()
         })
         next()
     }

@@ -22,7 +22,11 @@ const LoginPage = ({ user, authError, errors, form, loginHandler, changeForm, cl
         <PageContainer
             errorFromBackend={authError}
             errors={errors}
-            btnHandler={() => loginHandler(form)}
+            btnHandler={() => {
+                clearErrors()
+                clearAuthError()
+                loginHandler(form)
+            }}
             changeForm={changeForm}
             title={'Авторизация'}
             btnText={'Авторизоваться'}

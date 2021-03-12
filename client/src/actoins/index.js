@@ -5,6 +5,7 @@ const service = new ProjectService()
 
 const registerHandler = (dispatch, form) => {
 
+    dispatch(sendAuthForm())
     const errors = validateRegForm(form)
     
     if (!isEmptyObject(errors)) {
@@ -22,8 +23,16 @@ const registerHandler = (dispatch, form) => {
     }
 }
 
+const sendAuthForm = () => {
+    return {
+        type: 'CLIENT_FORM_SENDING'
+    }
+}
+
 const loginHandler = (dispatch, form) => {
     
+    dispatch(sendAuthForm())
+
     const errors = validateAuthForm(form)
 
     if (!isEmptyObject(errors)) {

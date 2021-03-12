@@ -6,7 +6,7 @@ const initialState = {
     },
     todos: {
         items: [],
-        loading: true,
+        loading: false,
         error: null,
     },
     projects: {
@@ -20,6 +20,7 @@ const initialState = {
         password: '',
         matchPassword: '',
     },
+    formLoading: false,
     formErrors: {},
     authError: '',
     user: {
@@ -106,25 +107,22 @@ const changeForm = (state, form, event) => {
 const setFormErrors = (state, payload) => {
     return {
         ...state,
-        formErrors: { ...payload }
+        formErrors: { ...payload },
+        formLoading: false
     }
 }
 
 const clearErrors = (state) => {
     return {
         ...state,
-        formErrors: {}
+        formErrors: {},
+        formLoading: false
     }
 }
 
-const clearUser = (state) => {
+const clearState = (state) => {
     return {
-        ...state,
-        user: {
-            name: '',
-            email: '',
-            userId: '',
-        },
+        ...initialState
     }
 }
 
@@ -147,7 +145,8 @@ const setProjectSuccess = (state, project) => {
              key: key,
              loading: false,
              error: null,
-        }
+        },
+        selectedTodo: {}
     }
 }
 
@@ -201,7 +200,8 @@ const setUser = (state, payload) => {
 const setUserError = (state, payload) => {
     return {
         ...state,
-        authError: payload
+        authError: payload,
+        formLoading: false,
     }
 }
 
@@ -214,10 +214,11 @@ const reducer = (state = initialState, action) => {
         case 'AUTH_ERROR_CLEAR':
             return {
                 ...state,
-                authError: ''
+                authError: '',
+                formLoading: false,
             }
         case 'USER_LOGOUT_SUCCESS':
-            return clearUser(state)
+            return clearState(state)
         case 'CREATE_PROJECT_REQUESTED':
             return setProjectLoading(state)
         case 'CREATE_PROJECT_SUCCESS':
@@ -245,7 +246,8 @@ const reducer = (state = initialState, action) => {
         case 'FETCH_PROJECT_SUCCESS':
             return {
                 ...state,
-                project: { ...action.payload }
+                project: { ...action.payload },
+                selectedTodo: {}
             }
         case 'FETCH_PROJECTS_SUCCESS':
             return setProjects(state, action.payload)
@@ -307,11 +309,13 @@ const reducer = (state = initialState, action) => {
         case 'FORM_CHANGED':
             return changeForm(state, state.form, action.payload)
         case 'REGISTER_FORM_SUBMITED':
-            return state
+            return { ...state, formLoading: false }
         case 'REGISTER_FORM_ERROR':
             return setFormErrors(state, action.payload)
+        case 'CLIENT_FORM_SENDING':
+            return { ...state, formLoading: true }
         case 'LOGIN_FORM_SUBMITED':
-            return state
+            return { ...state, formLoading: false}
         case 'LOGIN_FORM_ERROR':
             return setFormErrors(state, action.payload)
         case 'CLEAR_FORM_ERRORS':

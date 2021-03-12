@@ -1,9 +1,10 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { ParentComponent } from './parent-component'
 
-const PageContainer = ({ errorFromBackend, errors, title, btnHandler, btnText, link, linkText, isRegister, changeForm }) => {
+const PageContainer = ({ errorFromBackend, errors, title, btnHandler, btnText, link, linkText, isRegister, changeForm, formLoading }) => {
 
     return (
         <div className="d-flex mw-340 form-container text-center align-items-center">
@@ -30,7 +31,8 @@ const PageContainer = ({ errorFromBackend, errors, title, btnHandler, btnText, l
                         type="button" 
                         onClick={btnHandler}
                     >
-                        {btnText}
+                        <span className="mr-2">{btnText}</span>
+                        { formLoading && <span className="spinner-border spinner-border-sm"></span> }
                     </button>
                     <Link to={link}>
                         <button
@@ -49,4 +51,10 @@ const PageContainer = ({ errorFromBackend, errors, title, btnHandler, btnText, l
 
 }
 
-export default PageContainer
+const mapStateToProps = (state) => {
+    return {
+        formLoading: state.formLoading
+    }
+}
+
+export default connect(mapStateToProps)(PageContainer)
