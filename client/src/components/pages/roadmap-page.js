@@ -82,6 +82,7 @@ const RoadMapPage = ({ todos, project, todoCreated, fetchTodos, todoSelected, lo
         )
     }
 
+    if (!auth.projectId) return <>Выберите проект</>
     if (projectListIsEmpty) return <CreateProjectLink />
     if (loading) return <Spinner />
 
