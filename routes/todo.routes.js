@@ -5,6 +5,7 @@ const Project = require('../models/Project')
 const User = require('../models/User')
 const router = Router()
 const uuid = require('uuid')
+const auth = require('../middleware/auth.middleware')
 
 const updateCards = async (cards) => {
     const newCards = []
@@ -259,7 +260,7 @@ router.post('/createProject', async (req, res) => {
     }
 })
 
-router.get('/getProjects', async (req, res) => {
+router.get('/getProjects', auth, async (req, res) => {
     try
     {
         const userId = req.headers.user.split(' ')[1]

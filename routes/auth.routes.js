@@ -12,8 +12,8 @@ const router = Router()
 const generateToken = (userId, secretKey) => {
     return jwt.sign(
         { userId: userId },
-        'gbophuk0s98' + secretKey,
-        { expiresIn: '23h' },
+        secretKey,
+        { expiresIn: 30 },
     )
 }
 
@@ -38,7 +38,7 @@ router.post('/login', loginFormValidator, async (req, res) => {
         if (!isMatch) return res.status(400).json({ message: 'Неверный пароль!' })        
         
         const secretKey = Date.now().toString()
-        await User.updateOne({ email: user.email, token: generateToken(user.id, secretKey) })
+        await User.updateOne({ email: user.email }, { token: generateToken(user.id, secretKey), secretKey: secretKey })
 
         const userToFront = await User.findOne({ _id: user.id })
 
@@ -63,11 +63,11 @@ router.post('/register', async (req, res) => {
         if (candidate) return res.status(400).json({ message: 'Такой пользователь уже существует!' })
 
         const hashedPassword = await bcrypt.hash(password, 10)
-
-        const user = new User({ userName, email, password: hashedPassword })
+        
+        const secretKey = Date.now().toString()
+        const user = new User({ userName, email, password: hashedPassword, secretKey: secretKey })
         await user.save()
 
-        const secretKey = Date.now().toString()
         await User.updateOne({ email: user.email }, { token: generateToken(user.id, secretKey) })
 
         const userToFront = await User.findOne({ _id: user.id })

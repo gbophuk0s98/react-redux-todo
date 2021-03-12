@@ -12,7 +12,7 @@ const ProjectListPage = ({ projects, loading, fetchProjects, fetchProject }) => 
     const auth = useContext(AuthContext)
     const history = useHistory()
 
-    useEffect(() => fetchProjects(auth.userId), [fetchProjects, auth])
+    useEffect(() => fetchProjects({userId: auth.userId, token: auth.token }), [fetchProjects, auth])
 
     const onTitleClick = (e, projectId) => {
         e.preventDefault()

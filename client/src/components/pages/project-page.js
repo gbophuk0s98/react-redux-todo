@@ -39,7 +39,7 @@ const ProjectPage = ({ projectInfo, createProject, loading, fetchProjects }) => 
     const onCreateHandler = e => {
         e.preventDefault()
         createProject({ ...project, userId: auth.userId})
-        fetchProjects(auth.userId)
+        fetchProjects({userId: auth.userId, token: auth.token })
         history.push('/projectList')
     }
 
@@ -117,7 +117,10 @@ const mapDispatchToProps = (dispatch) => {
         loginHandler,
         clearErrors,
         createProject: (project) => actions.createProject(dispatch, project),
-        fetchProjects: (userId) => actions.fetchProjects(dispatch, userId),
+        fetchProjects: (userId) => {
+            console.log('userId', userId)
+            actions.fetchProjects(dispatch, userId)
+        },
     }
 }
 
