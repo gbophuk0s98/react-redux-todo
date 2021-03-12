@@ -18,14 +18,6 @@ const ProjectPage = ({ projectInfo, createProject, loading, fetchProjects }) => 
         projectKey: '',
     })
 
-    // useEffect(() => {
-    //     if (!!projectInfo.id && !auth.projectId) {
-    //         console.log('HELLO')
-    //         auth.login(auth.userId, auth.token, projectInfo.id)
-    //         history.push('/projectList')
-    //     }
-    // }, [auth, projectInfo, history])
-
     const makeId = () => {
         let text = ""
         let possible = "abcdefghijklmnopqrstuvwxyz"
@@ -47,10 +39,8 @@ const ProjectPage = ({ projectInfo, createProject, loading, fetchProjects }) => 
     const onCreateHandler = e => {
         e.preventDefault()
         createProject({ ...project, userId: auth.userId})
-        if (!!projectInfo.id) {
-            fetchProjects(auth.userId)
-            history.push('/projectList')
-        }
+        fetchProjects(auth.userId)
+        history.push('/projectList')
     }
 
     return (
