@@ -1,11 +1,11 @@
 const express = require('express')
 const mongo = require('mongoose')
 const app = express()
+const path = require('path')
 const PORT = process.env.port || 8080
 
-app.use(express.static(__dirname))
 app.use(express.json({ extended: true }))
-app.use(express.static(__dirname + '/client/public'))
+
 app.use('/api/auth/', require('./routes/auth.routes'))
 app.use('/api/todo/', require('./routes/todo.routes'))
 
