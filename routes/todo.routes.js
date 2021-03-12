@@ -19,17 +19,17 @@ const updateCards = async (cards) => {
 
 const updateCardItem = (items, id, startDate = null, endDate = null, color = null, title = null, priority = null) => {
     return items.map(item => {
-        if (item._id === id) {
+        if (item._id.toString() === id) {
             if (startDate && endDate) {
                 return { ...item, startDate: startDate, endDate: endDate }
             }
-            if (color) {
+            else if (color) {
                 return { ...item, background: color }
             }
-            if (title) {
+            else if (title) {
                 return { ...item, content: title }
             }
-            if (priority) {
+            else if (priority) {
                 return { ...item, priority: priority }
             }
         }
@@ -85,7 +85,7 @@ router.post('/createTodo', async (req, res) => {
         const customId = uuid.v4()
     
         const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
-        const card = await Card.findOne({ columnType: 'TaskList', project: projectId })
+        
 
         const todo = new Todo({ 
             customId: customId,
@@ -96,8 +96,6 @@ router.post('/createTodo', async (req, res) => {
             background: 'rgba(69, 108, 134, 1)',
             priority: 'Средний'
         })
-        await todo.save()
-
         await Card.updateOne(
             { _id: _id }, 
             { 
@@ -114,6 +112,8 @@ router.post('/createTodo', async (req, res) => {
                     } 
                 }
             })
+
+        await todo.save()
 
         return res.status(200).json(todo)
     }
@@ -179,30 +179,36 @@ router.put('/updateCards', async (req, res) => {
     try
     {
         const { id, startDate, endDate, color, title, priority } = req.body
-        console.log('startDate', startDate)
-        console.log('endDate', endDate)
-        console.log('color', color)
-        console.log('title', title)
-        console.log('priority', priority)
         const [todo] = await Todo.find({ _id: id })
-        const [{ _id, items }] = await Card.find(
-            {items: {"$elemMatch": { _id: todo._id }}}
+        let currentCardId, currentCardItems
+        // console.log('startDate', startDate)
+        // console.log('endDate', endDate)
+        // console.log('color', color)
+        // console.log('title', title)
+        // console.log('priority', priority)
+
+        const [card] = await Card.find(
+            {items: {"$elemMatch": { _id: {$eq: id} }}}
             )
+        if (!card) {
+            // значит последний добавленный!
+            const [{ _id, items }] = await Card.find(
+                {items: {"$elemMatch": { _id: {$eq: todo._id} }}}
+                )
+            currentCardId = _id
+            currentCardItems = items
+        } else {
+            currentCardId = card._id
+            currentCardItems = card.items
+        }
         let newItems = []
-        if (startDate && endDate) {
-            newItems = updateCardItem(items, id, startDate, endDate)
-        }
-        else if (color) {
-            newItems = updateCardItem(items, id, null, null, color)
-        }
-        else if (title) {
-            newItems = updateCardItem(items, id, null, null, null, title)
-        }
-        else if (priority) {
-            newItems = updateCardItem(items, id, null, null, null, null, priority)
-        }
-        newItems.map(item => console.log('item', item))
-        await Card.updateOne({ _id: _id }, { items: newItems })
+        if (startDate && endDate) newItems = updateCardItem(currentCardItems, id, startDate, endDate)
+        else if (color) newItems = updateCardItem(currentCardItems, id, null, null, color)
+        else if (title) newItems = updateCardItem(currentCardItems, id, null, null, null, title)
+        else if (priority) newItems = updateCardItem(currentCardItems, id, null, null, null, null, priority)
+        // newItems.map(item => console.log('item', item))
+
+        await Card.updateOne({ _id: currentCardId }, { items: newItems })
         res.status(200).json({ message: 'Карточки успешно обновлены!' })
     }
     catch (e)

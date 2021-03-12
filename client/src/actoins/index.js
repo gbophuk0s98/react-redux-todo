@@ -172,6 +172,7 @@ const todosLoaded = todos => {
 const todoCreated = (dispatch, todo, projectId) => {
     service.createTodo(todo, projectId)
     .then(todo => todoSelected(dispatch, todo._id))
+    .then(() => fetchCards(dispatch, projectId))
     .then(() => fetchTodos(dispatch, projectId))
 
     return { type: 'TODO_CREATED' }
