@@ -1,9 +1,9 @@
 .card {
     min-height: 100px;
     height: max-content;
-    max-width: 400px;
+    max-width: 600px;
     width: 100%;
-    margin: 10px;
+    margin: 5px;
     box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
     border-radius: 5px;
     display: flex;
@@ -29,15 +29,12 @@
 .card-title-text + .card-title-count {
     margin-left: 5px;
 }
-
-.card-title-text {
-}
-
 .card-title-count {
     padding-top: 1px;
     font-size: 14px;
 }
 
 .card-items-droppable{
+    width: 100%;
     height: max-content;
 }

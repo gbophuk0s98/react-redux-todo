@@ -1,8 +1,20 @@
 .card-items {
+    position: relative;
     user-select: 'none';
-    cursor: move;
     padding: 16px;
     margin: 0 0 8px 0;
     color: #252525;
-    min-height: 50px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.todo-info-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.todo-key-number {
+    font-size: 14px;
 }

@@ -45,7 +45,7 @@ const TodoDetail = ({ todo, todoUpdate}) => {
             <div className="users-info-list">
                 <div className="users-info-item">
                     <div className="users-info-left">
-                        <span>
+                        <span className="users-info-span">
                             Исполнитель:
                         </span>
                     </div>
@@ -57,7 +57,7 @@ const TodoDetail = ({ todo, todoUpdate}) => {
                 </div>
                 <div className="users-info-item">
                     <div className="users-info-left">
-                        <span>
+                        <span className="users-info-span">
                             Автор:
                         </span>
                     </div>
@@ -69,7 +69,7 @@ const TodoDetail = ({ todo, todoUpdate}) => {
                 </div>
                 <div className="users-info-item">
                     <div className="users-info-left">
-                        <span>
+                        <span className="users-info-span">
                             Приоритет:
                         </span>
                     </div>
@@ -79,8 +79,8 @@ const TodoDetail = ({ todo, todoUpdate}) => {
                 </div>
                 <div className="users-info-item">
                     <div className="users-info-left">
-                        <span>
-                            Название:
+                        <span className="users-info-span">
+                            Epic name:
                         </span>
                     </div>
                     <div className="users-info-right">

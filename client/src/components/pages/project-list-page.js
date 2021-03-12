@@ -2,12 +2,12 @@ import React, { useContext, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import { fetchProjects } from '../../actoins'
+import { fetchProjects, fetchProject } from '../../actoins'
 import AuthContext from '../../context'
 import Spinner from '../spinner'
 import CreateProjectLink from '../create-project-link'
 
-const ProjectListPage = ({ projects, loading, fetchProjects }) => {
+const ProjectListPage = ({ projects, loading, fetchProjects, fetchProject }) => {
 
     const auth = useContext(AuthContext)
     const history = useHistory()
@@ -17,6 +17,7 @@ const ProjectListPage = ({ projects, loading, fetchProjects }) => {
     const onTitleClick = (e, projectId) => {
         e.preventDefault()
         auth.login(auth.userId, auth.token, projectId)
+        fetchProject(projectId)
         history.push('/cards')
     }
 
@@ -64,7 +65,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchProjects: (userId) => fetchProjects(dispatch, userId)
+        fetchProjects: (userId) => fetchProjects(dispatch, userId),
+        fetchProject: (projectId) => fetchProject(dispatch, projectId)
     }
 }
 

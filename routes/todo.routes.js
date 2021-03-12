@@ -85,7 +85,7 @@ router.post('/createTodo', async (req, res) => {
         const customId = uuid.v4()
     
         const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
-        
+        const allTodos = await Todo.find()
 
         const todo = new Todo({ 
             customId: customId,
@@ -94,7 +94,8 @@ router.post('/createTodo', async (req, res) => {
             endDate: endDate,
             owner: projectId,
             background: 'rgba(69, 108, 134, 1)',
-            priority: 'Средний'
+            priority: 'Средний',
+            creationNumber: allTodos.length + 1
         })
         await Card.updateOne(
             { _id: _id }, 
@@ -108,14 +109,25 @@ router.post('/createTodo', async (req, res) => {
                         endDate: endDate,
                         posNumber: items.length,
                         background: 'rgba(69, 108, 134, 1)',
-                        priority: 'Средний'
+                        priority: 'Средний',
+                        creationNumber: todo.creationNumber
                     } 
                 }
             })
 
         await todo.save()
 
-        return res.status(200).json(todo)
+        let todoToFront = {
+            _id: todo._id,
+            customId: todo.customId,
+            content: todo.content,
+            startDate: todo.startDate,
+            endDate: todo.endDate,
+            background: todo.background,
+            priority: todo.priority,
+            creationNumber: todo.creationNumber,
+        }
+        return res.status(200).json(todoToFront)
     }
     catch (e)
     {
@@ -257,6 +269,19 @@ router.get('/getProjects', async (req, res) => {
             return { _id: project._id, title: project.title, description: project.description, key: project.key, owner: userName }
         })
         return res.status(200).json(newProjects)
+    }
+    catch (e)
+    {
+        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
+    }
+})
+
+router.get('/getProject', async (req, res) => {
+    try
+    {
+        const projectId = req.headers.project.split(' ')[1]
+        const [project] = await Project.find({ _id: projectId })
+        return res.status(200).json(project)
     }
     catch (e)
     {

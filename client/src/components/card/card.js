@@ -19,7 +19,7 @@ export const Card = ({ columns }) => {
 							<span>{column.items.length}</span>
 						</div>
 					</div>
-					<div style={{ margin: 1 }}>
+					<div className="card-items" style={{ margin: 1, padding: 5 }}>
 						<Droppable droppableId={id.toString()} key={id}>
 							{(provided, snapshot) => {
 								return (
@@ -30,8 +30,6 @@ export const Card = ({ columns }) => {
 										style={{
 											background: snapshot.isDraggingOver ? 'lightblue': '#303030',
 											border: snapshot.isDraggingOver ? 2 + 'px dashed rgb(16,59,68)': '',
-											padding: 4,
-											width: 250
 										}}
 									>
 										<CardItems items={column.items} />

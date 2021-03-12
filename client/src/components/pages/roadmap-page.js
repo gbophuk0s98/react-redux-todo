@@ -12,8 +12,7 @@ import './pages-css/roadmap-page.css'
 
 const getDate = (plusMonth = 0) => `${(new Date().getMonth() + 1) + plusMonth }/${new Date().getDate()}/${new Date().getFullYear()}`
 
-const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, projectListIsEmpty }) => {
-
+const RoadMapPage = ({ todos, project, todoCreated, fetchTodos, todoSelected, loading, projectListIsEmpty }) => {
     const auth = useContext(AuthContext)
 
     const [showInput, setShowInput] = useState(false)
@@ -100,15 +99,19 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
                     {
                         todos.map(todo => {
                             const { content, startDate, endDate } = todo
+                            console.log('todo', todo)
                             return (
                                 <tr className="todo" key={todo._id}>
                                     <td className="todo-content">
-                                        <button
-                                            className="btn btn-dark text-info font-weight-bold"
-                                            onClick={() => todoSelected(todo._id)}
-                                        >
-                                            {content}
-                                        </button>
+                                        <div className="key-button-wrapper">
+                                            <div className="project-key-text">{project.key}-{todo.creationNumber}</div>
+                                            <div
+                                                className="right-btn btn btn-dark text-info font-weight-bold"
+                                                onClick={() => todoSelected(todo._id)}
+                                            >
+                                                {content}
+                                            </div>
+                                        </div>
                                     </td>
                                     <td className="todo-content">
                                         <CustomDateRangePicker
@@ -138,7 +141,8 @@ const mapStateTopProps = (state) => {
         todos: state.todos.items,
         loading: state.todos.loading,
         error: state.todos.error,
-        projectListIsEmpty
+        project: state.project,
+        projectListIsEmpty,
     }
 }
 

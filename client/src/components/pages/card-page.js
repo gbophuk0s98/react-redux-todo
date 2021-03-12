@@ -9,6 +9,8 @@ import AuthContext from '../../context'
 import Spinner from '../spinner'
 import CreateProjectLink from '../create-project-link'
 
+import './pages-css/card-page.css'
+
 const CardPage = ({ cards, loading, transferCardsItems, fetchCards }) => {
 
     const { projectId } = useContext(AuthContext)
@@ -28,11 +30,11 @@ const CardPage = ({ cards, loading, transferCardsItems, fetchCards }) => {
         transferCardsItems(result)
     }
 
-    if (cards.length===0) return <CreateProjectLink />
     if (loading) return <Spinner />
+    if (cards.length===0) return <CreateProjectLink />
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+        <div className="card-container">
             <DragDropContext onDragEnd={result => checkCard(result)}>
                 <Card columns={cards} />
             </DragDropContext>

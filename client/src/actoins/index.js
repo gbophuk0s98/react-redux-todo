@@ -122,6 +122,18 @@ const fetchProjects = (dispatch, userId) => {
     .catch(error => dispatch(projectsError(error)) )
 }
 
+const setProject = project => {
+    return {
+        type: 'FETCH_PROJECT_SUCCESS',
+        payload: project
+    }
+}
+
+const fetchProject = (dispatch, projectId) => {
+    service.getProject(projectId)
+    .then(project => dispatch(setProject(project)))
+}
+
 const cardsRequested = () => {
     return {
         type: 'FETCH_CARDS_REQUEST',
@@ -192,6 +204,7 @@ const todoUpdate = (dispatch, id, projectId, startDate = null, endDate = null, c
     .then(() => service.updateCardItem(objToUpdate))
     .then(() => todoSelected(dispatch, id))
     .then(() => fetchTodos(dispatch, projectId))
+    .then(() => fetchCards(dispatch, projectId))
         
     return { type: 'TODO_UPDATED' }
 }
@@ -251,4 +264,5 @@ export {
     fetchProjects,
     todoSelected,
     todoUpdate,
+    fetchProject
 }

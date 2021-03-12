@@ -1,7 +1,7 @@
 const initialState = {
     cards: {
         items: [],
-        loading: true,
+        loading: false,
         error: null,
     },
     todos: {
@@ -27,15 +27,14 @@ const initialState = {
         email: '',
         userId: '',
     },
-    project: {
-        id: '',
-        title: '',
-        description: '',
-        key: '',
-        loading: false,
-        error: null,
-    },
-    selectedTodo: {}
+    project: {},
+    selectedTodo: {},
+    iconOptions: [
+        { value: 'Наивысший', label: 'Наивысший', styles: { fill: 'red', opacity: '1' } },
+        { value: 'Высокий', label: 'Высокий', styles: { fill: '#ff4d4b', opacity: '0.8' } },
+        { value: 'Средний', label: 'Средний', styles: { fill: '#ff902d', opacity: '1' } },
+        { value: 'Низкий', label: 'Низкий', styles: { fill: '#2dee36', opacity: '0.8' } },
+    ]
 }
 
 const setCards = (state, payload) => {
@@ -242,6 +241,11 @@ const reducer = (state = initialState, action) => {
                     loading: false,
                     error: action.payload
                 }
+            }
+        case 'FETCH_PROJECT_SUCCESS':
+            return {
+                ...state,
+                project: { ...action.payload }
             }
         case 'FETCH_PROJECTS_SUCCESS':
             return setProjects(state, action.payload)

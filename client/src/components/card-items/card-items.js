@@ -1,28 +1,44 @@
 import React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
+import { connect } from 'react-redux'
+import { FaArrowUp } from 'react-icons/fa'
 
 import './card-items.css'
 
-export const CardItems = ({ items }) => {
+const CardItems = ({ items, projectKey, iconOptions }) => {
+    
+    const renderIcon = (priority) => {
+        const [{styles}] = iconOptions.filter(option => option.value === priority)
+        console.log(styles)
+        return <FaArrowUp style={{...styles}} />
+    }
+
     return (
         <>
         {items.map(item => {
+            console.log('item priority', item.priority)
             return (
                 <Draggable key={item.customId} draggableId={item.customId} index={item.posNumber}>
                     {(provided, snapshot) => {
                         return(
                             <div
-                                className="card-items"
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                                 style={{
                                     // #456C86
-                                    backgroundColor: snapshot.isDragging ? '#263B4A': item.background,
-                                    ...provided.draggableProps.style
+                                    backgroundColor: item.background,
+                                    ...provided.draggableProps.style,
+                                    border: snapshot.isDragging ? `2px solid rgba(140, 140, 140, 1)`: 'none',
+                                    borderRadius: snapshot.isDragging ? '5px': '0px'
                                 }}
+                                className="card-items"
                             >
-                                {item.content}
+                                <div>{item.content}</div>
+                                <div className="todo-info-wrapper">
+                                    <div className="todo-info-icons">{renderIcon(item.priority)}</div>
+                                    <div className="todo-key-number">{projectKey}-{item.creationNumber}</div>
+                                </div>
                             </div>
                         )
                     }}
@@ -32,3 +48,17 @@ export const CardItems = ({ items }) => {
         </>
     )
 }
+
+const mapStateTopProps = (state) => {
+    console.log(state.project)
+    return {
+        projectKey: state.project.key,
+        iconOptions: state.iconOptions,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {}
+}
+
+export default connect(mapStateTopProps, mapDispatchToProps)(CardItems)

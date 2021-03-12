@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { connect } from 'react-redux'
 import Select from 'react-select'
 import { FaArrowUp } from 'react-icons/fa'
@@ -17,16 +17,13 @@ const CustomOption = ({ data, innerRef, innerProps }) => {
     )
 }
 
-const CustomSelect = ({ priority, id, todoUpdate }) => {
+const CustomSelect = ({ priority, id, todoUpdate, iconOptions }) => {
 
     const auth = useContext(AuthContext)
 
-    const [options, ] = useState([
-        { value: 'Наивысший', label: 'Наивысший', styles: { fill: 'red', opacity: '1' } },
-        { value: 'Высокий', label: 'Высокий', styles: { fill: '#ff4d4b', opacity: '0.8' } },
-        { value: 'Средний', label: 'Средний', styles: { fill: '#ff902d', opacity: '1' } },
-        { value: 'Низкий', label: 'Низкий', styles: { fill: '#2dee36', opacity: '0.8' } },
-    ])
+    const [options, setOptions] = useState([])
+    
+    useEffect(() => setOptions(iconOptions), [setOptions, iconOptions])
 
     const dot = (color = '#ccc') => ({
         alignItems: 'center',
@@ -63,7 +60,9 @@ const CustomSelect = ({ priority, id, todoUpdate }) => {
 }
 
 const mapStateTopProps = (state) => {
+    console.log("state.iconOptions", state.iconOptions)
     return {
+        iconOptions: state.iconOptions
     }
 }
 
