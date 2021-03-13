@@ -99,7 +99,11 @@ const createProjectFailure = (error) => {
 const createProject = (dispatch, project) => {
     dispatch(createProjectRequested())
     service.createProject(project)
-    .then(res => dispatch(createProjectSuccess(res)) )
+    .then(res => {
+        dispatch(createProjectSuccess(res)) 
+        dispatch(setProject(res))
+        setRecentProjects(dispatch, res._id)
+    })
     .catch(error => dispatch(createProjectFailure(error)) )
 }
 

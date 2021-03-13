@@ -2,9 +2,10 @@ import React, { useState, useEffect, useContext } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import { fetchProject } from '../../actoins'
 import './dropdown.css'
 
-const DropDown = ({ recentProjects }) => {
+const DropDown = ({ recentProjects, fetchProject }) => {
 
     const [open, setOpen] = useState(false)
 
@@ -18,7 +19,10 @@ const DropDown = ({ recentProjects }) => {
                         <div
                             className="projectList-item-title"
                             key={project._id}
-                            onClick={() => {}}
+                            onClick={() => {
+                                fetchProject(project._id)
+                                // history.push('/cards')
+                            }}
                         >
                             <div>
                                 {project.title}
@@ -63,7 +67,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {}
+    return {
+        fetchProject: (projectId) => fetchProject(dispatch, projectId),
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DropDown)

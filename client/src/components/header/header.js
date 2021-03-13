@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
@@ -8,16 +8,12 @@ import DropDown from '../dropdown'
 
 import './header.css'
 
-const Header = ({ logoutHandler }) => {
+const Header = ({ logoutHandler, selectedProject, user }) => {
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
 
             <Link className="navbar-brand" to="/cards">CroCodileUI</Link>
-
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="/navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-            </button>
 
             <div className="collapse navbar-collapse" id="navbarColor03">
                 <ul className="navbar-nav mr-auto">
@@ -32,14 +28,29 @@ const Header = ({ logoutHandler }) => {
                     <li>
                         <DropDown />
                     </li>
+                    <li className="nav-item">
+                        <div className="project-info">
+                            <span className="nav-link-text">
+                                {selectedProject.title}
+                            </span>
+                            <span className="nav-link-text">
+                                {selectedProject.key}
+                            </span>
+                        </div>
+                    </li>
                 </ul>
-                <form className="form-inline my-2 my-lg-0">
-                <button
-                    className="btn btn-secondary my-2 my-sm-0" 
-                    type="submit"
-                    onClick={() => logoutHandler()}
-                    >Выход</button>
-                </form>
+                <div className="header-user-info">
+                    <div className="header-user-title">
+                        <span>{user.userName} ({user.email})</span>
+                    </div>
+                    <button
+                        className="btn btn-secondary my-2 my-sm-0" 
+                        type="submit"
+                        onClick={() => logoutHandler()}
+                    >
+                        Выход
+                    </button>
+                </div>
             </div>
         </nav>
     )
@@ -48,15 +59,13 @@ const Header = ({ logoutHandler }) => {
 const mapStateToProps = (state) => {
     return {
         user: state.user,
+        selectedProject: state.selectedProject,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     const { logoutHandler } = bindActionCreators(actions, dispatch)
-    return {
-        logoutHandler,
-        fetchProjects: (headers) => actions.fetchProjects(dispatch, headers)
-    }
+    return { logoutHandler }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)
