@@ -27,9 +27,9 @@ const RoadMapPage = ({ todos, project, todoCreated, fetchTodos, todoSelected, lo
         if (auth.projectId) fetchTodos(auth.projectId)
     }, [fetchTodos, auth])
 
-    useEffect(() => {
-        if (auth.projectId) fetchProject(auth.projectId)
-    }, [fetchProject, auth.projectId])
+    // useEffect(() => {
+    //     if (auth.projectId) fetchProject(auth.projectId)
+    // }, [fetchProject, auth.projectId])
     
     const addTableRow = () => showInput ? setShowInput(false) : setShowInput(true)
     

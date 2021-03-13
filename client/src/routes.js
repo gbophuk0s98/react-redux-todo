@@ -12,7 +12,7 @@ export const useRoutes = (isAuthenticated = true, location = null) => {
                     <Header />
                     <div className="container">
                         <Switch>
-                            <Route path="/cards">
+                            <Route path="/cards" exact>
                                 <CardPage />
                             </Route>
                             <Route path="/roadmap" exact>
