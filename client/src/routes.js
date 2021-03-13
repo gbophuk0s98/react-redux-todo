@@ -5,7 +5,6 @@ import Header from './components/header'
 import { CardPage, RoadMapPage, RegPage, LoginPage, ProjectPage, ProjectListPage } from './components/pages'
 
 export const useRoutes = (isAuthenticated = true, location = null) => {
-    console.log(location)
 
         if (isAuthenticated) {
             return (

@@ -2,12 +2,12 @@ import React, { useContext, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import { fetchProjects, fetchProject } from '../../actoins'
+import { fetchProjects, fetchProject, setRecentProjects } from '../../actoins'
 import AuthContext from '../../context'
 import Spinner from '../spinner'
 import CreateProjectLink from '../create-project-link'
 
-const ProjectListPage = ({ projects, loading, fetchProjects, fetchProject }) => {
+const ProjectListPage = ({ projects, loading, fetchProjects, fetchProject, setRecentProjects }) => {
 
     const auth = useContext(AuthContext)
     const history = useHistory()
@@ -18,6 +18,7 @@ const ProjectListPage = ({ projects, loading, fetchProjects, fetchProject }) => 
         e.preventDefault()
         auth.login(auth.userId, auth.token, projectId)
         fetchProject(projectId)
+        setRecentProjects(projectId)
         history.push('/cards')
     }
 
@@ -35,7 +36,6 @@ const ProjectListPage = ({ projects, loading, fetchProjects, fetchProject }) => 
             </thead>
             <tbody>
                 { projects.map(project => {
-                    console.log(project)
                     return (
                         <tr key={project._id}>
                             <td>
@@ -64,9 +64,11 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
+
     return {
         fetchProjects: (userId) => fetchProjects(dispatch, userId),
-        fetchProject: (projectId) => fetchProject(dispatch, projectId)
+        fetchProject: (projectId) => fetchProject(dispatch, projectId),
+        setRecentProjects: (projectId) => setRecentProjects(dispatch, projectId),
     }
 }
 

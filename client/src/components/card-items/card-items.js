@@ -9,14 +9,13 @@ const CardItems = ({ items, projectKey, iconOptions }) => {
     
     const renderIcon = (priority) => {
         const [{styles}] = iconOptions.filter(option => option.value === priority)
-        console.log(styles)
         return <FaArrowUp style={{...styles}} />
     }
 
     return (
         <>
         {items.map(item => {
-            console.log('item priority', item.priority)
+
             return (
                 <Draggable key={item.customId} draggableId={item.customId} index={item.posNumber}>
                     {(provided, snapshot) => {
@@ -50,7 +49,6 @@ const CardItems = ({ items, projectKey, iconOptions }) => {
 }
 
 const mapStateTopProps = (state) => {
-    console.log(state.project)
     return {
         projectKey: state.project.key,
         iconOptions: state.iconOptions,

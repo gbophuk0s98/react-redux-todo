@@ -1,35 +1,17 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 
 import AuthContext from '../../context'
 import * as actions from '../../actoins'
+import DropDown from '../dropdown'
+
 import './header.css'
 
 const Header = ({ user, logoutHandler }) => {
 
-    const [open, setOpen] = useState(false)
     const auth = useContext(AuthContext)
-
-    const DropDown = () => {
-        return (
-            <div className="my-dropdown">
-                <div 
-                    className="btn btn-secondary dropdown-toggle" 
-                    onClick={() => setOpen(!open)}
-                >Проекты
-                </div>
-
-                {open && 
-                    <div className="my-dropdown-menu"  onClick={() => setOpen(!open)}>
-                        <Link className="dropdown-item" to="/projectList">Все проекты</Link>
-                        <Link className="dropdown-item" to="/createProject">Создать...</Link>
-                    </div>
-                }
-            </div>
-        )
-    }
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -71,14 +53,15 @@ const Header = ({ user, logoutHandler }) => {
 
 const mapStateToProps = (state) => {
     return {
-        user: state.user
+        user: state.user,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     const { logoutHandler } = bindActionCreators(actions, dispatch)
     return {
-        logoutHandler
+        logoutHandler,
+        fetchProjects: (headers) => actions.fetchProjects(dispatch, headers)
     }
 }
 

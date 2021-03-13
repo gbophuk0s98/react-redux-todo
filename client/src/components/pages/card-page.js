@@ -25,7 +25,6 @@ const CardPage = ({ cards, loading, transferCardsItems, fetchCards, fetchProject
     }, [fetchProject, projectId])
 
     const checkCard = (result) => {
-        console.log('location.pathname', location.pathname)
         const { source, destination } = result
 
         if (!destination) return

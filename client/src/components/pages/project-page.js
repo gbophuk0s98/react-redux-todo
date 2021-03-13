@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router'
+import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 
 import * as actions from '../../actoins'
@@ -9,7 +10,7 @@ import AuthContext from '../../context'
 import './pages-css/project-page.css'
 
 const ProjectPage = ({ projectInfo, createProject, loading, fetchProjects }) => {
-    console.log('projectInfo', projectInfo)
+
     const auth = useContext(AuthContext)
     const history = useHistory()
 
@@ -92,7 +93,7 @@ const ProjectPage = ({ projectInfo, createProject, loading, fetchProjects }) => 
                                 className="form-btn w-100 btn btn-primary" 
                                 type="button" 
                             >
-                            Закрыть
+                            <Link to='/projectList' style={{ color: '#fff' }} >Закрыть</Link>
                             </button>
                         </div>
                     </div>
@@ -117,10 +118,7 @@ const mapDispatchToProps = (dispatch) => {
         loginHandler,
         clearErrors,
         createProject: (project) => actions.createProject(dispatch, project),
-        fetchProjects: (userId) => {
-            console.log('userId', userId)
-            actions.fetchProjects(dispatch, userId)
-        },
+        fetchProjects: (userId) => actions.fetchProjects(dispatch, userId),
     }
 }
 

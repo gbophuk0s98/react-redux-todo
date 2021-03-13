@@ -105,7 +105,6 @@ const RoadMapPage = ({ todos, project, todoCreated, fetchTodos, todoSelected, lo
                     {
                         todos.map(todo => {
                             const { content, startDate, endDate } = todo
-                            console.log('todo', todo)
                             return (
                                 <tr className="todo" key={todo._id}>
                                     <td className="todo-content">

@@ -206,8 +206,6 @@ const todoUpdate = (dispatch, id, projectId, startDate = null, endDate = null, c
     else if (title) objToUpdate = { id, title }
     else if (priority) objToUpdate = { id, priority }
 
-    console.log('objToUpdate', objToUpdate)
-
     service.updateTodo(objToUpdate)
     .then(() => service.updateCardItem(objToUpdate))
     .then(() => todoSelected(dispatch, id))
@@ -256,6 +254,11 @@ const clearErrors = () => {
     }
 }
 
+const setRecentProjects = (dispatch, projectId) => {
+    service.getProject(projectId)
+    .then(project => dispatch({ type: 'USER_RECENT_PROJECTS', payload: project }))
+}
+
 export {
     fetchCards,
     transferCardsItems,
@@ -272,5 +275,6 @@ export {
     fetchProjects,
     todoSelected,
     todoUpdate,
-    fetchProject
+    fetchProject,
+    setRecentProjects,
 }

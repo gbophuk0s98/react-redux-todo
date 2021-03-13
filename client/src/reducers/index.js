@@ -14,6 +14,7 @@ const initialState = {
         loading: true,
         error: null,
     },
+    recentProjects: [],
     form: {
         userName: '',
         email: '',
@@ -135,7 +136,6 @@ const setSelectedTodo = (state, payload) => {
 
 const setProjectSuccess = (state, project) => {
     const { _id, title, description, key } = project
-    console.log('project', project)
     return {
         ...state,
         project: {
@@ -189,8 +189,19 @@ const setProjects = (state, projects) => {
     }
 }
 
+const setRecentProjects = (state, project) => {
+    let recentProjectsArray = state.recentProjects
+    let filterArr = recentProjectsArray.filter(item => item._id === project._id)
+    if (filterArr.length === 0) recentProjectsArray.unshift(project)
+    if (recentProjectsArray.length === 4) recentProjectsArray.splice(-1, 1)
+    console.log('CURRENT ARRAY:', recentProjectsArray)
+    return {
+        ...state,
+        recentProjects: [...recentProjectsArray]
+    }
+}
+
 const setUser = (state, payload) => {
-    console.log('FromBackend ( reducer.setUser() )', payload)
     return {
         ...state,
         user: { ...payload }
@@ -320,6 +331,8 @@ const reducer = (state = initialState, action) => {
             return setFormErrors(state, action.payload)
         case 'CLEAR_FORM_ERRORS':
             return clearErrors(state)
+        case 'USER_RECENT_PROJECTS':
+            return setRecentProjects(state, action.payload)
         default:
             return state
     }
