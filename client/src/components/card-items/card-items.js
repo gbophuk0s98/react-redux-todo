@@ -50,7 +50,7 @@ const CardItems = ({ items, projectKey, iconOptions }) => {
 
 const mapStateTopProps = (state) => {
     return {
-        projectKey: state.project.key,
+        projectKey: state.selectedProject.key,
         iconOptions: state.iconOptions,
     }
 }

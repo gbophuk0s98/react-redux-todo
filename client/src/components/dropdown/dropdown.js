@@ -2,19 +2,11 @@ import React, { useState, useEffect, useContext } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import AuthContext from '../../context'
-import { fetchProjects } from '../../actoins'
-
-import Spinner from '../spinner'
-
 import './dropdown.css'
 
-const DropDown = ({ fetchProjects, projectsLoading, recentProjects }) => {
+const DropDown = ({ recentProjects }) => {
 
-    const auth = useContext(AuthContext)
     const [open, setOpen] = useState(false)
-
-    useEffect(() => fetchProjects({ userId: auth.userId, token: auth.token }), [fetchProjects, auth])
 
     const ProjectsList = () => {
         return (
@@ -26,7 +18,7 @@ const DropDown = ({ fetchProjects, projectsLoading, recentProjects }) => {
                         <div
                             className="projectList-item-title"
                             key={project._id}
-                            onClick={() => auth.login(auth.userId, auth.token, project._id)}
+                            onClick={() => {}}
                         >
                             <div>
                                 {project.title}
@@ -50,7 +42,7 @@ const DropDown = ({ fetchProjects, projectsLoading, recentProjects }) => {
             {open && 
                 <div className="my-dropdown-menu"  onClick={() => setOpen(!open)}>
                     <div className="dropdown-projectList">
-                        { projectsLoading ? <Spinner/> : <ProjectsList /> }
+                        <ProjectsList />
                     </div>
                     <div className="menu-links">
                         <Link className="dropdown-item" to="/projectList">Все проекты</Link>
@@ -64,15 +56,14 @@ const DropDown = ({ fetchProjects, projectsLoading, recentProjects }) => {
 
 const mapStateToProps = (state) => {
     return {
-        projectsLoading: state.projects.loading,
-        recentProjects: state.recentProjects
+        recentProjects: state.recentProjects,
+        selectedProject: state.selectedProject,
+        user: state.user,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchProjects: (headers) => fetchProjects(dispatch, headers)
-    }
+    return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DropDown)

@@ -2,11 +2,9 @@ import React, { useState, useContext, useEffect } from 'react'
 import { connect } from 'react-redux'
 import Select from 'react-select'
 import { FaArrowUp } from 'react-icons/fa'
-
 import { todoUpdate } from '../../actoins'
 
 import './custom-select.css'
-import AuthContext from '../../context'
 
 const CustomOption = ({ data, innerRef, innerProps }) => {
     return (
@@ -17,9 +15,7 @@ const CustomOption = ({ data, innerRef, innerProps }) => {
     )
 }
 
-const CustomSelect = ({ priority, id, todoUpdate, iconOptions }) => {
-
-    const auth = useContext(AuthContext)
+const CustomSelect = ({ priority, id, todoUpdate, iconOptions, selectedProject }) => {
 
     const [options, setOptions] = useState([])
     
@@ -46,7 +42,7 @@ const CustomSelect = ({ priority, id, todoUpdate, iconOptions }) => {
     }
 
     const renderOption = () => options.filter(option => option.value === priority)
-    const changeHandler = data => todoUpdate(id, auth.projectId, data.value)
+    const changeHandler = data => todoUpdate(id, selectedProject._id, data.value)
 
     return (
         <Select
@@ -60,9 +56,10 @@ const CustomSelect = ({ priority, id, todoUpdate, iconOptions }) => {
 }
 
 const mapStateTopProps = (state) => {
-    console.log("state.iconOptions", state.iconOptions)
+    
     return {
-        iconOptions: state.iconOptions
+        iconOptions: state.iconOptions,
+        selectedProject: state.selectedProject,
     }
 }
 

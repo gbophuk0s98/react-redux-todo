@@ -4,19 +4,13 @@ import { bindActionCreators } from 'redux'
 
 import PageContainer from '../auth-components/auth-page-container'
 import * as actions from '../../actoins'
-import AuthContext from '../../context'
 
 import './pages-css/auth-pages.css'
 
 const RegPage = ({ user, authError, errors, form, changeForm, registerHandler, clearErrors, clearAuthError }) => {
 
-    const auth = useContext(AuthContext)
-
     useEffect(() => clearErrors(), [clearErrors])
     useEffect(() => clearAuthError(), [clearAuthError])
-    useEffect(() => {
-        if (!!user.token) auth.login(user.id, user.token, null)
-    }, [user, auth])
 
     return (
         <PageContainer

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react'
 import { connect } from 'react-redux'
 
 import { fetchTodos, todoCreated, todoSelected, fetchProject } from '../../actoins'
-import AuthContext from '../../context'
 import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'
 import CustomDateRangePicker from '../date-range-picker'
@@ -12,9 +11,7 @@ import './pages-css/roadmap-page.css'
 
 const getDate = (plusMonth = 0) => `${(new Date().getMonth() + 1) + plusMonth }/${new Date().getDate()}/${new Date().getFullYear()}`
 
-const RoadMapPage = ({ todos, project, todoCreated, fetchTodos, todoSelected, loading, projectListIsEmpty, fetchProject }) => {
-
-    const auth = useContext(AuthContext)
+const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, projectListIsEmpty, selectedProject }) => {
 
     const [showInput, setShowInput] = useState(false)
     const [todo, setTodo] = useState({
@@ -24,12 +21,8 @@ const RoadMapPage = ({ todos, project, todoCreated, fetchTodos, todoSelected, lo
     })
 
     useEffect(() => {
-        if (auth.projectId) fetchTodos(auth.projectId)
-    }, [fetchTodos, auth])
-
-    // useEffect(() => {
-    //     if (auth.projectId) fetchProject(auth.projectId)
-    // }, [fetchProject, auth.projectId])
+        if (selectedProject._id) fetchTodos(selectedProject._id)
+    }, [fetchTodos, selectedProject])
     
     const addTableRow = () => showInput ? setShowInput(false) : setShowInput(true)
     
@@ -37,7 +30,7 @@ const RoadMapPage = ({ todos, project, todoCreated, fetchTodos, todoSelected, lo
     
     const onBlurHandler = () => {
         if (todo.content) {
-            todoCreated(todo, auth.projectId)
+            todoCreated(todo, selectedProject._id)
             setTodo({ ...todo, content: '' })
         }
         setShowInput(false)
@@ -54,12 +47,6 @@ const RoadMapPage = ({ todos, project, todoCreated, fetchTodos, todoSelected, lo
                         name="content"
                         onChange={changeHandler}
                         value={todo.content}
-                    />
-                </td>
-                <td>
-                    <CustomDateRangePicker
-                        startDate={getDate()}
-                        endDate={getDate(1)}
                     />
                 </td>
             </tr>
@@ -82,9 +69,9 @@ const RoadMapPage = ({ todos, project, todoCreated, fetchTodos, todoSelected, lo
         )
     }
 
-    if (!auth.projectId) return <>Выберите проект</>
-    if (loading) return <Spinner />
     if (projectListIsEmpty) return <CreateProjectLink />
+    if (!selectedProject._id) return <>Выберите проект</>
+    if (loading) return <Spinner />
 
     return (
         <div className="roadmap-container">
@@ -109,7 +96,7 @@ const RoadMapPage = ({ todos, project, todoCreated, fetchTodos, todoSelected, lo
                                 <tr className="todo" key={todo._id}>
                                     <td className="todo-content">
                                         <div className="key-button-wrapper">
-                                            <div className="project-key-text">{project.key}-{todo.creationNumber}</div>
+                                            <div className="project-key-text">{selectedProject.key}-{todo.creationNumber}</div>
                                             <div
                                                 className="right-btn btn btn-dark text-info font-weight-bold"
                                                 onClick={() => todoSelected(todo._id)}
@@ -123,7 +110,7 @@ const RoadMapPage = ({ todos, project, todoCreated, fetchTodos, todoSelected, lo
                                             startDate={startDate}
                                             endDate={endDate}
                                             todoId={todo._id}
-                                            projectId={auth.projectId}
+                                            projectId={selectedProject._id}
                                         />
                                     </td>
                                 </tr>
@@ -141,13 +128,13 @@ const RoadMapPage = ({ todos, project, todoCreated, fetchTodos, todoSelected, lo
 
 const mapStateTopProps = (state) => {
 
-    const projectListIsEmpty = state.projects.items.length === 0 ? true: false
+    const projectListIsEmpty = state.projects.items.length === 0
     return {
         todos: state.todos.items,
         loading: state.todos.loading,
         error: state.todos.error,
-        project: state.project,
         projectListIsEmpty,
+        selectedProject: state.selectedProject
     }
 }
 

@@ -6,13 +6,10 @@ import { todoUpdate } from '../../actoins'
 import CustomSelect from '../custom-select'
 
 import './todo-detail.css'
-import AuthContext from '../../context'
 import Spinner from '../spinner'
 
-const TodoDetail = ({ todo, todoUpdate, selectedTodoLoading }) => {
+const TodoDetail = ({ todo, todoUpdate, selectedTodoLoading, selectedProject }) => {
 
-    console.log('SELECTEDTODOLOADING', selectedTodoLoading)
-    const auth = useContext(AuthContext)
     const [title, setTitle] = useState('Todo content')
 
     useEffect(() => setTitle(todo.content), [setTitle, todo])
@@ -21,7 +18,7 @@ const TodoDetail = ({ todo, todoUpdate, selectedTodoLoading }) => {
     const onTitleBlurHandler = e => {
         if (title === '' || title === todo.content) setTitle(todo.content)
         else {
-            todoUpdate(todo._id, auth.projectId, title)
+            todoUpdate(todo._id, selectedProject._id, title)
         }
     }
 
@@ -113,6 +110,7 @@ const mapStateTopProps = (state) => {
     return {
         todo: state.selectedTodo,
         selectedTodoLoading: state.selectedTodoLoading,
+        selectedProject: state.selectedProject
     }
 }
 

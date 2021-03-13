@@ -32,7 +32,7 @@ const initialState = {
         email: '',
         userId: '',
     },
-    project: {},
+    selectedProject: {},
     selectedTodo: {},
     selectedTodoLoading: false,
     iconOptions: [
@@ -127,7 +127,8 @@ const clearErrors = (state) => {
 
 const clearState = (state) => {
     return {
-        ...initialState
+        ...initialState,
+        recentProjects: [],
     }
 }
 
@@ -143,7 +144,7 @@ const setProjectSuccess = (state, project) => {
     const { _id, title, description, key } = project
     return {
         ...state,
-        project: {
+        selectedProject: {
              id: _id,
              title: title,
              description: description,
@@ -158,7 +159,7 @@ const setProjectSuccess = (state, project) => {
 const setProjectLoading = (state) => {
     return {
         ...state,
-        project: {
+        selectedProject: {
              id: '',
              title: '',
              description: '',
@@ -172,7 +173,7 @@ const setProjectLoading = (state) => {
 const setProjectError = (state, error) => {
     return {
         ...state,
-        project: {
+        selectedProject: {
              id: '',
              title: '',
              description: '',
@@ -262,7 +263,7 @@ const reducer = (state = initialState, action) => {
         case 'FETCH_PROJECT_SUCCESS':
             return {
                 ...state,
-                project: { ...action.payload },
+                selectedProject: { ...action.payload },
                 selectedTodo: {}
             }
         case 'FETCH_PROJECTS_SUCCESS':

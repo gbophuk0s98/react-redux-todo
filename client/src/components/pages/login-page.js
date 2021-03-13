@@ -6,17 +6,11 @@ import PageContainer from '../auth-components/auth-page-container'
 import * as actions from '../../actoins'
 
 import './pages-css/auth-pages.css'
-import AuthContext from '../../context'
 
 const LoginPage = ({ user, authError, errors, form, loginHandler, changeForm, clearErrors, clearAuthError }) => {
 
-    const auth = useContext(AuthContext)
-
     useEffect(() => clearErrors(), [clearErrors])
     useEffect(() => clearAuthError(), [clearAuthError])
-    useEffect(() => {
-        if (!!user.token) auth.login(user.id, user.token, null)
-    }, [user.token, auth, user.id])
 
     return (
         <PageContainer

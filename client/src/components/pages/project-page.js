@@ -1,17 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 
 import * as actions from '../../actoins'
-import AuthContext from '../../context'
 
 import './pages-css/project-page.css'
 
-const ProjectPage = ({ projectInfo, createProject, loading, fetchProjects }) => {
-
-    const auth = useContext(AuthContext)
+const ProjectPage = ({ createProject, loading, user }) => {
+    
     const history = useHistory()
 
     const [project, setProject] = useState({
@@ -39,8 +37,7 @@ const ProjectPage = ({ projectInfo, createProject, loading, fetchProjects }) => 
 
     const onCreateHandler = e => {
         e.preventDefault()
-        createProject({ ...project, userId: auth.userId})
-        fetchProjects({userId: auth.userId, token: auth.token })
+        createProject({ ...project, userId: user.id})
         history.push('/projectList')
     }
 
@@ -105,9 +102,9 @@ const ProjectPage = ({ projectInfo, createProject, loading, fetchProjects }) => 
 
 const mapStateToProps = (state) => {
     return {
-        projectInfo: state.project,
-        loading: state.project.loading,
-        error: state.project.error
+        loading: state.selectedProject.loading,
+        error: state.selectedProject.error,
+        user: state.user,
     }
 }
 

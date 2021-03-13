@@ -4,7 +4,6 @@ import { SketchPicker } from 'react-color'
 import { connect } from 'react-redux'
 
 import { todoUpdate } from '../../actoins'
-import AuthContext from '../../context'
 
 import './color-picker.css'
 
@@ -12,9 +11,7 @@ const colorToRGBA = (color) => {
 	return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`
 }
 
-const ColorPicker = ({ todoId, todoColor, todoUpdate }) => {
-
-	const auth = useContext(AuthContext)
+const ColorPicker = ({ todoId, todoColor, todoUpdate, selectedProject }) => {
 
 	const [displayColorPicker, setDisplayColorPicker] = useState(false)
 	const [color, setColor] = useState({ r: '241',g: '112',b: '19',a: '1', })
@@ -24,7 +21,7 @@ const ColorPicker = ({ todoId, todoColor, todoUpdate }) => {
 	const handleClose = () => {
 		setDisplayColorPicker(false)
 		if (JSON.stringify(colorToRGBA(color)) !== JSON.stringify(todoColor)) {
-			todoUpdate(todoId, auth.projectId, colorToRGBA(color))
+			todoUpdate(todoId, selectedProject._id, colorToRGBA(color))
 		}
 	} 
 
@@ -79,6 +76,7 @@ const mapStateToProps = (state) => {
 	return {
 		todoId: state.selectedTodo._id,
 		todoColor: state.selectedTodo.background,
+		selectedProject: state.selectedProject,
 	}
 }
 

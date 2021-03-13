@@ -4,25 +4,20 @@ import { connect } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
 import Card from '../card'
-import { transferCardsItems, fetchCards, saveCards, fetchProject } from '../../actoins'
-import AuthContext from '../../context'
+import { transferCardsItems, fetchCards, saveCards } from '../../actoins'
 import Spinner from '../spinner'
 import CreateProjectLink from '../create-project-link'
 
 import './pages-css/card-page.css'
 
-const CardPage = ({ cards, loading, transferCardsItems, fetchCards, fetchProject }) => {
+const CardPage = ({ cards, loading, transferCardsItems, fetchCards, selectedProject, projectListIsEmpty }) => {
 
-    const { projectId } = useContext(AuthContext)
     const location = useLocation()
 
     useEffect(() => {
-        if (projectId) fetchCards(projectId)
-    }, [fetchCards, projectId])
+        if (selectedProject._id) fetchCards(selectedProject._id)
+    }, [fetchCards, selectedProject])
     useEffect(() => saveCards(cards), [cards])
-    useEffect(() => {
-        if (projectId) fetchProject(projectId)
-    }, [fetchProject, projectId])
 
     const checkCard = (result) => {
         const { source, destination } = result
@@ -32,8 +27,9 @@ const CardPage = ({ cards, loading, transferCardsItems, fetchCards, fetchProject
         transferCardsItems(result)
     }
 
+    if (projectListIsEmpty) return <CreateProjectLink />
+    if (!selectedProject._id) return <>Выберите проект</>
     if (loading) return <Spinner />
-    if (cards.length===0) return <CreateProjectLink />
 
     return (
         <div className="card-container">
@@ -45,9 +41,12 @@ const CardPage = ({ cards, loading, transferCardsItems, fetchCards, fetchProject
 }
 
 const mapStateToProps = (state) => {
+    const projectListIsEmpty = state.projects.items.length === 0
     return {
         cards: state.cards.items,
-        loading: state.cards.loading
+        loading: state.cards.loading,
+        selectedProject: state.selectedProject,
+        projectListIsEmpty,
     }
 }
 
@@ -55,8 +54,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         transferCardsItems: (result) => dispatch(transferCardsItems(result)),
         fetchCards: (projectId) => fetchCards(dispatch, projectId),
-        saveCards: (cards) => dispatch(saveCards(cards)),
-        fetchProject: (projectId) => fetchProject(dispatch, projectId)
+        saveCards: (cards) => dispatch(saveCards(cards))
     }
 }
 
