@@ -7,9 +7,11 @@ import CustomSelect from '../custom-select'
 
 import './todo-detail.css'
 import AuthContext from '../../context'
+import Spinner from '../spinner'
 
-const TodoDetail = ({ todo, todoUpdate}) => {
+const TodoDetail = ({ todo, todoUpdate, selectedTodoLoading }) => {
 
+    console.log('SELECTEDTODOLOADING', selectedTodoLoading)
     const auth = useContext(AuthContext)
     const [title, setTitle] = useState('Todo content')
 
@@ -24,7 +26,20 @@ const TodoDetail = ({ todo, todoUpdate}) => {
     }
 
 
-    if (JSON.stringify(todo) === '{}') return <div className="todo-detail-container">Выберите тудушку</div>
+    if (selectedTodoLoading) return (
+        <div className="todo-detail-container">
+            <div className="empty-content">
+            <Spinner />
+            </div>
+        </div>
+    )
+    if (JSON.stringify(todo) === '{}') return (
+        <div className="todo-detail-container">
+            <div className="empty-content">
+            Выберите тудушку
+            </div>
+        </div>
+    )
     
     return (
         <div className="todo-detail-container">
@@ -96,7 +111,8 @@ const TodoDetail = ({ todo, todoUpdate}) => {
 
 const mapStateTopProps = (state) => {
     return {
-        todo: state.selectedTodo
+        todo: state.selectedTodo,
+        selectedTodoLoading: state.selectedTodoLoading,
     }
 }
 

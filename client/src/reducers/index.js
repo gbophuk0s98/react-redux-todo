@@ -31,6 +31,7 @@ const initialState = {
     },
     project: {},
     selectedTodo: {},
+    selectedTodoLoading: false,
     iconOptions: [
         { value: 'Наивысший', label: 'Наивысший', styles: { fill: 'red', opacity: '1' } },
         { value: 'Высокий', label: 'Высокий', styles: { fill: '#ff4d4b', opacity: '0.8' } },
@@ -130,7 +131,8 @@ const clearState = (state) => {
 const setSelectedTodo = (state, payload) => {
     return {
         ...state,
-        selectedTodo: { ...payload }
+        selectedTodo: { ...payload },
+        selectedTodoLoading: false
     }
 }
 
@@ -313,6 +315,8 @@ const reducer = (state = initialState, action) => {
             return state
         case 'TODO_UPDATED':
             return state
+        case 'SELECTED_TODO_LOADING':
+            return { ...state, selectedTodoLoading: true }
         case 'TODO_SELECTED':
             return setSelectedTodo(state, action.payload)
         case 'TRANSFER_CARDS_ITEMS':

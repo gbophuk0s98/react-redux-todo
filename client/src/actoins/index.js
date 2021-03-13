@@ -189,6 +189,12 @@ const todosLoaded = todos => {
     }
 }
 
+const todoSelectedLoading = () => {
+    return {
+        type: 'SELECTED_TODO_LOADING'
+    }
+}
+
 const todoCreated = (dispatch, todo, projectId) => {
     service.createTodo(todo, projectId)
     .then(todo => todoSelected(dispatch, todo._id))
@@ -216,6 +222,7 @@ const todoUpdate = (dispatch, id, projectId, startDate = null, endDate = null, c
 }
 
 const todoSelected = (dispatch, id) => {
+    dispatch(todoSelectedLoading())
     service.getTodo(id)
     .then(todo => dispatch({ type: 'TODO_SELECTED', payload: todo }) )
 }
