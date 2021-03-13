@@ -6,12 +6,9 @@ const validateAuthForm = (form) => {
 
     if (!form) return
     if (!form.email) errors.email = 'Почта обязательна!'
-    else if (!reEmail.test(form.email)) {
-        errors.email = 'Неверная почта'
-    }
+    else if (!reEmail.test(form.email)) errors.email = 'Неверная почта'
     if (!form.password) errors.password = 'Пароль обязателен'
     else if (!rePassword.test(form.password)) errors.password = `Минимум 6 символов, буквы (латиница) в верхнем и нижнем регистре`
-    console.log('errors', errors)
     return errors
 }
 
@@ -21,14 +18,11 @@ const validateRegForm = (form) => {
     if (!form) return
     if (!form.userName.trim()) errors.userName = 'Имя обязательно!'
     if (!form.email) errors.email = 'Почта обязательна!'
-    else if (!reEmail.test(form.email)) {
-        errors.email = 'Неверная почта'
-    }
+    else if (!reEmail.test(form.email)) errors.email = 'Неверная почта'
     if (!form.password) errors.password = 'Пароль обязателен'
     else if (!rePassword.test(form.password)) errors.password = 'Минимум 6 символов, буквы (латиница) в верхнем и нижнем регистре'
     if (!form.matchPassword) errors.matchPassword = 'Пароль обязателен'
     else if (form.password !== form.matchPassword) errors.matchPassword = 'Пароли не совпадают!'
-    console.log('val err', errors)
     return errors
 }
 
