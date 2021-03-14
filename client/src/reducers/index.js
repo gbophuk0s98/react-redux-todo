@@ -32,6 +32,7 @@ const initialState = {
         email: '',
         userId: '',
     },
+    theme: 'light',
     selectedProject: {},
     selectedTodo: {},
     selectedTodoLoading: false,
@@ -224,6 +225,8 @@ const setUserError = (state, payload) => {
 
 const reducer = (state = initialState, action) => {
     switch (action.type){
+        case 'USER_THEME_CHANGED':
+            return { ...state, theme: action.payload }
         case 'USER_CREATED_SUCCESS':
             return setUser(state, action.payload)
         case 'USER_CREATED_FAILURE':

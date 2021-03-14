@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router'
-import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 
 import * as actions from '../../actoins'
+import { Button, ProjectPageContainer } from '../styled-components'
 
 import './pages-css/project-page.css'
 
@@ -42,7 +42,7 @@ const ProjectPage = ({ createProject, loading, user }) => {
     }
 
     return (
-        <div className="project-page-container d-flex align-items-top">
+        <ProjectPageContainer className="d-flex align-items-top">
             <div className="form-project">
                 <div>
                     <div className="h4 mb-2 fw-normal">
@@ -75,28 +75,27 @@ const ProjectPage = ({ createProject, loading, user }) => {
                     </div>
                     <div className="btn-container">
                         <div className="btn-left">
-                            <button 
-                                className="form-btn w-100 btn btn-primary" 
-                                type="button"
+                            <Button 
+                                className="btn" 
                                 disabled={project.projectName.length > 2 ? false : true}
                                 onClick={e => onCreateHandler(e)}
                             >
                                 <span className="btn-text">Создать</span>
                                 { loading && <span className="spinner-border spinner-border-sm"></span> }
-                            </button>
+                            </Button>
                         </div>
                         <div className="btn-right">
-                            <button 
-                                className="form-btn w-100 btn btn-primary" 
-                                type="button" 
+                            <Button 
+                                className="btn"
+                                onClick={() => history.goBack()}
                             >
-                            <Link to='/projectList' style={{ color: '#fff' }} >Закрыть</Link>
-                            </button>
+                                Закрыть
+                            </Button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </ProjectPageContainer>
     )
 }
 

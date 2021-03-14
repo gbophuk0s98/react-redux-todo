@@ -4,6 +4,7 @@ import ColorPicker from '../color-picker/color-picker'
 
 import { todoUpdate } from '../../actoins'
 import CustomSelect from '../custom-select'
+import { TodoDetailWrapper } from '../styled-components'
 
 import './todo-detail.css'
 import Spinner from '../spinner'
@@ -24,22 +25,22 @@ const TodoDetail = ({ todo, todoUpdate, selectedTodoLoading, selectedProject }) 
 
 
     if (selectedTodoLoading) return (
-        <div className="todo-detail-container">
+        <TodoDetailWrapper>
             <div className="empty-content">
             <Spinner />
             </div>
-        </div>
+        </TodoDetailWrapper>
     )
     if (JSON.stringify(todo) === '{}') return (
-        <div className="todo-detail-container">
+        <TodoDetailWrapper>
             <div className="empty-content">
             Выберите тудушку
             </div>
-        </div>
+        </TodoDetailWrapper>
     )
     
     return (
-        <div className="todo-detail-container">
+        <TodoDetailWrapper>
             <div className="todo-title">
                 <div className="todo-title-color">
                     <ColorPicker />
@@ -102,7 +103,7 @@ const TodoDetail = ({ todo, todoUpdate, selectedTodoLoading, selectedProject }) 
                     </div>
                 </div>
             </div>
-        </div>
+        </TodoDetailWrapper>
     )
 }
 

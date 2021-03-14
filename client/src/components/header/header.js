@@ -5,15 +5,25 @@ import { bindActionCreators } from 'redux'
 
 import * as actions from '../../actoins'
 import DropDown from '../dropdown'
+import { HeaderWrapper, Button } from '../styled-components'
 
 import './header.css'
 
-const Header = ({ logoutHandler, selectedProject, user }) => {
+const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
+
+    const themeToggler = () => {
+		theme === 'light' ? setTheme('dark') : setTheme('light')
+	}
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-
-            <Link className="navbar-brand" to="/cards">CroCodileUI</Link>
+        <HeaderWrapper>
+        <nav className="navbar navbar-expand-lg navbar-dark">
+            <Button 
+                onClick={themeToggler}
+                className="btn"
+            >
+                CroCodileUI
+            </Button>
 
             <div className="collapse navbar-collapse" id="navbarColor03">
                 <ul className="navbar-nav mr-auto">
@@ -43,16 +53,17 @@ const Header = ({ logoutHandler, selectedProject, user }) => {
                     <div className="header-user-title">
                         <span>{user.userName} ({user.email})</span>
                     </div>
-                    <button
-                        className="btn btn-secondary my-2 my-sm-0" 
+                    <Button
+                        className="btn" 
                         type="submit"
                         onClick={() => logoutHandler()}
                     >
                         Выход
-                    </button>
+                    </Button>
                 </div>
             </div>
-        </nav>
+            </nav>
+        </HeaderWrapper>
     )
 }
 
@@ -60,12 +71,13 @@ const mapStateToProps = (state) => {
     return {
         user: state.user,
         selectedProject: state.selectedProject,
+        theme: state.theme,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { logoutHandler } = bindActionCreators(actions, dispatch)
-    return { logoutHandler }
+    const { logoutHandler, setTheme } = bindActionCreators(actions, dispatch)
+    return { logoutHandler, setTheme }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)

@@ -2,16 +2,6 @@
     position: relative;
 }
 
-.my-dropdown-menu {
-    position: absolute;
-    z-index: 50;
-    top: 38px;
-    width: 200px;
-    background-color: #484848;
-    overflow: hidden;
-    border-radius: 5px;
-}
-
 .project-info {
     height: 100%;
     display: flex;

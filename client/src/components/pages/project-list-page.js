@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import { fetchProjects, fetchProject, setRecentProjects } from '../../actoins'
+import { TableWrapper, Button } from '../styled-components'
 import Spinner from '../spinner'
 import CreateProjectLink from '../create-project-link'
 
@@ -23,7 +24,7 @@ const ProjectListPage = ({ user, projects, loading, fetchProjects, fetchProject,
     if (projects.length===0) return <CreateProjectLink />
 
     return (
-        <table className="table table-dark table-hover">
+        <TableWrapper className="table table-hover">
             <thead>
                 <tr>
                     <th>Название</th>
@@ -36,12 +37,12 @@ const ProjectListPage = ({ user, projects, loading, fetchProjects, fetchProject,
                     return (
                         <tr key={project._id}>
                             <td>
-                                <button
-                                    className="btn btn-dark text-info font-weight-bold"
+                                <Button
+                                    className="btn"
                                     onClick={e => onTitleClick(e, project._id)}
                                 >
                                     {project.title}
-                                </button>
+                                </Button>
                             </td>
                             <td>{project.key}</td>
                             <td>{project.owner}</td>
@@ -49,7 +50,7 @@ const ProjectListPage = ({ user, projects, loading, fetchProjects, fetchProject,
                     )
                 }) }
             </tbody>
-        </table>
+        </TableWrapper>
     )
 }
 

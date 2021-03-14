@@ -1,6 +1,7 @@
 import React from 'react'
 import { Droppable } from 'react-beautiful-dnd'
 import CardItems from '../card-items'
+import { CardWrapper }  from '../styled-components'
 
 import './card.css'
 
@@ -9,7 +10,7 @@ export const Card = ({ columns }) => {
 		<>
 		{Object.entries(columns).map(([ id, column ]) => {
 			return (
-				<div className="card" key={id}>
+				<CardWrapper className="card" key={id}>
 					<div className="card-title">
 						<div className="card-title-text">
 							{column.name}
@@ -27,7 +28,7 @@ export const Card = ({ columns }) => {
 										{...provided.droppableProps}
 										ref={provided.innerRef}
 										style={{
-											background: snapshot.isDraggingOver ? 'lightblue': '#303030',
+											background: snapshot.isDraggingOver ? 'lightblue': '',
 											border: snapshot.isDraggingOver ? 2 + 'px dashed rgb(16,59,68)': '',
 										}}
 									>
@@ -39,7 +40,7 @@ export const Card = ({ columns }) => {
 						</Droppable>
 					</div>
 
-				</div>
+				</CardWrapper>
 			)
 		})}
 		</>

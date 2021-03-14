@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { fetchProject } from '../../actoins'
+import { DropDownMenuWrapper, Button, DropDownProjectList } from '../styled-components'
+
 import './dropdown.css'
 
 const DropDown = ({ recentProjects, fetchProject }) => {
@@ -19,10 +21,7 @@ const DropDown = ({ recentProjects, fetchProject }) => {
                         <div
                             className="projectList-item-title"
                             key={project._id}
-                            onClick={() => {
-                                fetchProject(project._id)
-                                // history.push('/cards')
-                            }}
+                            onClick={() => fetchProject(project._id)}
                         >
                             <div>
                                 {project.title}
@@ -37,22 +36,22 @@ const DropDown = ({ recentProjects, fetchProject }) => {
 
     return (
         <div className="my-dropdown">
-            <div 
-                className="btn btn-secondary dropdown-toggle" 
+            <Button 
+                className="btn dropdown-toggle" 
                 onClick={() => setOpen(!open)}
             >Проекты
-            </div>
+            </Button>
 
             {open && 
-                <div className="my-dropdown-menu"  onClick={() => setOpen(!open)}>
-                    <div className="dropdown-projectList">
+                <DropDownMenuWrapper onClick={() => setOpen(!open)}>
+                    <DropDownProjectList>
                         <ProjectsList />
-                    </div>
+                    </DropDownProjectList>
                     <div className="menu-links">
                         <Link className="dropdown-item" to="/projectList">Все проекты</Link>
                         <Link className="dropdown-item" to="/createProject">Создать...</Link>
                     </div>
-                </div>
+                </DropDownMenuWrapper>
             }
         </div>
     )

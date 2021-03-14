@@ -72,7 +72,6 @@ export default class ProjectService {
     }
 
     getProjects = async (body = null) => {
-        console.log('МЕНЯ ВЫЗВАЛИ!!!1')
         const headers = { User: `Id ${body.userId}`, Authorization: `Bearer ${body.token}` }
         return await this.getResourses(`${this._todoBase}/getProjects`, 'GET', null, headers)
     } 

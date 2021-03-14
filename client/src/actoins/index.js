@@ -173,6 +173,13 @@ const fetchCards = (dispatch, projectId) => {
         .catch(err => dispatch(cardsError(err)))
 }
 
+const setTheme = theme => {
+    return {
+        type: 'USER_THEME_CHANGED',
+        payload: theme
+    }
+}
+
 const todosRequested = () => {
     return {
         type: 'FETCH_TODOS_REQUEST'
@@ -288,4 +295,5 @@ export {
     todoUpdate,
     fetchProject,
     setRecentProjects,
+    setTheme,
 }

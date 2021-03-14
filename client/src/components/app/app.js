@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -12,21 +12,15 @@ import { useRoutes } from '../../routes'
 import './app.css'
 import { ThemeProvider } from 'styled-components'
 
-const App = ({ token }) => {
+const App = ({ token, theme }) => {
 
-	const [theme, setTheme] = useState('light')
 	const routes = useRoutes(!!token)
 	const isMobile = window.innerWidth < 600
-
-	const themeToggler = () => {
-		theme === 'light' ? setTheme('dark') : setTheme('light')
-	}
 
 	return (
 		<ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
 			<>
 			<GlobalStyles />
-			<button onClick={themeToggler}>Switch Theme</button>
 			<DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
 				{routes}
 			</DndProvider>
@@ -37,7 +31,8 @@ const App = ({ token }) => {
 
 const mapStateToProps = (state) => {
 	return {
-		token: state.user.token
+		token: state.user.token,
+		theme: state.theme
 	}
 }
 

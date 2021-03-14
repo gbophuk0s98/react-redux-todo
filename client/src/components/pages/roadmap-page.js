@@ -6,6 +6,7 @@ import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'
 import CustomDateRangePicker from '../date-range-picker'
 import CreateProjectLink from '../create-project-link'
+import { TableWrapper, Button } from '../styled-components'
 
 import './pages-css/roadmap-page.css'
 
@@ -77,7 +78,7 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
         <div className="roadmap-container">
             <TodoDetail/>
             <div className="scroll-table">
-                <table className="table table-striped table-dark">
+                <TableWrapper className="table table-hover">
                     <thead>
                         <tr className="todo">
                             <th className="todo-content">
@@ -97,12 +98,12 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
                                     <td className="todo-content">
                                         <div className="key-button-wrapper">
                                             <div className="project-key-text">{selectedProject.key}-{todo.creationNumber}</div>
-                                            <div
-                                                className="right-btn btn btn-dark text-info font-weight-bold"
+                                            <Button
+                                                className="right-btn btn"
                                                 onClick={() => todoSelected(todo._id)}
                                             >
                                                 {content}
-                                            </div>
+                                            </Button>
                                         </div>
                                     </td>
                                     <td className="todo-content">
@@ -120,7 +121,7 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
                     { showInput && <InputRow /> }
                     { !showInput && <BtnRow />}
                     </tbody>
-                </table>
+                </TableWrapper>
             </div>
         </div>
     )
