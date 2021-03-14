@@ -32,7 +32,7 @@ const initialState = {
         email: '',
         userId: '',
     },
-    theme: 'light',
+    theme: 'dark',
     selectedProject: {},
     selectedTodo: {},
     selectedTodoLoading: false,
