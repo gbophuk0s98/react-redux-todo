@@ -1,6 +1,6 @@
 import { 
     HeaderWrapper,
-    Button,
+    MyButton as Button,
     TableWrapper,
     TodoDetailWrapper,
     DropDownMenuWrapper,

@@ -14,7 +14,6 @@ const ProjectListPage = ({ user, projects, loading, fetchProjects, fetchProject,
     useEffect(() => fetchProjects({userId: user.id, token: user.token }), [fetchProjects, user])
 
     const onTitleClick = (e, projectId) => {
-        e.preventDefault()
         fetchProject(projectId)
         setRecentProjects(projectId)
         history.push('/cards')

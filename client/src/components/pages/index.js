@@ -11,5 +11,5 @@ export {
     RegPage,
     LoginPage,
     ProjectPage,
-    ProjectListPage
+    ProjectListPage,
 }

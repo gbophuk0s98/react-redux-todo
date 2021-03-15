@@ -1,15 +1,18 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { fetchProject } from '../../actoins'
-import { DropDownMenuWrapper, Button, DropDownProjectList } from '../styled-components'
+import { Button, Menu, MenuItem } from '@material-ui/core'
 
 import './dropdown.css'
 
 const DropDown = ({ recentProjects, fetchProject }) => {
 
-    const [open, setOpen] = useState(false)
+    const [anchorEl, setAnchorEl] = useState(false)
+
+    const handleClick = event => setAnchorEl(event.currentTarget)
+    const handleClose = () => setAnchorEl(null)
 
     const ProjectsList = () => {
         return (
@@ -18,15 +21,15 @@ const DropDown = ({ recentProjects, fetchProject }) => {
             {
                 recentProjects.map(project => {
                     return (
-                        <div
-                            className="projectList-item-title"
+                        <MenuItem
                             key={project._id}
-                            onClick={() => fetchProject(project._id)}
+                            onClick={() => {
+                                handleClose()
+                                fetchProject(project._id)
+                            }}
                         >
-                            <div>
-                                {project.title}
-                            </div>
-                        </div>
+                            {project.title}
+                        </MenuItem>
                     )
                 })
             }
@@ -35,24 +38,35 @@ const DropDown = ({ recentProjects, fetchProject }) => {
     }
 
     return (
-        <div className="my-dropdown">
-            <Button 
-                className="btn dropdown-toggle" 
-                onClick={() => setOpen(!open)}
-            >Проекты
-            </Button>
-
-            {open && 
-                <DropDownMenuWrapper onClick={() => setOpen(!open)}>
-                    <DropDownProjectList>
-                        <ProjectsList />
-                    </DropDownProjectList>
-                    <div className="menu-links">
-                        <Link className="dropdown-item" to="/projectList">Все проекты</Link>
-                        <Link className="dropdown-item" to="/createProject">Создать...</Link>
-                    </div>
-                </DropDownMenuWrapper>
-            }
+        <div>
+        <Button 
+        onClick={handleClick}
+        >
+            Проекты
+        </Button>
+        <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+        >
+            <ProjectsList />
+            <MenuItem onClick={handleClose}>
+                <Button>
+                    <Link to="/projectList">
+                        Все проекты
+                    </Link>
+                </Button>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+                <Button>
+                    <Link to="/createProject">
+                        Создать...
+                    </Link>
+                </Button>
+            </MenuItem>
+        </Menu>
         </div>
     )
 }

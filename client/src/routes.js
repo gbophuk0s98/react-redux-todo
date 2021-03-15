@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
 import Header from './components/header'
-import { CardPage, RoadMapPage, RegPage, LoginPage, ProjectPage, ProjectListPage } from './components/pages'
+import { CardPage, RoadMapPage, RegPage, LoginPage, ProjectPage, ProjectListPage, } from './components/pages'
 
 export const useRoutes = (isAuthenticated = true, location = null) => {
 

@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import { useTheme } from '@material-ui/core/styles'
+import { Button } from '@material-ui/core'
 
 export const HeaderWrapper = styled.nav`
     background: ${({ theme }) => theme.navBackground };
@@ -23,7 +25,7 @@ export const TableWrapper = styled.table`
     }
 `
 
-export const Button = styled.div`
+export const MyButton = styled.button`
     background: ${({ theme }) => theme.btnBackground};
     border: none;
     &:hover {
@@ -31,6 +33,16 @@ export const Button = styled.div`
         opacity: 0.7;
     }
 `
+
+export const ButtonWrapper = () => {
+    const theme = useTheme()
+    console.log('theme', theme)
+    return (
+        <Button>
+            Hello
+        </Button>
+    )
+}
 
 export const DropDownMenuWrapper = styled.div`
     position: absolute;
@@ -75,14 +87,3 @@ export const ProjectPageContainer = styled.div`
 export const CardWrapper = styled.div`
     background-color: ${({ theme }) => theme.cardBackground};
 `
-
-export default {
-    HeaderWrapper,
-    Button,
-    TableWrapper,
-    TodoDetailWrapper,
-    DropDownMenuWrapper,
-    DropDownProjectList,
-    ProjectPageContainer,
-    CardWrapper
-}
