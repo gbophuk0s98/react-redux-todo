@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { forwardRef, useRef, useState, createRef, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -7,6 +7,16 @@ import { Button, Menu, MenuItem } from '@material-ui/core'
 
 import './dropdown.css'
 
+class DropDownWrapper extends React.Component {
+    constructor(props) {
+        super(props)
+        this.wrapper = React.createRef()
+    }
+    render() {
+        return <div ref={this.wrapper}>{this.props.children}</div>
+    }
+}
+
 const DropDown = ({ recentProjects, fetchProject }) => {
 
     const [anchorEl, setAnchorEl] = useState(false)
@@ -14,60 +24,48 @@ const DropDown = ({ recentProjects, fetchProject }) => {
     const handleClick = event => setAnchorEl(event.currentTarget)
     const handleClose = () => setAnchorEl(null)
 
-    const ProjectsList = () => {
-        return (
-            <>
-            <span className="projectList-label">НЕДАВНИЕ:</span>
-            {
-                recentProjects.map(project => {
-                    return (
-                        <MenuItem
-                            key={project._id}
-                            onClick={() => {
-                                handleClose()
-                                fetchProject(project._id)
-                            }}
-                        >
-                            {project.title}
-                        </MenuItem>
-                    )
-                })
-            }
-            </>
-        )
-    }
-
     return (
-        <div>
-        <Button 
-        onClick={handleClick}
-        >
-            Проекты
-        </Button>
-        <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-        >
-            <ProjectsList />
-            <MenuItem onClick={handleClose}>
-                <Button>
-                    <Link to="/projectList">
+        <DropDownWrapper>
+            <Button
+                onClick={handleClick}
+            >
+                Проекты
+            </Button>
+            <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+            >
+            <span className="projectList-label">НЕДАВНИЕ:</span>
+                {
+                    recentProjects.map(project => {
+                        return (
+                            <MenuItem
+                                key={project._id}
+                                onClick={() => {
+                                    handleClose()
+                                    fetchProject(project._id)
+                                }}
+                            >
+                                {project.title}
+                            </MenuItem>
+                        )
+                    })
+                }
+                <MenuItem onClick={handleClose}>
+                    <Button component={Link} to='projectList'>
                         Все проекты
-                    </Link>
-                </Button>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-                <Button>
-                    <Link to="/createProject">
+                    </Button>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <Button component={Link} to='/createProject'>
                         Создать...
-                    </Link>
-                </Button>
-            </MenuItem>
-        </Menu>
-        </div>
+                    </Button>
+                </MenuItem>
+            </Menu>
+        </DropDownWrapper>
     )
 }
 

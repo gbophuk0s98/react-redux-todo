@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { createRef, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
@@ -15,9 +15,6 @@ import './header.css'
 const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
      
     const useStyles = makeStyles((theme) => ({
-        background: {
-        background: '#000',
-        },
         grow: {
         flexGrow: 1,
         },
@@ -55,7 +52,6 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
         },
         },
     }))
-
     const classes = useStyles()
 
     const [anchorEl, setAnchorEl] = useState(null)
@@ -73,25 +69,29 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
         handleMobileMenuClose()
     }
 
-    const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget)
-    };
-
+    const handleMobileMenuOpen = (event) => setMobileMoreAnchorEl(event.currentTarget)
     const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
+
+
+    const renderMenu = (
+        <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            id={menuId}
+            keepMounted
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            open={isMenuOpen}
+            onClose={handleMenuClose}
+        >
+        <MenuItem onClick={handleMenuClose}>Профиль</MenuItem>
+        <MenuItem onClick={() => {
+            handleMenuClose()
+            logoutHandler()
+        }}>
+            Выйти
+        </MenuItem>
+        </Menu>
+    )
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
     const renderMobileMenu = (
@@ -116,7 +116,7 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
         <p>Profile</p>
         </MenuItem>
         </Menu>
-    );
+    )
   
 
     const themeToggler = () => {
@@ -169,19 +169,24 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
     //     </HeaderWrapper>
     // )
 
-
     return (
         <div className={classes.grow}>
-            <AppBar className={classes.background} position="static">
+            <AppBar
+                color="primary"
+                position="static"
+            >
                 <Toolbar>
-
                 <Button
                     onClick={themeToggler}
                 >
                     CroCodileUI
                 </Button>
-                {/* <Link className="nav-link" to="/cards">Главная</Link> */}
-                {/* <Link className="nav-link" to="/roadmap">Дорожная карта</Link> */}
+                <Button component={Link} to='/cards'>
+                    Главная
+                </Button>
+                <Button component={Link} to='/roadmap'>
+                    Дорожная карта
+                </Button>
                 <DropDown />
 
                 <div className={classes.grow} />

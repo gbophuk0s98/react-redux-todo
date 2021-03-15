@@ -46,12 +46,16 @@ export const muiThemeLight = {
         },
         MuiMenu: {
             list: {
+                color: '#303030',
                 background: '#fff',
             },
-            text: {
-                color: '#303030',
+        },
+        MuiAppBar: {
+            colorPrimary: {
+                color: '#fff',
+                backgroundColor: '#1976d2',
             }
-        }
+        },
       }
 }
 
@@ -61,9 +65,25 @@ export const muiThemeDark = {
             root: {
                 ...defaultButtonStyles.root,
                 color: "#fff",
-                background: '#656565',
+                backgroundColor: '#424242',
             },
             text: { ...defaultButtonStyles.text },
+        },
+        MuiMenu: {
+            list: {
+                background: '#424242',
+                color: '#fff',
+                borderRadius: '0',
+            },
+        },
+        MuiAppBar: {
+            colorPrimary: {
+                color: 'rgba(0, 0, 0, 0.87)',
+                backgroundColor: '#333333',
+            }
+        },
+        MuiLink: {
+            color: 'red',
         }
-      }
+    }
 }
