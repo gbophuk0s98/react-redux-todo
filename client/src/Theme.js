@@ -56,6 +56,11 @@ export const muiThemeLight = {
                 backgroundColor: '#1976d2',
             }
         },
+        MuiCard: {
+            root: {
+                backgroundColor: '#fff',
+            }
+        }
       }
 }
 
@@ -84,6 +89,11 @@ export const muiThemeDark = {
         },
         MuiLink: {
             color: 'red',
+        },
+        MuiCard: {
+            root: {
+                backgroundColor: '#424242',
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import reactCSS from 'reactcss'
 import { SketchPicker } from 'react-color'
 import { connect } from 'react-redux'
@@ -14,7 +14,16 @@ const colorToRGBA = (color) => {
 const ColorPicker = ({ todoId, todoColor, todoUpdate, selectedProject }) => {
 
 	const [displayColorPicker, setDisplayColorPicker] = useState(false)
-	const [color, setColor] = useState({ r: '241',g: '112',b: '19',a: '1', })
+	const [color, setColor] = useState(null)
+
+	useEffect(() => {
+		let colorObj = { r: '241', g: '112', b: '19', a: '1' }
+		let arrOfNumbers = todoColor.match(/\d+/g)
+		if (arrOfNumbers.length === 4) {
+			colorObj = { r: arrOfNumbers[0], g: arrOfNumbers[1], b: arrOfNumbers[2], a: arrOfNumbers[3] }
+		}
+		setColor(colorObj)
+	}, [todoColor])
 
 	const handleClick = () => setDisplayColorPicker(!displayColorPicker)
 

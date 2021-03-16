@@ -19,8 +19,8 @@ const ProjectListPage = ({ user, projects, loading, fetchProjects, fetchProject,
 
     const history = useHistory()
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [page, setPage] = useState(0)
+    const [rowsPerPage, setRowsPerPage] = useState(5)
 
     const useStyles = makeStyles({
         paperStyles: { width: '50%', maxHeight: 500 },
@@ -96,7 +96,7 @@ const ProjectListPage = ({ user, projects, loading, fetchProjects, fetchProject,
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
+                rowsPerPageOptions={[5, 15, 25]}
                 component="div"
                 count={projects.length}
                 rowsPerPage={rowsPerPage}

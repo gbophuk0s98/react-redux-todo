@@ -113,7 +113,7 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
         >
         <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+            <p>Profile</p>
         </MenuItem>
         </Menu>
     )
@@ -122,52 +122,6 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
     const themeToggler = () => {
         theme === 'light' ? setTheme('dark') : setTheme('light')
 	}
-    
-    // return (
-    //     <HeaderWrapper>
-    //     <nav className="navbar navbar-expand-lg navbar-dark">
-    //         <Button
-    //             onClick={themeToggler}
-    //         >
-    //             CroCodileUI
-    //         </Button>
-
-    //         <div className="collapse navbar-collapse" id="navbarColor03">
-    //             <ul className="navbar-nav mr-auto">
-    //                 <li className="nav-item">
-    //                     <Link className="nav-link" to="/cards">Главная</Link>
-    //                 </li>
-    //                 <li className="nav-item">
-    //                     <Link className="nav-link" to="/roadmap">Дорожная карта</Link>
-    //                 </li>
-    //                 <li>
-    //                     <DropDown />
-    //                 </li>
-    //                 <li className="nav-item">
-    //                     <div className="project-info">
-    //                         <span className="nav-link-text">
-    //                             {selectedProject.title}
-    //                         </span>
-    //                         <span className="nav-link-text">
-    //                             {selectedProject.key}
-    //                         </span>
-    //                     </div>
-    //                 </li>
-    //             </ul>
-    //             <div className="header-user-info">
-    //                 <div className="header-user-title">
-    //                     <span>{user.userName} ({user.email})</span>
-    //                 </div>
-    //                 <Button
-    //                     onClick={() => logoutHandler()}
-    //                 >
-    //                     Выход
-    //                 </Button>
-    //             </div>
-    //         </div>
-    //         </nav>
-    //     </HeaderWrapper>
-    // )
 
     return (
         <div className={classes.grow}>
@@ -188,6 +142,9 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
                     Дорожная карта
                 </Button>
                 <DropDown />
+                <Typography>
+                    Текущий проект: {selectedProject.title}
+                </Typography>
 
                 <div className={classes.grow} />
                 <div className={classes.sectionDesktop}>

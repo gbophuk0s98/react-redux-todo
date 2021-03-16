@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { fetchTodos, todoCreated, todoSelected, fetchProject } from '../../actoins'
@@ -6,67 +6,108 @@ import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'
 import CustomDateRangePicker from '../date-range-picker'
 import CreateProjectLink from '../create-project-link'
-import { TableWrapper, Button } from '../styled-components'
+// import { TableWrapper, Button } from '../styled-components'
+import { Table, Button, TableBody, TableCell, TableContainer, TablePagination, TableHead, TableRow, Paper, TextField, makeStyles } from '@material-ui/core'
 
 import './pages-css/roadmap-page.css'
 
 const getDate = (plusMonth = 0) => `${(new Date().getMonth() + 1) + plusMonth }/${new Date().getDate()}/${new Date().getFullYear()}`
 
+const columns = [
+    { id: 'epicName', label: 'Epic', minWidth: 170, aling: 'left' },
+    { id: 'epicDate', label: 'Срок выполнения', minWidth: 100, aling: 'left' },
+]
+
 const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, projectListIsEmpty, selectedProject }) => {
 
     const [showInput, setShowInput] = useState(false)
-    const [todo, setTodo] = useState({
-        content: '',
-        startDate: getDate(),
-        endDate: getDate(1),
+    const [page, setPage] = useState(0)
+    const [rowsPerPage, setRowsPerPage] = useState(5)
+
+    const useStyles = makeStyles({
+        paperStyles: { width: '50%', maxHeight: 550, borderRadius: '0' },
+        container: { maxHeight: 500 },
+        paperRow: { width: '50%', maxHeight: 550, padding: '15px 25px', borderRadius: '0' },
     })
+    const classes = useStyles()
 
     useEffect(() => {
         if (selectedProject._id) fetchTodos(selectedProject._id)
     }, [fetchTodos, selectedProject])
+
+    const handleChangePage = (event, newPage) => setPage(newPage)
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value)
+        setPage(0)
+    }
     
-    const addTableRow = () => showInput ? setShowInput(false) : setShowInput(true)
-    
-    const changeHandler = e => setTodo({ ...todo, [e.target.name]: e.target.value })
-    
-    const onBlurHandler = () => {
-        if (todo.content) {
+    const onBlurHandler = e => {
+        const { value } = e.target
+        if (value) {
+            const todo = { content: value, startDate: getDate(), endDate: getDate(1)}
             todoCreated(todo, selectedProject._id)
-            setTodo({ ...todo, content: '' })
         }
         setShowInput(false)
     }
 
+    const renderHead = (column) => {
+        return (
+            <TableCell
+                key={column.id}
+                align={column.align}
+                style={{ minWidth: column.minWidth }}
+            >
+                {column.label}
+            </TableCell>
+        )
+    }
+
+    const renderRow = (todo) => {
+        return (
+            <TableRow hover key={todo._id}>
+                <TableCell>
+                    <Button
+                        onClick={() => todoSelected(todo._id)}
+                    >
+                        {todo.content}
+                    </Button>
+                </TableCell>
+                <TableCell>
+                    <CustomDateRangePicker
+                        startDate={todo.startDate}
+                        endDate={todo.endDate}
+                        todoId={todo._id}
+                        projectId={selectedProject._id}
+                    />
+                </TableCell>
+            </TableRow>
+        )
+    }
+
     const InputRow = () => {
         return (
-            <tr className="todo" onBlur={onBlurHandler}>
-                <td className="todo-content">
-                    <input 
-                        type="text" 
-                        id="inputTodo" 
-                        ref={input => input ? input.focus() : null}
-                        name="content"
-                        onChange={changeHandler}
-                        value={todo.content}
-                    />
-                </td>
-            </tr>
+            <>
+                <TextField 
+                    label="Epic"
+                    variant="outlined"
+                    name="content"
+                    autoFocus={true}
+                    onBlur={e => onBlurHandler(e)}
+                />
+            </>
         )
     }
 
     const BtnRow = () => {
         return (
-            <tr>
-                <td colSpan={2}>
-                <button 
-                    className="btn btn-primary"
-                    style={{ padding: '1px 10px' }}
-                    onClick={addTableRow}
+            <>
+                <Button
+                    onClick={() => setShowInput(!showInput)}
                 >
                         Создать Epic...
-                </button>
-                </td>
-            </tr>
+                </Button>
+            </>
         )
     }
 
@@ -77,52 +118,36 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
     return (
         <div className="roadmap-container">
             <TodoDetail/>
-            <div className="scroll-table">
-                <TableWrapper className="table table-hover">
-                    <thead>
-                        <tr className="todo">
-                            <th className="todo-content">
-                                Epic
-                            </th>
-                            <th>
-                                Срок выполнения
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        todos.map(todo => {
-                            const { content, startDate, endDate } = todo
-                            return (
-                                <tr className="todo" key={todo._id}>
-                                    <td className="todo-content">
-                                        <div className="key-button-wrapper">
-                                            <div className="project-key-text">{selectedProject.key}-{todo.creationNumber}</div>
-                                            <Button
-                                                className="right-btn btn"
-                                                onClick={() => todoSelected(todo._id)}
-                                            >
-                                                {content}
-                                            </Button>
-                                        </div>
-                                    </td>
-                                    <td className="todo-content">
-                                        <CustomDateRangePicker
-                                            startDate={startDate}
-                                            endDate={endDate}
-                                            todoId={todo._id}
-                                            projectId={selectedProject._id}
-                                        />
-                                    </td>
-                                </tr>
-                            )
-                        })
-                    }
-                    { showInput && <InputRow /> }
-                    { !showInput && <BtnRow />}
-                    </tbody>
-                </TableWrapper>
-            </div>
+            <Paper className={classes.paperStyles}>
+                <TableContainer className={classes.container}>
+                    <Table
+                        stickyHeader
+                        aria-label="sticky table"
+                    >
+                        <TableHead>
+                            <TableRow>
+                                {columns.map(column => renderHead(column))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(todo => renderRow(todo))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 15]}
+                    component="div"
+                    count={todos.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                />
+            </Paper>
+            <Paper className={classes.paperRow}>
+                { !showInput && <BtnRow /> }
+                { showInput && <InputRow /> }
+            </Paper>
         </div>
     )
 }
