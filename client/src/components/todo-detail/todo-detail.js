@@ -1,115 +1,174 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import ColorPicker from '../color-picker/color-picker'
 
 import { todoUpdate } from '../../actoins'
 import CustomSelect from '../custom-select'
-import { TodoDetailWrapper } from '../styled-components'
+
+import { makeStyles, TextField, Grid, Typography, } from '@material-ui/core'
 
 import './todo-detail.css'
 import Spinner from '../spinner'
 
-const TodoDetail = ({ todo, todoUpdate, selectedTodoLoading, selectedProject }) => {
 
-    const [title, setTitle] = useState('Todo content')
+const useStyles = makeStyles((theme) => ({
+    grid: {
+        padding: '5px 25px',
+        marginBottom: '5px',
+    },
+    title: {
+        '& input': {
+            padding: '10px 15px',
+        }
+    },
+}))
 
-    useEffect(() => setTitle(todo.content), [setTitle, todo])
+
+const TodoDetail = ({ selectedTodo, todoUpdate, selectedTodoLoading, selectedProject }) => {
+
+    const [title, setTitle] = useState('')
+
+    useEffect(() => setTitle(selectedTodo.content), [setTitle, selectedTodo])
 
     const onTitleChange = e => setTitle(e.target.value)
     const onTitleBlurHandler = e => {
-        if (title === '' || title === todo.content) setTitle(todo.content)
-        else {
-            todoUpdate(todo._id, selectedProject._id, title)
-        }
+        if (title === '' || title === selectedTodo.content) setTitle(selectedTodo.content)
+        else todoUpdate(selectedTodo._id, selectedProject._id, title)
     }
+
+    const classes = useStyles()
 
 
     if (selectedTodoLoading) return (
-        <TodoDetailWrapper>
-            <div className="empty-content">
+        <Grid
+            container
+            justify='center'
+            alignItems='center'
+            style={{ height: '100%' }}
+        >
             <Spinner />
-            </div>
-        </TodoDetailWrapper>
+        </Grid>
     )
-    if (JSON.stringify(todo) === '{}') return (
-        <TodoDetailWrapper>
-            <div className="empty-content">
+    if (JSON.stringify(selectedTodo) === '{}') return (
+        <Grid
+            container
+            justify='center'
+            alignItems='center'
+            style={{ height: '100%' }}
+        >
             Выберите тудушку
-            </div>
-        </TodoDetailWrapper>
+        </Grid>
     )
     
     return (
-        <TodoDetailWrapper>
-            <div className="todo-title">
-                <div className="todo-title-color">
+        <>
+            <Grid
+                container
+                className={classes.grid}
+                direction='row'
+                justify='flex-start'
+                spacing={2}
+                alignItems="center"
+            >
+                <Grid item xs={2} id='xs'>
                     <ColorPicker />
-                </div>
-                <div className="todo-title-input">
-                    <input
-                        type="text"
-                        className="form-control"
+                </Grid>
+                <Grid item xs={10} key={selectedTodo._id}>
+                    <TextField
+                        id="standard-basic"
+                        className={classes.title}
                         onChange={onTitleChange}
-                        value={title || ''}
+                        value={title}
                         onBlur={onTitleBlurHandler}
+                        label="Контент"
+                        style={{ width: '100%' }}
                     />
-                </div>
-            </div>
-            <div className="users-info-list">
-                <div className="users-info-item">
-                    <div className="users-info-left">
-                        <span className="users-info-span">
-                            Исполнитель:
-                        </span>
-                    </div>
-                    <div className="users-info-right">
-                        <span>
-                            {todo.owner} 
-                        </span>
-                    </div>
-                </div>
-                <div className="users-info-item">
-                    <div className="users-info-left">
-                        <span className="users-info-span">
-                            Автор:
-                        </span>
-                    </div>
-                    <div className="users-info-right">
-                        <span>
-                            {todo.owner} ({todo.ownerEmail})
-                        </span>
-                    </div>
-                </div>
-                <div className="users-info-item">
-                    <div className="users-info-left">
-                        <span className="users-info-span">
-                            Приоритет:
-                        </span>
-                    </div>
-                    <div className="users-info-right">
-                        <CustomSelect id={todo._id} priority={todo.priority}/>
-                    </div>
-                </div>
-                <div className="users-info-item">
-                    <div className="users-info-left">
-                        <span className="users-info-span">
-                            Epic name:
-                        </span>
-                    </div>
-                    <div className="users-info-right">
-                        <span>
-                            {todo.content}
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </TodoDetailWrapper>
+                </Grid>
+            </Grid>
+            <Grid
+                container
+                className={classes.grid}
+                direction={"column"}
+                spacing={0}
+                alignItems={"left"}
+            >
+                <Grid item>
+                    <Typography>
+                        Описание
+                    </Typography>
+                </Grid>
+                <Grid item>
+                    <TextField
+                        label="Добавить описание..."
+                        multiline={true}
+                        style={{ width: '100%' }}
+                    />
+                </Grid>
+            </Grid>
+            <Grid
+                container
+                className={classes.grid}
+                direction={"row"}
+                spacing={0}
+                alignItems={"center"}
+            >
+                <Grid item xs={3}>
+                        Исполнитель
+                </Grid>
+                <Grid item xs={9}>
+                    <TextField
+                        variant="outlined"
+                        label="Исполнитель"
+                        disabled={true}
+                        value={selectedTodo.owner}
+                        style={{ width: '100%' }}
+                    />
+                </Grid>
+            </Grid>
+            <Grid
+                container
+                className={classes.grid}
+                direction={"row"}
+                spacing={0}
+                alignItems={"center"}
+            >
+                <Grid item xs={3}>
+                        Автор
+                </Grid>
+                <Grid item xs={9}>
+                    <TextField
+                        variant="outlined"
+                        label="Автор"
+                        disabled={true}
+                        value={`${selectedTodo.owner} (${selectedTodo.ownerEmail})`}
+                        style={{ width: '100%' }}
+                    />
+                </Grid>
+            </Grid>
+            <Grid
+                container
+                className={classes.grid}
+                direction={"row"}
+                spacing={0}
+                alignItems={"center"}
+            >
+                <Grid item xs={3}>
+                        Приоритет
+                </Grid>
+                <Grid item xs={9}>
+                    <CustomSelect 
+                        id={selectedTodo._id}
+                        priority={selectedTodo.priority}
+                    />
+                </Grid>
+            </Grid>
+        </>
     )
 }
 
 const mapStateTopProps = (state) => {
     return {
-        todo: state.selectedTodo,
+        selectedTodo: state.selectedTodo,
         selectedTodoLoading: state.selectedTodoLoading,
         selectedProject: state.selectedProject
     }

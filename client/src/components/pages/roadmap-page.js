@@ -19,9 +19,7 @@ import {
     Paper,
     TextField,
     SwipeableDrawer,
-    Divider,
-    List,
-    ListItem,
+    Drawer,
     IconButton,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
@@ -40,7 +38,7 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
     const [showInput, setShowInput] = useState(false)
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(true)
 
     const useStyles = makeStyles({
         paperStyles: { width: '50%', maxHeight: 550, borderRadius: '0' },
@@ -53,7 +51,7 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
     useEffect(() => {
         if (selectedProject._id) fetchTodos(selectedProject._id)
     }, [fetchTodos, selectedProject])
-
+    
     const handleChangePage = (event, newPage) => setPage(newPage)
 
     const handleChangeRowsPerPage = (event) => {
@@ -88,8 +86,8 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
                 <TableCell>
                     <Button
                         onClick={() => {
-                            //todoSelected(todo._id)
-                            // setState(true)
+                            todoSelected(todo._id)
+                            setOpen(true)
                         }}
                     >
                         {todo.content}
@@ -137,9 +135,10 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
     if (!selectedProject._id) return <>Выберите проект</>
     if (loading) return <Spinner />
 
+    console.log('ROADMAP RENDER()')
     return (
         <div className="roadmap-container">
-            <TodoDetail/>
+            
             <Paper className={classes.paperStyles}>
                 <TableContainer className={classes.container}>
                     <Table
@@ -170,12 +169,8 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
                 { !showInput && <BtnRow /> }
                 { showInput && <InputRow /> }
             </Paper>
-            <Button
-                onClick={() => setOpen(true)}
-            >
-                Click on me
-            </Button>
-            <SwipeableDrawer
+            <Drawer
+                variant="persistent"
                 anchor="right"
                 open={open}
                 onClose={() => {}}
@@ -186,7 +181,8 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
                 >
                     <CloseIcon />
                 </IconButton>
-            </SwipeableDrawer>
+                <TodoDetail />
+            </Drawer>
         </div>
     )
 }

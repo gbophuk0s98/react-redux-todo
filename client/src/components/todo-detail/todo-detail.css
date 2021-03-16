@@ -7,9 +7,9 @@
 }
 
 .todo-detail-container {
-    position: absolute;
-    right: -250px;
-    z-index: 99;
+    /* position: absolute; */
+    /* right: -250px; */
+    /* z-index: 99; */
     width: 35%;
     height: 100%;
     overflow: auto;

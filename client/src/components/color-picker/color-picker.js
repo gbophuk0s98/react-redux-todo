@@ -14,7 +14,7 @@ const colorToRGBA = (color) => {
 const ColorPicker = ({ todoId, todoColor, todoUpdate, selectedProject }) => {
 
 	const [displayColorPicker, setDisplayColorPicker] = useState(false)
-	const [color, setColor] = useState(null)
+	const [color, setColor] = useState({ r: '241', g: '112', b: '19', a: '1' })
 
 	useEffect(() => {
 		let colorObj = { r: '241', g: '112', b: '19', a: '1' }
@@ -39,10 +39,10 @@ const ColorPicker = ({ todoId, todoColor, todoUpdate, selectedProject }) => {
 	const styles = reactCSS({
 		'default': {
 			color: {
-				width: '25px',
-				height: '25px',
+				width: '30px',
+				height: '30px',
 				borderRadius: '2px',
-				background: todoColor !== '' ? todoColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${ color.a })`,
+				background: `rgba(${color.r}, ${color.g}, ${color.b}, ${ color.a })`,
 			},
 			swatch: {
 				padding: '5px',
@@ -52,7 +52,7 @@ const ColorPicker = ({ todoId, todoColor, todoUpdate, selectedProject }) => {
 			},
 			popover: {
 				position: 'absolute',
-				zIndex: '2',
+				zIndex: '9999',
 			},
 			cover: {
 				position: 'fixed',

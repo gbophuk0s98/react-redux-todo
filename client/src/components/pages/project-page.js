@@ -4,7 +4,6 @@ import { useHistory } from 'react-router'
 import { bindActionCreators } from 'redux'
 
 import * as actions from '../../actoins'
-import { ProjectPageContainer } from '../styled-components'
 import { Button, Card, CardContent, makeStyles, TextField } from '@material-ui/core'
 
 import './pages-css/project-page.css'
@@ -87,60 +86,6 @@ const ProjectPage = ({ createProject, loading, user }) => {
                 </div>
             </CardContent>
         </Card>
-        // <ProjectPageContainer className="d-flex align-items-top">
-        //     <div className="form-project">
-        //         <div>
-        //             <div className="h4 mb-2 fw-normal">
-        //                 <span className="project-title-span">Создать проект</span>
-        //             </div>
-        //             <div className="d-flex align-items-center mb-2 flex-column">
-        //                 <input 
-        //                     className="form-control mb-1"
-        //                     name="projectName"
-        //                     value={project.projectName}
-        //                     type="text"
-        //                     id="projectId"
-        //                     onChange={onChangeHandler}
-        //                     placeholder="Введите название проекта"
-        //                     />
-        //             </div>
-        //             <div className="mb-2 fw-normal">
-        //                 <span className="project-title-span">Ключ проекта</span>
-        //             </div>
-        //             <div className="d-flex align-items-center mb-2 flex-column">
-        //                 <input 
-        //                     className="form-control"
-        //                     name="projectKey"
-        //                     type="text"
-        //                     id="porjectKey"
-        //                     defaultValue={project.projectKey}
-        //                     disabled={true}
-        //                     placeholder="Ключ"
-        //                     />
-        //             </div>
-        //             <div className="btn-container">
-        //                 <div className="btn-left">
-        //                     <Button 
-        //                         className="btn" 
-        //                         disabled={project.projectName.length > 2 ? false : true}
-        //                         onClick={e => onCreateHandler(e)}
-        //                     >
-        //                         <span className="btn-text">Создать</span>
-        //                         { loading && <span className="spinner-border spinner-border-sm"></span> }
-        //                     </Button>
-        //                 </div>
-        //                 <div className="btn-right">
-        //                     <Button 
-        //                         className="btn"
-        //                         onClick={() => history.goBack()}
-        //                     >
-        //                         Закрыть
-        //                     </Button>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     </div>
-        // </ProjectPageContainer>
     )
 }
 

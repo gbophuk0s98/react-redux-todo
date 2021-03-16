@@ -18,6 +18,7 @@ const App = ({ token, theme }) => {
 	const routes = useRoutes(!!token)
 	const isMobile = window.innerWidth < 600
 	const muiTheme = createMuiTheme(theme === 'light' ? muiThemeLight: muiThemeDark)
+	console.log(muiTheme)
 	
 	return (
 		<ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>

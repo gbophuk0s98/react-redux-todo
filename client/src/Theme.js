@@ -127,8 +127,10 @@ export const muiThemeLight = {
             },
         },
         MuiDrawer: {
+            root: {
+                ariaHidden: 'false',
+            },
             paper: {
-                color: 'red',
                 top: '74px',
                 maxWidth: '500px',
                 width: '100%',
@@ -139,6 +141,12 @@ export const muiThemeLight = {
 
 export const muiThemeDark = {
     overrides: {
+        '@global': {
+            body: {
+                background: 'red',
+            }
+        },
+
         MuiButton: {
             root: {
                 ...defaultButtonStyles.root,

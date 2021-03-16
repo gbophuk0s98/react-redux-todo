@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import { fetchProjects, fetchProject, setRecentProjects } from '../../actoins'
-// import { TableWrapper, Button } from '../styled-components'
 import { Table, Button, TableBody, TableCell, TableContainer, TablePagination, TableHead, TableRow, Paper, makeStyles } from '@material-ui/core'
 
 import Spinner from '../spinner'
