@@ -6,8 +6,25 @@ import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'
 import CustomDateRangePicker from '../date-range-picker'
 import CreateProjectLink from '../create-project-link'
-// import { TableWrapper, Button } from '../styled-components'
-import { Table, Button, TableBody, TableCell, TableContainer, TablePagination, TableHead, TableRow, Paper, TextField, makeStyles } from '@material-ui/core'
+import {
+    makeStyles,
+    Table,
+    Button,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TablePagination,
+    TableHead,
+    TableRow,
+    Paper,
+    TextField,
+    SwipeableDrawer,
+    Divider,
+    List,
+    ListItem,
+    IconButton,
+} from '@material-ui/core'
+import CloseIcon from '@material-ui/icons/Close'
 
 import './pages-css/roadmap-page.css'
 
@@ -23,11 +40,13 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
     const [showInput, setShowInput] = useState(false)
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
+    const [open, setOpen] = useState(false)
 
     const useStyles = makeStyles({
         paperStyles: { width: '50%', maxHeight: 550, borderRadius: '0' },
         container: { maxHeight: 500 },
         paperRow: { width: '50%', maxHeight: 550, padding: '15px 25px', borderRadius: '0' },
+        swipe: { height: '200px', top: 64 },
     })
     const classes = useStyles()
 
@@ -68,7 +87,10 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
             <TableRow hover key={todo._id}>
                 <TableCell>
                     <Button
-                        onClick={() => todoSelected(todo._id)}
+                        onClick={() => {
+                            //todoSelected(todo._id)
+                            // setState(true)
+                        }}
                     >
                         {todo.content}
                     </Button>
@@ -148,6 +170,23 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
                 { !showInput && <BtnRow /> }
                 { showInput && <InputRow /> }
             </Paper>
+            <Button
+                onClick={() => setOpen(true)}
+            >
+                Click on me
+            </Button>
+            <SwipeableDrawer
+                anchor="right"
+                open={open}
+                onClose={() => {}}
+                onOpen={() => {}}
+            >
+                <IconButton
+                    onClick={() => setOpen(false)}
+                >
+                    <CloseIcon />
+                </IconButton>
+            </SwipeableDrawer>
         </div>
     )
 }

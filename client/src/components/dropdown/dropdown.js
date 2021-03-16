@@ -1,4 +1,5 @@
-import React, { forwardRef, useRef, useState, createRef, useEffect } from 'react'
+import React, { useState } from 'react'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -30,6 +31,7 @@ const DropDown = ({ recentProjects, fetchProject }) => {
                 onClick={handleClick}
             >
                 Проекты
+                <ArrowDropDownIcon />
             </Button>
             <Menu
                 id="simple-menu"
