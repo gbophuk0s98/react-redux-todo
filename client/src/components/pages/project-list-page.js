@@ -28,6 +28,7 @@ const ProjectListPage = ({ user, projects, loading, fetchProjects, fetchProject,
     const classes = useStyles()
     
     useEffect(() => fetchProjects({userId: user.id, token: user.token }), [fetchProjects, user])
+    console.log('projects', projects)
     
     const onTitleClick = (projectId) => {
         fetchProject(projectId)

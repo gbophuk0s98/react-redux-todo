@@ -107,6 +107,12 @@ const createProject = (dispatch, project) => {
     .catch(error => dispatch(createProjectFailure(error)) )
 }
 
+const createCard = (dispatch, objToBackend) => {
+    service.createCard(objToBackend)
+    .then(() => fetchProject(dispatch, objToBackend.projectId))
+    return { type: 'USER_CARD_CREATED' }
+}
+
 const projectsRequested = () => {
     return {
         type: 'FETCH_PROJECTS_REQUEST'
@@ -304,4 +310,5 @@ export {
     setTheme,
     cardsLoaded,
     projectUpdate,
+    createCard,
 }

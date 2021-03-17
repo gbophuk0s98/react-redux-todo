@@ -25,10 +25,10 @@ export const useRoutes = (isAuthenticated = true, location = null) => {
                             <Route path="/projectList" exact>
                                 <ProjectListPage />
                             </Route>
-                            <Route path="/">
+                            <Route path="/cardsSettings">
                                 <CardManagement />
                             </Route>
-                            <Redirect to='/' />
+                            <Redirect to='/projectList' />
                         </Switch>
                     </div>
                 </>

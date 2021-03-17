@@ -344,6 +344,8 @@ const reducer = (state = initialState, action) => {
             return clearErrors(state)
         case 'USER_RECENT_PROJECTS':
             return setRecentProjects(state, action.payload)
+        case 'USER_CARD_CREATED':
+            return state
         default:
             return state
     }
@@ -352,7 +354,6 @@ const reducer = (state = initialState, action) => {
 const persistConfig = {
     key: 'myState',
     storage,
-    // whitelist: ['reducer']
 }
 
 export default persistReducer(persistConfig, reducer)

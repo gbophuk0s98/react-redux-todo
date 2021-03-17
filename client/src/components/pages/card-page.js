@@ -47,7 +47,7 @@ const CardPage = ({ cards, loading, transferCardsItems, fetchCards, selectedProj
             edge="end"
             aria-label="settings"
             aria-haspopup="true"
-            onClick={() => history.push('/')}
+            onClick={() => history.push('/cardsSettings')}
             color="inherit"
         >
             <SettingsIcon />

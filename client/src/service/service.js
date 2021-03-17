@@ -66,6 +66,10 @@ export default class ProjectService {
     saveCards = async (body, headers = {}) => {
         await this.getResourses(`${this._todoBase}/saveCards`, 'POST', { ...body })
     }
+    
+    createCard = async (body = null, headers = {}) => {
+        await this.getResourses(`${this._todoBase}/createCard`, 'POST', { ...body })
+    }
 
     createProject = async (body, headers = {}) => {
         return await this.getResourses(`${this._todoBase}/createProject`, 'POST', { ...body })
@@ -81,7 +85,6 @@ export default class ProjectService {
     }
 
     updateProjectItems = async (body = null) => {
-        // console.log('body', body)
         return await this.getResourses(`${this._todoBase}/updateProjectItems`, 'PUT', { ...body })
     }
 

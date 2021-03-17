@@ -1,7 +1,7 @@
 import React from 'react'
 import { Droppable } from 'react-beautiful-dnd'
 import CardItems from '../card-items'
-import { Card as MaterialCard, CardContent, Typography, makeStyles } from '@material-ui/core';
+import { Card as MaterialCard, CardContent, Typography, makeStyles } from '@material-ui/core'
 
 import './card.css'
 

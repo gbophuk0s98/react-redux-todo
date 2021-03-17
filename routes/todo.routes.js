@@ -11,9 +11,11 @@ const updateCards = async (cards) => {
     const newCards = []
 
     for (const card of cards) {
-        const { id, columnType, name } = card
+        // const { id, columnType, name } = card
+        const { id, name } = card
         const data = await Todo.find({ owner: card.id })
-        newCards.push({ id: id, name: name, columnType: columnType, items: [...data] })
+        // newCards.push({ id: id, name: name, columnType: columnType, items: [...data] })
+        newCards.push({ id: id, name: name, items: [...data] })
     }
     return newCards
 }
@@ -96,7 +98,8 @@ router.post('/createTodo', async (req, res) => {
         const { content, startDate, endDate } = req.body
         const customId = uuid.v4()
     
-        const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
+        // const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
+        const { _id, items } = await Card.findOne({ project: projectId })
         const allTodos = await Todo.find({ owner: projectId })
 
         const todo = new Todo({ 
@@ -245,16 +248,20 @@ router.post('/createProject', async (req, res) => {
         const project = new Project({ title: projectName, description: '', key: projectKey, owner: userId, cards: [] })
         await project.save()
 
-        const tasksCard = new Card({ name: 'Бэклог', columnType: 'TaskList', items: [], project: project.id })
+        // const tasksCard = new Card({ name: 'Бэклог', columnType: 'TaskList', items: [], project: project.id })
+        const tasksCard = new Card({ name: 'Бэклог', items: [], project: project.id })
         await tasksCard.save()
 
-        const selectedCard = new Card({ name: 'Выбрано для разработки', columnType: 'SelectedList', items: [], project: project.id })
+        // const selectedCard = new Card({ name: 'Выбрано для разработки', columnType: 'SelectedList', items: [], project: project.id })
+        const selectedCard = new Card({ name: 'Выбрано для разработки', items: [], project: project.id })
         await selectedCard.save()
 
-        const processingCard = new Card({ name: 'В работе', columnType: 'ProcessingList', items: [], project: project.id })
+        // const processingCard = new Card({ name: 'В работе', columnType: 'ProcessingList', items: [], project: project.id })
+        const processingCard = new Card({ name: 'В работе', items: [], project: project.id })
         await processingCard.save()
 
-        const doneCard = new Card({ name: 'Готово', columnType: 'DoneList', items: [], project: project.id })
+        // const doneCard = new Card({ name: 'Готово', columnType: 'DoneList', items: [], project: project.id })
+        const doneCard = new Card({ name: 'Готово', items: [], project: project.id })
         await doneCard.save()
 
         for (const card of [
@@ -268,6 +275,36 @@ router.post('/createProject', async (req, res) => {
         
         
         return res.status(200).json(currProject)
+    }
+    catch (e)
+    {
+        errorResponse()
+    }
+})
+
+router.post('/createCard', async (req, res) => {
+    try
+    {
+        console.log('/createCard')
+        const { name, projectId } = req.body
+
+        const newCard = new Card({ name: name, items: [], project: projectId })
+        await newCard.save()
+        console.log(newCard)
+
+        await Project.updateOne({ _id: projectId }, { 
+            $push: { 
+                cards: {
+                    id: newCard._id,
+                    name: newCard.name,
+                } 
+            }
+        })
+
+        const project = await Project.findOne({ _id: projectId })
+        console.log('project', project)
+
+        res.status(200).json({ message: 'Все хорошо!' })
     }
     catch (e)
     {
