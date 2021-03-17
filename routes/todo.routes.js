@@ -97,7 +97,9 @@ router.post('/createTodo', async (req, res) => {
         const customId = uuid.v4()
     
         // const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
-        const { _id, items } = await Card.findOne({ project: projectId })
+        const card = await Card.findOne({ project: projectId })
+        console.log(card)
+        if (!card) return res.status(400).json({ message: 'Нельзя создать тудушку без владельца' })
         const allTodos = await Todo.find({ owner: projectId })
 
         const todo = new Todo({ 
@@ -111,7 +113,7 @@ router.post('/createTodo', async (req, res) => {
             creationNumber: allTodos.length + 1
         })
         await Card.updateOne(
-            { _id: _id }, 
+            { _id: card._id }, 
             { 
                 $push: { 
                     items: {
@@ -120,7 +122,7 @@ router.post('/createTodo', async (req, res) => {
                         content: content,
                         startDate: startDate,
                         endDate: endDate,
-                        posNumber: items.length,
+                        posNumber: card.items.length,
                         background: 'rgba(69, 108, 134, 1)',
                         priority: 'Средний',
                         creationNumber: todo.creationNumber

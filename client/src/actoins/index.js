@@ -217,6 +217,7 @@ const todoCreated = (dispatch, todo, projectId) => {
     .then(todo => todoSelected(dispatch, todo._id))
     .then(() => fetchCards(dispatch, projectId))
     .then(() => fetchTodos(dispatch, projectId))
+    .catch(err => console.log(err.message))
 
     return { type: 'TODO_CREATED' }
 }
