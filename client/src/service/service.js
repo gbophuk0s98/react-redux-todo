@@ -80,4 +80,9 @@ export default class ProjectService {
         return await this.getResourses(`${this._todoBase}/getProject`, 'GET', null, headers)
     }
 
+    updateProjectItems = async (body = null) => {
+        // console.log('body', body)
+        return await this.getResourses(`${this._todoBase}/updateProjectItems`, 'PUT', { ...body })
+    }
+
 }

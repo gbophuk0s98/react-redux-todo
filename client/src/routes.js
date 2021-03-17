@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 
 import Header from './components/header'
 import { CardPage, RoadMapPage, RegPage, LoginPage, ProjectPage, ProjectListPage, } from './components/pages'
+import CardManagement from './components/card-management'
 
 export const useRoutes = (isAuthenticated = true, location = null) => {
 
@@ -24,7 +25,10 @@ export const useRoutes = (isAuthenticated = true, location = null) => {
                             <Route path="/projectList" exact>
                                 <ProjectListPage />
                             </Route>
-                            <Redirect to='/projectList' />
+                            <Route path="/">
+                                <CardManagement />
+                            </Route>
+                            <Redirect to='/' />
                         </Switch>
                     </div>
                 </>

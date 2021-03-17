@@ -1,18 +1,27 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import Card from '../card'
 import { transferCardsItems, fetchCards, saveCards } from '../../actoins'
 import Spinner from '../spinner'
 import CreateProjectLink from '../create-project-link'
+import { IconButton } from '@material-ui/core'
+import SettingsIcon from '@material-ui/icons/Settings'
 
 import './pages-css/card-page.css'
 
+const sortCards = (cards, projectItems) => {
+    return cards.sort((a, b) => {
+        return projectItems.findIndex(({ id }) => id === a._id ) - projectItems.findIndex(({ id }) => id === b._id )
+    })
+}
+
 const CardPage = ({ cards, loading, transferCardsItems, fetchCards, selectedProject, projectListIsEmpty }) => {
 
-    const location = useLocation()
+    const history = useHistory()
+    console.log(selectedProject)
 
     useEffect(() => {
         if (selectedProject._id) fetchCards(selectedProject._id)
@@ -32,10 +41,23 @@ const CardPage = ({ cards, loading, transferCardsItems, fetchCards, selectedProj
     if (loading) return <Spinner />
 
     return (
+        <div className="page-container">
+        <div className="icons-wrapper">
+        <IconButton
+            edge="end"
+            aria-label="settings"
+            aria-haspopup="true"
+            onClick={() => history.push('/')}
+            color="inherit"
+        >
+            <SettingsIcon />
+        </IconButton>
+        </div>
         <div className="card-container">
             <DragDropContext onDragEnd={result => checkCard(result)}>
-                <Card columns={cards} />
+                <Card columns={sortCards(cards, selectedProject.cards)} />
             </DragDropContext>
+        </div>
         </div>
     )
 }

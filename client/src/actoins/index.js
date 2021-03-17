@@ -238,6 +238,12 @@ const todoSelected = (dispatch, id) => {
     .then(todo => dispatch({ type: 'TODO_SELECTED', payload: todo }) )
 }
 
+const projectUpdate = (dispatch, projectId, items) => {
+    service.updateProjectItems({ projectId, items })
+    .then(() => dispatch({ type: 'SELECTED_PROJECT_UPDATED' }))
+    .then(() => fetchProject(dispatch, projectId))
+}
+
 const fetchTodos = (dispatch, projectId) => {
     dispatch(todosRequested())
     service.getTodos(projectId)
@@ -296,4 +302,6 @@ export {
     fetchProject,
     setRecentProjects,
     setTheme,
+    cardsLoaded,
+    projectUpdate,
 }

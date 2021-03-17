@@ -18,6 +18,17 @@ const updateCards = async (cards) => {
     return newCards
 }
 
+const getCardIdAndName = (card) => {
+    return {
+        id: card.id,
+        name: card.name
+    }
+}
+
+const errorResponse = () => {
+    res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
+}
+
 const updateCardItem = (items, id, startDate = null, endDate = null, color = null, title = null, priority = null) => {
     return items.map(item => {
         if (item._id.toString() === id) {
@@ -194,11 +205,6 @@ router.put('/updateCards', async (req, res) => {
         const { id, startDate, endDate, color, title, priority } = req.body
         const [todo] = await Todo.find({ _id: id })
         let currentCardId, currentCardItems
-        // console.log('startDate', startDate)
-        // console.log('endDate', endDate)
-        // console.log('color', color)
-        // console.log('title', title)
-        // console.log('priority', priority)
 
         const [card] = await Card.find(
             {items: {"$elemMatch": { _id: {$eq: id} }}}
@@ -219,7 +225,6 @@ router.put('/updateCards', async (req, res) => {
         else if (color) newItems = updateCardItem(currentCardItems, id, null, null, color)
         else if (title) newItems = updateCardItem(currentCardItems, id, null, null, null, title)
         else if (priority) newItems = updateCardItem(currentCardItems, id, null, null, null, null, priority)
-        // newItems.map(item => console.log('item', item))
 
         await Card.updateOne({ _id: currentCardId }, { items: newItems })
         res.status(200).json({ message: 'Карточки успешно обновлены!' })
@@ -237,7 +242,7 @@ router.post('/createProject', async (req, res) => {
     {
         const { projectName, projectKey, userId } = req.body
         
-        const project = new Project({ title: projectName, description: '', key: projectKey, owner: userId })
+        const project = new Project({ title: projectName, description: '', key: projectKey, owner: userId, cards: [] })
         await project.save()
 
         const tasksCard = new Card({ name: 'Бэклог', columnType: 'TaskList', items: [], project: project.id })
@@ -251,12 +256,37 @@ router.post('/createProject', async (req, res) => {
 
         const doneCard = new Card({ name: 'Готово', columnType: 'DoneList', items: [], project: project.id })
         await doneCard.save()
+
+        for (const card of [
+            getCardIdAndName(tasksCard),
+            getCardIdAndName(selectedCard),
+            getCardIdAndName(processingCard),
+            getCardIdAndName(doneCard)
+        ]) await Project.updateOne({ _id: project.id }, { $push: { cards: card } })
+
+        const currProject = await Project.findOne({ _id: project.id })
         
-        return res.status(200).json(project)
+        
+        return res.status(200).json(currProject)
     }
     catch (e)
     {
-        res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
+        errorResponse()
+    }
+})
+
+router.put('/updateProjectItems', async (req, res) => {
+    try
+    {
+        const { projectId, items } = req.body
+        await Project.updateOne({ _id: projectId }, { cards: items })
+        const project = await Project.findOne({ _id: projectId })
+        console.log(project)
+        return res.status(200).json({ message: 'Успешно обновлен!' })
+    }
+    catch (e)
+    {
+        errorResponse()
     }
 })
 
