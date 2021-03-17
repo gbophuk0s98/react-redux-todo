@@ -90,7 +90,6 @@ const TodoDetail = ({ selectedTodo, todoUpdate, selectedTodoLoading, selectedPro
                 className={classes.grid}
                 direction={"column"}
                 spacing={0}
-                alignItems={"left"}
             >
                 <Grid item>
                     <Typography>

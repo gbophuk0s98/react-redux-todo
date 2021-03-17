@@ -25,7 +25,7 @@ export const Card = ({ columns }) => {
 		},
 		cardContent: {
 			width: '100%',
-			padding: '5px',
+			padding: '5px 0px',
 			'&:last-child': {
 				paddingBottom: '5px',
 			}

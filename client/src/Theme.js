@@ -79,7 +79,10 @@ export const muiThemeLight = {
         },
         MuiCard: {
             root: {
-                backgroundColor: '#fff',
+                backgroundColor: '#f4f5f7',
+                '& p': {
+                    paddingLeft: '5px',
+                }
             }
         },
         MuiPaper: {

@@ -71,6 +71,10 @@ export default class ProjectService {
         await this.getResourses(`${this._todoBase}/createCard`, 'POST', { ...body })
     }
 
+    deleteCard = async (body = null, headers ={}) => {
+        await this.getResourses(`${this._todoBase}/deleteCard`, 'DELETE', { ...body })
+    }
+
     createProject = async (body, headers = {}) => {
         return await this.getResourses(`${this._todoBase}/createProject`, 'POST', { ...body })
     }

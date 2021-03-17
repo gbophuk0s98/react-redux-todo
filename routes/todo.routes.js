@@ -27,9 +27,7 @@ const getCardIdAndName = (card) => {
     }
 }
 
-const errorResponse = () => {
-    res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
-}
+const errorResponse = (res, e)=> res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
 
 const updateCardItem = (items, id, startDate = null, endDate = null, color = null, title = null, priority = null) => {
     return items.map(item => {
@@ -214,11 +212,12 @@ router.put('/updateCards', async (req, res) => {
             )
         if (!card) {
             // значит последний добавленный!
-            const [{ _id, items }] = await Card.find(
+            const [firstCard] = await Card.find(
                 {items: {"$elemMatch": { _id: {$eq: todo._id} }}}
                 )
-            currentCardId = _id
-            currentCardItems = items
+            if (!firstCard) return res.status(400).json({ message: 'У карточки нет владельца' })
+            currentCardId = firstCard._id
+            currentCardItems = firstCard.items
         } else {
             currentCardId = card._id
             currentCardItems = card.items
@@ -278,7 +277,7 @@ router.post('/createProject', async (req, res) => {
     }
     catch (e)
     {
-        errorResponse()
+        errorResponse(res, e)
     }
 })
 
@@ -308,7 +307,20 @@ router.post('/createCard', async (req, res) => {
     }
     catch (e)
     {
-        errorResponse()
+        errorResponse(res, e)
+    }
+})
+
+router.delete('/deleteCard', async (req, res) => {
+    try
+    {
+        const { cardId, projectId } = req.body
+        await Card.deleteOne({ _id: cardId, project: projectId }) 
+        return res.status(200).json({ message: 'Удалено' })
+    }
+    catch (e)
+    {
+        errorResponse(res, e)
     }
 })
 
@@ -323,7 +335,7 @@ router.put('/updateProjectItems', async (req, res) => {
     }
     catch (e)
     {
-        errorResponse()
+        errorResponse(res,)
     }
 })
 

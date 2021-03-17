@@ -346,6 +346,8 @@ const reducer = (state = initialState, action) => {
             return setRecentProjects(state, action.payload)
         case 'USER_CARD_CREATED':
             return state
+        case 'USER_CARD_DELETE':
+            return state
         default:
             return state
     }

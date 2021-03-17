@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
-import { projectUpdate, createCard } from '../../actoins'
-import { Card, CardContent, Button, Dialog, DialogActions, DialogContent, TextField } from '@material-ui/core'
+import { projectUpdate, createCard, deleteCard } from '../../actoins'
+import { Card, CardContent, Button, Dialog, DialogActions, DialogContent, TextField, makeStyles, IconButton } from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete'
+import Divider from '@material-ui/core/Divider'
 
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list)
@@ -14,11 +16,10 @@ const reorder = (list, startIndex, endIndex) => {
 
 const getItemStyle = (isDragging, draggableStyle) => ({
     userSelect: 'none',
-    padding: 16,
+    padding: '2px 5px',
     margin: `0 8px 0 0`,
-    maxWidth: '300px',
+    maxWidth: '500px',
     width: '100%',
-    background: isDragging ? 'lightgreen' : 'grey',
     ...draggableStyle,
 })
 
@@ -26,14 +27,22 @@ const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? 'lightblue' : 'lightgrey',
     display: 'flex',
     padding: 8,
+    width: '100%',
     height: '50%',
 })
 
-const CardManagement = ({ selectedProject, projectUpdate, createCard }) => {
+const useStyles = makeStyles({
+    cardContent: {
+        padding: 0
+    }
+})
+
+const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard }) => {
 
     const [items, setItems] = useState(selectedProject.cards || [])
     const [open, setOpen] = useState(false)
     const [title, setTitle] = useState('')
+    const classes = useStyles()
 
     useEffect(() => setItems(selectedProject.cards), [selectedProject])
 
@@ -49,7 +58,7 @@ const CardManagement = ({ selectedProject, projectUpdate, createCard }) => {
         setItems(reorderItems)
         projectUpdate(selectedProject._id, reorderItems)
     }
-    
+
     const handleSubmit = () => {
         setOpen(false)
         createCard({ name: title, projectId: selectedProject._id })
@@ -61,75 +70,95 @@ const CardManagement = ({ selectedProject, projectUpdate, createCard }) => {
     }
     const handleOpen = () => setOpen(true)
     const handleChange = e => setTitle(e.target.value)
+    const handleDelete = (id, index) => {
+        const myArr = [
+            ...items.slice(0, index),
+            ...items.slice(index + 1)
+        ]
+        // setItems(myArr)
+        deleteCard({ cardId: id, projectId: selectedProject._id }, myArr)
+    }
 
     return (
-        <div>
-        <div className="d-flex justify-content-end m-2">
-            <Button
-                onClick={handleOpen}
-            >
-                Добавить столбец...
-            </Button>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="responsive-dialog-title"
-            >
-                <DialogContent>
-                    <TextField 
-                        label="Название столбца"
-                        value={title}
-                        onChange={(e) => handleChange(e)}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        onClick={handleSubmit}
-                        color="primary"
-                    >
-                        Добавить
-                    </Button>
-                    <Button
-                        onClick={handleClose}
-                        color="primary"
-                    >
-                        Закрыть
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </div>
-        <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-            <Droppable droppableId="droppable" direction="horizontal">
-                {(provided, snapshot) => (
-                <div
-                    ref={provided.innerRef}
-                    style={getListStyle(snapshot.isDraggingOver)}
-                    {...provided.droppableProps}
+        <div style={{ width: '70%' }}>
+            <div className="d-flex justify-content-end m-2">
+                <Button
+                    onClick={handleOpen}
                 >
-                    {items.map((item, index) => (
-                        <Draggable key={item.id} draggableId={item.id} index={index}>
-                            {(provided, snapshot) => (
-                                <Card
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    style={getItemStyle(
-                                    snapshot.isDragging,
-                                    provided.draggableProps.style
+                    Добавить столбец...
+            </Button>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="responsive-dialog-title"
+                >
+                    <DialogContent>
+                        <TextField
+                            label="Название столбца"
+                            value={title}
+                            onChange={(e) => handleChange(e)}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            onClick={handleSubmit}
+                            color="primary"
+                        >
+                            Добавить
+                    </Button>
+                        <Button
+                            onClick={handleClose}
+                            color="primary"
+                        >
+                            Закрыть
+                    </Button>
+                    </DialogActions>
+                </Dialog>
+            </div>
+            <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+                <Droppable droppableId="droppable" direction="horizontal">
+                    {(provided, snapshot) => (
+                        <div
+                            ref={provided.innerRef}
+                            style={getListStyle(snapshot.isDraggingOver)}
+                            {...provided.droppableProps}
+                        >
+                            {items.map((item, index) => (
+                                <Draggable key={item.id} draggableId={item.id} index={index}>
+                                    {(provided, snapshot) => (
+                                        <Card
+                                            ref={provided.innerRef}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            style={getItemStyle(
+                                                snapshot.isDragging,
+                                                provided.draggableProps.style
+                                            )}
+                                        >
+                                            <CardContent className={classes.cardContent}>
+                                                <div className="text-right">
+                                                    <IconButton
+                                                        onClick={() => handleDelete(item.id, index)}
+                                                        edge="end"
+                                                    >
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </div>
+                                                <TextField
+                                                    value={item.name}
+                                                    style={{ marginBottom: '15px', width: '100%' }}
+                                                />
+                                                <Divider />
+                                            </CardContent>
+                                        </Card>
                                     )}
-                                >
-                                <CardContent>
-                                {item.name}
-                                </CardContent>
-                                </Card>
-                            )}
-                        </Draggable>
-                    ))}
-                    {provided.placeholder}
-                </div>
-                )}
-            </Droppable>
-        </DragDropContext>
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
         </div>
     )
 }
@@ -144,6 +173,7 @@ const matDispatchToProps = (dispatch) => {
     return {
         projectUpdate: (projectId, items) => projectUpdate(dispatch, projectId, items),
         createCard: (objToBackend) => createCard(dispatch, objToBackend),
+        deleteCard: (objToBackend, projectItems) => deleteCard(dispatch, objToBackend, projectItems)
     }
 }
 

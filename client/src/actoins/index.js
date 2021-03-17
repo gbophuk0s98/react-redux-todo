@@ -230,7 +230,7 @@ const todoUpdate = (dispatch, id, projectId, startDate = null, endDate = null, c
     else if (priority) objToUpdate = { id, priority }
 
     service.updateTodo(objToUpdate)
-    .then(() => service.updateCardItem(objToUpdate))
+    .then(() => service.updateCardItem(objToUpdate).catch((err) => console.log(err)))
     .then(() => todoSelected(dispatch, id))
     .then(() => fetchTodos(dispatch, projectId))
     .then(() => fetchCards(dispatch, projectId))
@@ -265,9 +265,17 @@ const transferCardsItems = (result) => {
 }
 
 const saveCards = (cards) => {
-    service.saveCards(cards)
+    
     return {
         type: 'CARDS_SAVED'
+    }
+}
+
+const deleteCard = (dispatch, objToBackend, projectItems) => {
+    service.deleteCard(objToBackend)
+    .then(() => projectUpdate(dispatch, objToBackend.projectId, projectItems))
+    return {
+        type: 'USER_CARD_DELETE'
     }
 }
 
@@ -311,4 +319,5 @@ export {
     cardsLoaded,
     projectUpdate,
     createCard,
+    deleteCard
 }

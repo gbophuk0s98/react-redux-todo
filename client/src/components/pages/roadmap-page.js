@@ -173,8 +173,6 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
                 variant="persistent"
                 anchor="right"
                 open={open}
-                onClose={() => {}}
-                onOpen={() => {}}
             >
                 <IconButton
                     onClick={() => setOpen(false)}
