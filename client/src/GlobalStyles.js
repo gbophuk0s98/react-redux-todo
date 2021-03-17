@@ -1,8 +1,19 @@
-import { createGlobalStyle} from 'styled-components'
+import { createStyles, makeStyles } from '@material-ui/core'
 
-export const GlobalStyles = createGlobalStyle`
-body {
-    background: ${({ theme }) => theme.body};
-    font-family: Tahoma, Helvetica, Arial, Roboto, sans-serif;
-    transition: all 0.50s linear;
-}`
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        '@global': {
+            body: {
+                transition: 'all 0.50s linear',
+                background: `${theme.overrides.pallete.background.paper}`,
+            }
+        }
+    })
+)
+
+const GlobalStyles = () => {
+    useStyles()
+    return null
+}
+
+export default GlobalStyles;

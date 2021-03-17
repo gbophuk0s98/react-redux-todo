@@ -37,6 +37,11 @@ const defaultButtonStyles = {
 
 export const muiThemeLight = {
     overrides: {
+        pallete: {
+            background: {
+                paper: '#e8e8e8'
+            },
+        },
         MuiButton: {
             root: {
                 ...defaultButtonStyles.root,
@@ -134,6 +139,13 @@ export const muiThemeLight = {
                 top: '74px',
                 maxWidth: '500px',
                 width: '100%',
+                color: '#303030',
+                '& .MuiInputBase-root.Mui-disabled': {
+                    color: '#303030',
+                },
+                '& MuiFormLabel-root': {
+                    color: '#303030',
+                }
             }
         }
       }
@@ -141,12 +153,11 @@ export const muiThemeLight = {
 
 export const muiThemeDark = {
     overrides: {
-        '@global': {
-            body: {
-                background: 'red',
-            }
+        pallete: {
+            background: {
+                paper: '#474747'
+            },
         },
-
         MuiButton: {
             root: {
                 ...defaultButtonStyles.root,
@@ -246,6 +257,23 @@ export const muiThemeDark = {
         MuiBackdrop: {
             root: {
                 backgroundColor: 'none'
+            }
+        },
+        MuiDrawer: {
+            root: {
+                ariaHidden: 'false',
+            },
+            paper: {
+                top: '74px',
+                maxWidth: '500px',
+                width: '100%',
+                color: '#fff',
+                '& .MuiInputBase-root.Mui-disabled': {
+                    color: '#fff',
+                },
+                '& MuiFormLabel-root': {
+                    color: '#fff',
+                }
             }
         }
     }
