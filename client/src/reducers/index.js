@@ -90,6 +90,7 @@ const transferItems = (state, payload) => {
             return el
         })
     }
+    console.log('newCards', newCards)
     return {
         ...state,
         cards: {

@@ -20,6 +20,7 @@ const sortCards = (cards, projectItems) => {
 
 const CardPage = ({ cards, loading, transferCardsItems, fetchCards, selectedProject, projectListIsEmpty }) => {
 
+    console.log('cards', cards)
     const history = useHistory()
     console.log(selectedProject)
 

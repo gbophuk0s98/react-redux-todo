@@ -222,18 +222,19 @@ const todoCreated = (dispatch, todo, projectId) => {
 }
 
 const todoUpdate = (dispatch, id, projectId, startDate = null, endDate = null, color = null, title = null, priority = null) => {
-    let objToUpdate = {}
+    let objToUpdate = {}, error = ''
 
     if (startDate && endDate) objToUpdate = { id, startDate, endDate }
     else if (color) objToUpdate = { id, color }
     else if (title) objToUpdate = { id, title }
     else if (priority) objToUpdate = { id, priority }
 
-    service.updateTodo(objToUpdate)
-    .then(() => service.updateCardItem(objToUpdate).catch((err) => console.log(err)))
+    service.updateCardItem(objToUpdate)
+    .then(() => service.updateTodo(objToUpdate))
     .then(() => todoSelected(dispatch, id))
     .then(() => fetchTodos(dispatch, projectId))
     .then(() => fetchCards(dispatch, projectId))
+    .catch((err) => error = err.message)
         
     return { type: 'TODO_UPDATED' }
 }
@@ -265,7 +266,7 @@ const transferCardsItems = (result) => {
 }
 
 const saveCards = (cards) => {
-    
+    service.saveCards(cards)
     return {
         type: 'CARDS_SAVED'
     }

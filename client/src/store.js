@@ -10,6 +10,6 @@ export const store = createStore(
 
 export const persistor = persistStore(store)
 
-// store.subscribe(() => console.log(store.getState()))
+store.subscribe(() => console.log(store.getState()))
 
 export default { store , persistor }

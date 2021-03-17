@@ -5,32 +5,32 @@ import { Card as MaterialCard, CardContent, Typography, makeStyles } from '@mate
 
 import './card.css'
 
-export const Card = ({ columns }) => {
+const useStyles = makeStyles({
+	card: {
+		minHeight: '166px',
+		height: 'max-content',
+		maxWidth: '600px',
+		width: '100%',
+		margin: '5px',
+		boxShadow: '1px 1px 3px rgba(0, 0, 0, 0.5)',
+		borderRadius: '5px',
+		display: 'flex',
+		justifyContent: 'center',
+		flexWrap: 'wrap',
+		color: '#201E1E',
+		flexDirection: 'column',
+		alignItems: 'center',
+	},
+	cardContent: {
+		width: '100%',
+		padding: '5px 0px',
+		'&:last-child': {
+			paddingBottom: '5px',
+		}
+	},
+})
 
-	const useStyles = makeStyles({
-		card: {
-			minHeight: '166px',
-			height: 'max-content',
-			maxWidth: '600px',
-			width: '100%',
-			margin: '5px',
-			boxShadow: '1px 1px 3px rgba(0, 0, 0, 0.5)',
-			borderRadius: '5px',
-			display: 'flex',
-			justifyContent: 'center',
-			flexWrap: 'wrap',
-			color: '#201E1E',
-			flexDirection: 'column',
-			alignItems: 'center',
-		},
-		cardContent: {
-			width: '100%',
-			padding: '5px 0px',
-			'&:last-child': {
-				paddingBottom: '5px',
-			}
-		},
-	})
+export const Card = ({ columns }) => {
 
 	const classes = useStyles()
 
