@@ -4,6 +4,7 @@ import ColorPicker from '../color-picker/color-picker'
 
 import { todoUpdate } from '../../actoins'
 import CustomSelect from '../custom-select'
+import SimpleSelect from '../simple-select'
 
 import { makeStyles, TextField, Grid, Typography, } from '@material-ui/core'
 
@@ -27,16 +28,17 @@ const useStyles = makeStyles((theme) => ({
 const TodoDetail = ({ selectedTodo, todoUpdate, selectedTodoLoading, selectedProject }) => {
 
     const [title, setTitle] = useState('')
+    const classes = useStyles()
 
     useEffect(() => setTitle(selectedTodo.content), [setTitle, selectedTodo])
 
     const onTitleChange = e => setTitle(e.target.value)
+    
     const onTitleBlurHandler = e => {
         if (title === '' || title === selectedTodo.content) setTitle(selectedTodo.content)
         else todoUpdate(selectedTodo._id, selectedProject._id, title)
     }
 
-    const classes = useStyles()
 
 
     if (selectedTodoLoading) return (
@@ -158,6 +160,22 @@ const TodoDetail = ({ selectedTodo, todoUpdate, selectedTodoLoading, selectedPro
                     <CustomSelect 
                         id={selectedTodo._id}
                         priority={selectedTodo.priority}
+                    />
+                </Grid>
+            </Grid>
+            <Grid
+                container
+                className={classes.grid}
+                direction={"row"}
+                spacing={0}
+                alignItems={"center"}
+            >
+                <Grid item xs={3}>
+                        Карточка
+                </Grid>
+                <Grid item xs={9}>
+                    <SimpleSelect 
+                        todoId={selectedTodo._id}
                     />
                 </Grid>
             </Grid>

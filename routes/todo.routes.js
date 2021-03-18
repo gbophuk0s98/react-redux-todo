@@ -7,19 +7,6 @@ const router = Router()
 const uuid = require('uuid')
 const auth = require('../middleware/auth.middleware')
 
-const updateCards = async (cards) => {
-    const newCards = []
-
-    for (const card of cards) {
-        // const { id, columnType, name } = card
-        const { id, name } = card
-        const data = await Todo.find({ owner: card.id })
-        // newCards.push({ id: id, name: name, columnType: columnType, items: [...data] })
-        newCards.push({ id: id, name: name, items: [...data] })
-    }
-    return newCards
-}
-
 const getCardIdAndName = (card) => {
     return {
         id: card.id,
@@ -99,7 +86,7 @@ router.post('/createTodo', async (req, res) => {
         // const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
         const card = await Card.findOne({ project: projectId })
         console.log(card)
-        if (!card) return res.status(400).json({ message: 'Нельзя создать тудушку без владельца' })
+        if (!card) return res.status(400).json({ message: 'Нельзя создать запись без владельца. Чтобы создать запись, нужна карточка!' })
         const allTodos = await Todo.find({ owner: projectId })
 
         const todo = new Todo({ 
@@ -176,7 +163,6 @@ router.get('/getCards', async (req, res) => {
     {
         const projectId = req.headers.project.split(' ')[1]
         const cards = await Card.find({ project: projectId })
-        const newCards = await updateCards(cards)
         return res.status(200).json(cards)
     }
     catch (e)
@@ -217,7 +203,7 @@ router.put('/updateCards', async (req, res) => {
             const [firstCard] = await Card.find(
                 {items: {"$elemMatch": { _id: {$eq: todo._id} }}}
                 )
-            if (!firstCard) return res.status(400).json({ message: 'У карточки нет владельца' })
+            if (!firstCard) return res.status(400).json({ message: 'Данные не обновлены. Чтобы обновить, укажите карточку!' })
             currentCardId = firstCard._id
             currentCardItems = firstCard.items
         } else {

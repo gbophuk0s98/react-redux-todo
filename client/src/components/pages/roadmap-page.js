@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { fetchTodos, todoCreated, todoSelected, fetchProject } from '../../actoins'
+import { fetchTodos, todoCreated, todoSelected, fetchProject, clearCardsError, clearCreateTodoError } from '../../actoins'
 import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'
 import CustomDateRangePicker from '../date-range-picker'
 import CreateProjectLink from '../create-project-link'
+import ErrorAlertWrapper from '../error-alert'
 import {
     makeStyles,
     Table,
@@ -18,55 +19,45 @@ import {
     TableRow,
     Paper,
     TextField,
-    SwipeableDrawer,
     Drawer,
     IconButton,
+    Snackbar,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 
 import './pages-css/roadmap-page.css'
 
-const getDate = (plusMonth = 0) => `${(new Date().getMonth() + 1) + plusMonth }/${new Date().getDate()}/${new Date().getFullYear()}`
+const getDate = (plusMonth = 0) => `${(new Date().getMonth() + 1) + plusMonth}/${new Date().getDate()}/${new Date().getFullYear()}`
 
 const columns = [
     { id: 'epicName', label: 'Epic', minWidth: 170, aling: 'left' },
     { id: 'epicDate', label: 'Срок выполнения', minWidth: 100, aling: 'left' },
 ]
 
-const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, projectListIsEmpty, selectedProject }) => {
+const useStyles = makeStyles({
+    paperStyles: { width: '50%', maxHeight: 550, borderRadius: '0' },
+    container: { maxHeight: 500 },
+    paperRow: { width: '50%', maxHeight: 550, padding: '15px 25px', borderRadius: '0' },
+    swipe: { height: '200px', top: 64 },
+})
+
+
+
+const RoadMapPage = ({ 
+    todos, todoCreated, loading, projectListIsEmpty,
+    fetchTodos, todoSelected, selectedProject 
+}) => {
 
     const [showInput, setShowInput] = useState(false)
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
     const [open, setOpen] = useState(true)
 
-    const useStyles = makeStyles({
-        paperStyles: { width: '50%', maxHeight: 550, borderRadius: '0' },
-        container: { maxHeight: 500 },
-        paperRow: { width: '50%', maxHeight: 550, padding: '15px 25px', borderRadius: '0' },
-        swipe: { height: '200px', top: 64 },
-    })
     const classes = useStyles()
 
     useEffect(() => {
         if (selectedProject._id) fetchTodos(selectedProject._id)
     }, [fetchTodos, selectedProject])
-    
-    const handleChangePage = (event, newPage) => setPage(newPage)
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value)
-        setPage(0)
-    }
-    
-    const onBlurHandler = e => {
-        const { value } = e.target
-        if (value) {
-            const todo = { content: value, startDate: getDate(), endDate: getDate(1)}
-            todoCreated(todo, selectedProject._id)
-        }
-        setShowInput(false)
-    }
 
     const renderHead = (column) => {
         return (
@@ -79,7 +70,7 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
             </TableCell>
         )
     }
-
+    
     const renderRow = (todo) => {
         return (
             <TableRow hover key={todo._id}>
@@ -104,11 +95,11 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
             </TableRow>
         )
     }
-
+    
     const InputRow = () => {
         return (
             <>
-                <TextField 
+                <TextField
                     label="Epic"
                     variant="outlined"
                     name="content"
@@ -118,27 +109,43 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
             </>
         )
     }
-
+    
     const BtnRow = () => {
         return (
             <>
                 <Button
                     onClick={() => setShowInput(!showInput)}
                 >
-                        Создать Epic...
+                    Создать Epic...
                 </Button>
             </>
         )
     }
 
+    const handleChangePage = (event, newPage) => setPage(newPage)
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value)
+        setPage(0)
+    }
+
+    const onBlurHandler = e => {
+        const { value } = e.target
+        if (value) {
+            const todo = { content: value, startDate: getDate(), endDate: getDate(1) }
+            todoCreated(todo, selectedProject._id)
+        }
+        setShowInput(false)
+    }
+
+
     if (projectListIsEmpty) return <CreateProjectLink />
     if (!selectedProject._id) return <>Выберите проект</>
     if (loading) return <Spinner />
 
-    console.log('ROADMAP RENDER()')
     return (
         <div className="roadmap-container">
-            
+
             <Paper className={classes.paperStyles}>
                 <TableContainer className={classes.container}>
                     <Table
@@ -166,8 +173,8 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
                 />
             </Paper>
             <Paper className={classes.paperRow}>
-                { !showInput && <BtnRow /> }
-                { showInput && <InputRow /> }
+                {!showInput && <BtnRow />}
+                {showInput && <InputRow />}
             </Paper>
             <Drawer
                 variant="persistent"
@@ -181,6 +188,7 @@ const RoadMapPage = ({ todos, todoCreated, fetchTodos, todoSelected, loading, pr
                 </IconButton>
                 <TodoDetail />
             </Drawer>
+            <ErrorAlertWrapper />
         </div>
     )
 }
@@ -193,7 +201,7 @@ const mapStateTopProps = (state) => {
         loading: state.todos.loading,
         error: state.todos.error,
         projectListIsEmpty,
-        selectedProject: state.selectedProject
+        selectedProject: state.selectedProject,
     }
 }
 

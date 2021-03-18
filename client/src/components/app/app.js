@@ -11,7 +11,6 @@ import { useRoutes } from '../../routes'
 
 import './app.css'
 import { ThemeProvider } from 'styled-components'
-import { CssBaseline } from '@material-ui/core'
 import { createMuiTheme, ThemeProvider as MaterialThemeProvider } from '@material-ui/core/styles';
 
 const App = ({ token, theme }) => {
@@ -19,14 +18,12 @@ const App = ({ token, theme }) => {
 	const routes = useRoutes(!!token)
 	const isMobile = window.innerWidth < 600
 	const muiTheme = createMuiTheme(theme === 'light' ? muiThemeLight: muiThemeDark)
-	console.log(muiTheme)
 	
 	return (
 		<ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
 			<MaterialThemeProvider theme={muiTheme}>
 			<>
 			<GlobalStyles />
-			{/* <CssBaseline /> */}
 			<DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
 				{routes}
 			</DndProvider>

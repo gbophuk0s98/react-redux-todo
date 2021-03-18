@@ -217,25 +217,37 @@ const todoCreated = (dispatch, todo, projectId) => {
     .then(todo => todoSelected(dispatch, todo._id))
     .then(() => fetchCards(dispatch, projectId))
     .then(() => fetchTodos(dispatch, projectId))
-    .catch(err => console.log(err.message))
+    .catch(err => dispatch(createTodoError(err.message)))
 
     return { type: 'TODO_CREATED' }
 }
 
-const todoUpdate = (dispatch, id, projectId, startDate = null, endDate = null, color = null, title = null, priority = null) => {
-    let objToUpdate = {}, error = ''
+const createTodoError = error => {
+    return {
+        type: 'TODO_CREATED_FAILURE',
+        payload: error
+    }
+}
+
+const clearCreateTodoError = () => {
+    return { type: 'CLEAR_TODO_ERROR' }
+}
+ 
+const todoUpdate = (dispatch, id, projectId, startDate = null, endDate = null, color = null, title = null, priority = null, owner = null) => {
+    let objToUpdate = {}
 
     if (startDate && endDate) objToUpdate = { id, startDate, endDate }
     else if (color) objToUpdate = { id, color }
     else if (title) objToUpdate = { id, title }
     else if (priority) objToUpdate = { id, priority }
+    else if (owner) objToUpdate = { id, owner }
 
     service.updateCardItem(objToUpdate)
     .then(() => service.updateTodo(objToUpdate))
     .then(() => todoSelected(dispatch, id))
     .then(() => fetchTodos(dispatch, projectId))
     .then(() => fetchCards(dispatch, projectId))
-    .catch((err) => error = err.message)
+    .catch((err) => dispatch(cardsError(err.message)))
         
     return { type: 'TODO_UPDATED' }
 }
@@ -263,6 +275,13 @@ const transferCardsItems = (result) => {
     return {
         type: 'TRANSFER_CARDS_ITEMS',
         payload: result
+    }
+}
+
+const moveCardItem = (transferInfo) => {
+    return {
+        type: 'MOVE_CARD_ITEM',
+        payload: transferInfo
     }
 }
 
@@ -299,6 +318,10 @@ const setRecentProjects = (dispatch, projectId) => {
     .then(project => dispatch({ type: 'USER_RECENT_PROJECTS', payload: project }))
 }
 
+const clearCardsError = () => {
+    return { type: 'CLEAR_CARDS_ERROR' }
+}
+
 export {
     fetchCards,
     transferCardsItems,
@@ -321,5 +344,8 @@ export {
     cardsLoaded,
     projectUpdate,
     createCard,
-    deleteCard
+    deleteCard,
+    clearCardsError,
+    clearCreateTodoError,
+    moveCardItem
 }

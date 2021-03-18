@@ -18,16 +18,14 @@ const sortCards = (cards, projectItems) => {
     })
 }
 
-const CardPage = ({ cards, loading, transferCardsItems, fetchCards, selectedProject, projectListIsEmpty }) => {
+const CardPage = ({ cards, loading, transferCardsItems, fetchCards, selectedProject, projectListIsEmpty, saveCards }) => {
 
-    console.log('cards', cards)
     const history = useHistory()
-    console.log(selectedProject)
 
     useEffect(() => {
         if (selectedProject._id) fetchCards(selectedProject._id)
     }, [fetchCards, selectedProject])
-    useEffect(() => saveCards(cards), [cards])
+    useEffect(() => saveCards(cards), [saveCards, cards])
 
     const checkCard = (result) => {
         const { source, destination } = result

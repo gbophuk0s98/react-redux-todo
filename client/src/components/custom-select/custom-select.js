@@ -16,7 +16,7 @@ const CustomOption = ({ data, innerRef, innerProps }) => {
 }
 
 const CustomSelect = ({ priority, id, todoUpdate, iconOptions, selectedProject }) => {
-
+    
     const [options, setOptions] = useState([])
     
     useEffect(() => setOptions(iconOptions), [setOptions, iconOptions])
@@ -42,6 +42,7 @@ const CustomSelect = ({ priority, id, todoUpdate, iconOptions, selectedProject }
     }
 
     const renderOption = () => options.filter(option => option.value === priority)
+
     const changeHandler = data => todoUpdate(id, selectedProject._id, data.value)
 
     return (
