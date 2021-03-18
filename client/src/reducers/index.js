@@ -104,21 +104,38 @@ const transferItems = (state, payload) => {
 
 const moveItem = (state, payload) => {
 
+    let newCards
     const { sourceCardIndex, targetCardIndex, currentItemIndex, currentItem } = payload
     const copiedCardsItems = [...state.cards.items]
+    console.log('reducer !!', payload)
+    if (!currentItem) {
+        copiedCardsItems[targetCardIndex].items.push(state.selectedTodo)
+        newCards = copiedCardsItems.map((el, index) => {
+            if (index === targetCardIndex) return { ...el, items: updatePosNumbers(copiedCardsItems[targetCardIndex].items) }
+            return el
+        })
+    }
+    else {
+        copiedCardsItems[sourceCardIndex].items = [
+            ...copiedCardsItems[sourceCardIndex].items.slice(0, currentItemIndex),
+            ...copiedCardsItems[sourceCardIndex].items.slice(currentItemIndex + 1)
+        ]
+        copiedCardsItems[targetCardIndex].items.push(currentItem)
     
-    copiedCardsItems[sourceCardIndex].items = [
-        ...copiedCardsItems[sourceCardIndex].items.slice(0, currentItemIndex),
-        ...copiedCardsItems[sourceCardIndex].items.slice(currentItemIndex + 1)
-    ]
-    copiedCardsItems[targetCardIndex].items.push(currentItem)
+        console.log('copiedCardsItems', copiedCardsItems)
+        newCards = copiedCardsItems.map((el, index) => {
+            if (index === sourceCardIndex) return { ...el, items: updatePosNumbers(copiedCardsItems[sourceCardIndex].items) }
+            if (index === targetCardIndex) return { ...el, items: updatePosNumbers(copiedCardsItems[targetCardIndex].items) }
+            return el
+        })
+    }
 
     return {
         ...state,
         cards: {
             loading: false,
             error: null,
-            items: copiedCardsItems
+            items: newCards
         }
     }
 }

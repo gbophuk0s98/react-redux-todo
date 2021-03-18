@@ -28,11 +28,12 @@ const SimpleSelect = ({ todoId, selectedProject, cards, projectId, moveCardItem,
 
     const changeHandler = (data) => {
         const copiedCards = [...cards]
-        const targetCardIndex = cards.findIndex(({ _id }) => _id === data.value)
+        console.log('copiedCards', copiedCards)
+        const targetCardIndex = copiedCards.findIndex((item) => item._id === data.value)
 
         let currentItemIndex, sourceCardIndex, currentItem
         copiedCards.every((card, index) => {
-            currentItemIndex = card.items.findIndex(({ _id }) => _id === todoId)
+            currentItemIndex = card.items.findIndex((item) => item._id === todoId)
             currentItem = card.items[currentItemIndex]
             sourceCardIndex = index
             console.log('currentItemIndex', currentItemIndex)
@@ -43,7 +44,7 @@ const SimpleSelect = ({ todoId, selectedProject, cards, projectId, moveCardItem,
             targetCardIndex: targetCardIndex,
             sourceCardIndex: sourceCardIndex,
             currentItemIndex: currentItemIndex,
-            currentItem: currentItem
+            currentItem: currentItem,
         })
     }
 
@@ -63,7 +64,7 @@ const mapStateToProps = (state) => {
     return {
         cards: state.cards.items,
         selectedProject: state.selectedProject,
-        projectId: state.selectedProject._id       
+        projectId: state.selectedProject._id,
     }
 }
 

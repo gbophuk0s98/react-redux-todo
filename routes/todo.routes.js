@@ -59,13 +59,16 @@ router.get('/getTodo', async (req, res) => {
         const user = await User.findOne({ _id: project.owner })
         const todoToFront = {
             _id: todo._id,
+            customId: todo.customId,
             content: todo.content,
             startDate: todo.startDate,
             endDate: todo.endDate,
+            posNumber: 0,
             owner: user.userName,
             ownerEmail: user.email,
             background: todo.background,
             priority: todo.priority,
+            creationNumber: todo.creationNumber
          }
         return res.status(200).json(todoToFront)
     }
