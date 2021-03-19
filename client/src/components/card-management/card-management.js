@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
-import { projectUpdate, createCard, deleteCard } from '../../actoins'
+import { projectUpdate, createCard, deleteCard, saveCards } from '../../actoins'
 import { Card, CardContent, Button, Dialog, DialogActions, DialogContent, TextField, makeStyles, IconButton } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Divider from '@material-ui/core/Divider'
@@ -37,7 +37,13 @@ const useStyles = makeStyles({
     }
 })
 
-const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard }) => {
+const sortCards = (cards, projectItems) => {
+    return cards.sort((a, b) => {
+        return projectItems.findIndex(({ id }) => id === a._id ) - projectItems.findIndex(({ id }) => id === b._id )
+    })
+}
+
+const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard, cards, saveCards }) => {
 
     const [items, setItems] = useState(selectedProject.cards || [])
     const [open, setOpen] = useState(false)
@@ -55,7 +61,8 @@ const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard
             result.source.index,
             result.destination.index
         )
-        setItems(reorderItems)
+        setItems(reorderItems)        
+        saveCards(sortCards(cards, reorderItems))
         projectUpdate(selectedProject._id, reorderItems)
     }
 
@@ -165,7 +172,8 @@ const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard
 
 const mapStateToProps = (state) => {
     return {
-        selectedProject: state.selectedProject
+        selectedProject: state.selectedProject,
+        cards: state.cards.items
     }
 }
 
@@ -173,7 +181,8 @@ const matDispatchToProps = (dispatch) => {
     return {
         projectUpdate: (projectId, items) => projectUpdate(dispatch, projectId, items),
         createCard: (objToBackend) => createCard(dispatch, objToBackend),
-        deleteCard: (objToBackend, projectItems) => deleteCard(dispatch, objToBackend, projectItems)
+        deleteCard: (objToBackend, projectItems) => deleteCard(dispatch, objToBackend, projectItems),
+        saveCards: (cards) => dispatch(saveCards(cards)),
     }
 }
 

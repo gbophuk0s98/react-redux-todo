@@ -23,15 +23,23 @@ const SimpleSelect = ({ selectedTodo, selectedProject, cards, moveCardItem, save
     
     const [options, setOptions] = useState([])
     const [index, setIndex] = useState(null)
+    console.log('seceltedProject', selectedProject)
 
     useEffect(() => setOptions(selectedProject.cards), [selectedProject.cards])
     useEffect(() => saveCards(cards), [saveCards, cards])
     useEffect(() => {
         cards.forEach((card, index) => {
-            const [todoInCard] = card.items.filter(item => item._id === selectedTodo._id)
+            // console.log('card', card)
+            const [todoInCard] = card.items.filter(item => {
+                // console.log('item', item)
+                // console.log('index', index)
+                return item._id === selectedTodo._id
+            })
+            // console.log('todoInCard', todoInCard)
             if (todoInCard)  setIndex(index)
+            // console.log('----------------------------')
         })
-    }, [cards, selectedTodo._id])
+    })
 
     
     const changeHandler = (data) => {
