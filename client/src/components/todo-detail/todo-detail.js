@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import ColorPicker from '../color-picker/color-picker'
 
-import { todoUpdate } from '../../actoins'
+import { todoUpdate, fetchCards } from '../../actoins'
 import CustomSelect from '../custom-select'
 import SimpleSelect from '../simple-select'
 
@@ -25,12 +25,15 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-const TodoDetail = ({ selectedTodo, todoUpdate, selectedTodoLoading, selectedProject }) => {
+const TodoDetail = ({ selectedTodo, todoUpdate, selectedTodoLoading, selectedProject, fetchCards }) => {
 
     const [title, setTitle] = useState('')
     const classes = useStyles()
 
     useEffect(() => setTitle(selectedTodo.content), [setTitle, selectedTodo])
+    useEffect(() => {
+        if (selectedProject._id) fetchCards(selectedProject._id)
+    }, [fetchCards, selectedProject])
 
     const onTitleChange = e => setTitle(e.target.value)
     
@@ -193,7 +196,8 @@ const mapStateTopProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        todoUpdate: (id, projectId, title) => todoUpdate(dispatch, id, projectId, null, null, null, title)
+        todoUpdate: (id, projectId, title) => todoUpdate(dispatch, id, projectId, null, null, null, title),
+        fetchCards: (projectId) => fetchCards(dispatch, projectId)
     }
 }
 

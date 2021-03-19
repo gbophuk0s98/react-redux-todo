@@ -199,6 +199,13 @@ const todosError = error => {
     }
 }
 
+const todoUpdateError = error => {
+    return {
+        type: 'TODO_UPDATE_FAILURE',
+        payload: error
+    }
+}
+
 const todosLoaded = todos => {
     return {
         type: 'FETCH_TODOS_SUCCESS',
@@ -232,6 +239,10 @@ const createTodoError = error => {
 const clearCreateTodoError = () => {
     return { type: 'CLEAR_TODO_ERROR' }
 }
+
+const clearUpdateTodoError = () => {
+    return { type: 'CLEAR_UPDATE_TODO_ERROR' }
+}
  
 const todoUpdate = (dispatch, id, projectId, startDate = null, endDate = null, color = null, title = null, priority = null, owner = null) => {
     let objToUpdate = {}
@@ -247,7 +258,7 @@ const todoUpdate = (dispatch, id, projectId, startDate = null, endDate = null, c
     .then(() => todoSelected(dispatch, id))
     .then(() => fetchTodos(dispatch, projectId))
     .then(() => fetchCards(dispatch, projectId))
-    .catch((err) => dispatch(cardsError(err.message)))
+    .catch((err) => dispatch(todoUpdateError(err.message)))
         
     return { type: 'TODO_UPDATED' }
 }
@@ -278,11 +289,8 @@ const transferCardsItems = (result) => {
     }
 }
 
-const moveCardItem = (transferInfo) => {
-    return {
-        type: 'MOVE_CARD_ITEM',
-        payload: transferInfo
-    }
+const moveCardItem = (dispatch, transferInfo) => {
+    dispatch({ type: 'MOVE_CARD_ITEM', payload: transferInfo })
 }
 
 const saveCards = (cards) => {
@@ -347,5 +355,6 @@ export {
     deleteCard,
     clearCardsError,
     clearCreateTodoError,
+    clearUpdateTodoError,
     moveCardItem
 }

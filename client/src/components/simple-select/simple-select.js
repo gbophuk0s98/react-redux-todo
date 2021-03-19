@@ -19,27 +19,42 @@ const getObj = (card) => {
     }
 }
 
-const SimpleSelect = ({ todoId, selectedProject, cards, projectId, moveCardItem, saveCards }) => {
+const SimpleSelect = ({ selectedTodo, selectedProject, cards, moveCardItem, saveCards }) => {
     
     const [options, setOptions] = useState([])
-    
+    const [index, setIndex] = useState(null)
+
     useEffect(() => setOptions(selectedProject.cards), [selectedProject.cards])
     useEffect(() => saveCards(cards), [saveCards, cards])
+    useEffect(() => {
+        cards.forEach((card, index) => {
+            const [todoInCard] = card.items.filter(item => item._id === selectedTodo._id)
+            if (todoInCard)  setIndex(index)
+        })
+    }, [cards, selectedTodo._id])
 
+    
     const changeHandler = (data) => {
         const copiedCards = [...cards]
-        console.log('copiedCards', copiedCards)
         const targetCardIndex = copiedCards.findIndex((item) => item._id === data.value)
 
         let currentItemIndex, sourceCardIndex, currentItem
         copiedCards.every((card, index) => {
-            currentItemIndex = card.items.findIndex((item) => item._id === todoId)
+            currentItemIndex = card.items.findIndex((item) => item._id === selectedTodo._id)
             currentItem = card.items[currentItemIndex]
-            sourceCardIndex = index
-            console.log('currentItemIndex', currentItemIndex)
-            if (currentItemIndex >= 0) return false
+            if (currentItemIndex >= 0) {
+                sourceCardIndex = index
+                return false
+            }
             return true
         })
+        let obj = {
+            targetCardIndex: targetCardIndex,
+            sourceCardIndex: sourceCardIndex,
+            currentItemIndex: currentItemIndex,
+            currentItem: currentItem,
+        }
+    
         moveCardItem({
             targetCardIndex: targetCardIndex,
             sourceCardIndex: sourceCardIndex,
@@ -52,25 +67,28 @@ const SimpleSelect = ({ todoId, selectedProject, cards, projectId, moveCardItem,
 
     return (
         <Select
-            value={myArr[0]}
+            value={myArr[index]}
             components={{ Option: CustomOption }}
-            options={myArr}
+            options={options.map(option => getObj(option))}
             onChange={(data) => changeHandler(data)}
         />
     )
 }
 
 const mapStateToProps = (state) => {
+
+    const { _id,  customId, content, startDate, endDate } = state.selectedTodo
+
     return {
         cards: state.cards.items,
         selectedProject: state.selectedProject,
-        projectId: state.selectedProject._id,
+        selectedTodo: { _id, customId, content, startDate, endDate }
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        moveCardItem: (transferInfo) => dispatch(moveCardItem(transferInfo)),
+        moveCardItem: (transferInfo) => moveCardItem(dispatch, transferInfo),
         saveCards: (cards) => dispatch(saveCards(cards)),
     }
 }

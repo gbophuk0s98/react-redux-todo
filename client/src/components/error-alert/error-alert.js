@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import MuiAlert from '@material-ui/lab/Alert'
 import { Snackbar } from '@material-ui/core'
 
-import { clearCardsError, clearCreateTodoError } from '../../actoins'
+import { clearCreateTodoError, clearUpdateTodoError } from '../../actoins'
 import { connect } from 'react-redux'
 
 const ErrorAlert = (props) => {
@@ -10,29 +10,29 @@ const ErrorAlert = (props) => {
 }
 
 const ErrorAlertWrapper = ({
-    cardsError, createTodoError,
-    clearCardsError, clearCreateTodoError
+    updateTodoError, createTodoError,
+    clearUpdateTodoError, clearCreateTodoError
 }) => {
 
     const [open, setOpen] = useState(false)
     const [message, setMessage] = useState()
 
     useEffect(() => {
-        if (!!cardsError) {
-            setOpen(!!cardsError)
-            setMessage(cardsError)
+        if (!!updateTodoError) {
+            setOpen(!!updateTodoError)
+            setMessage(updateTodoError)
         }
         else if (!!createTodoError) {
             setOpen(!!createTodoError)
             setMessage(createTodoError)
         }
         
-    }, [cardsError, createTodoError])
+    }, [updateTodoError, createTodoError])
 
     const onHandleClose = (event, reason) => {
         if (reason === 'clickaway') return
         setOpen(false)
-        clearCardsError()
+        clearUpdateTodoError()
         clearCreateTodoError()
     }
 
@@ -51,14 +51,14 @@ const ErrorAlertWrapper = ({
 
 const mapStateToProps = (state) => {
     return {
-        cardsError: state.cards.error,
+        updateTodoError: state.updateTodoError,
         createTodoError: state.createTodoError,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        clearCardsError: () => dispatch(clearCardsError()),
+        clearUpdateTodoError: () => dispatch(clearUpdateTodoError()),
         clearCreateTodoError: () => dispatch(clearCreateTodoError()),
     }
 }
