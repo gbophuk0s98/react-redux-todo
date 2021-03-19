@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { fetchTodos, todoCreated, todoSelected, fetchProject, clearCardsError, clearCreateTodoError } from '../../actoins'
+import { fetchTodos, todoCreated, todoSelected, fetchProject } from '../../actoins'
 import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'
 import CustomDateRangePicker from '../date-range-picker'
@@ -21,7 +21,6 @@ import {
     TextField,
     Drawer,
     IconButton,
-    Snackbar,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 
@@ -139,13 +138,12 @@ const RoadMapPage = ({
     }
 
 
-    if (projectListIsEmpty) return <CreateProjectLink />
     if (!selectedProject._id) return <>Выберите проект</>
+    if (projectListIsEmpty) return <CreateProjectLink />
     if (loading) return <Spinner />
 
     return (
         <div className="roadmap-container">
-
             <Paper className={classes.paperStyles}>
                 <TableContainer className={classes.container}>
                     <Table

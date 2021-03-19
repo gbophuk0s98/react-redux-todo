@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react'
 import MuiAlert from '@material-ui/lab/Alert'
 import { Snackbar } from '@material-ui/core'
 
-import { clearCreateTodoError, clearUpdateTodoError } from '../../actoins'
+import * as actions from '../../actoins'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 const ErrorAlert = (props) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />
 }
 
 const ErrorAlertWrapper = ({
-    updateTodoError, createTodoError,
-    clearUpdateTodoError, clearCreateTodoError
+    updateTodoError, createTodoError, authError,
+    clearUpdateTodoError, clearCreateTodoError, clearAuthError
 }) => {
 
     const [open, setOpen] = useState(false)
@@ -25,15 +26,19 @@ const ErrorAlertWrapper = ({
         else if (!!createTodoError) {
             setOpen(!!createTodoError)
             setMessage(createTodoError)
+        } else if (authError) {
+            setOpen(true)
+            setMessage(authError)
         }
         
-    }, [updateTodoError, createTodoError])
+    }, [updateTodoError, createTodoError, authError])
 
     const onHandleClose = (event, reason) => {
         if (reason === 'clickaway') return
         setOpen(false)
         clearUpdateTodoError()
         clearCreateTodoError()
+        clearAuthError()
     }
 
     return (
@@ -53,14 +58,14 @@ const mapStateToProps = (state) => {
     return {
         updateTodoError: state.updateTodoError,
         createTodoError: state.createTodoError,
+        authError: state.authError,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        clearUpdateTodoError: () => dispatch(clearUpdateTodoError()),
-        clearCreateTodoError: () => dispatch(clearCreateTodoError()),
-    }
+    const { clearAuthError, clearCreateTodoError, clearUpdateTodoError } = bindActionCreators(actions, dispatch)
+    
+    return { clearUpdateTodoError ,clearCreateTodoError, clearAuthError }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ErrorAlertWrapper)

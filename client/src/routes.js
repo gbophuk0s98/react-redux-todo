@@ -2,8 +2,9 @@ import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
 import Header from './components/header'
-import { CardPage, RoadMapPage, RegPage, LoginPage, ProjectPage, ProjectListPage, } from './components/pages'
+import { CardPage, RoadMapPage, RegPage, LoginPage, ProjectPage, ProjectListPage, SignIn, SignUp } from './components/pages'
 import CardManagement from './components/card-management'
+import { SnackbarProvider } from 'notistack'
 
 export const useRoutes = (isAuthenticated = true, location = null) => {
 
@@ -38,10 +39,26 @@ export const useRoutes = (isAuthenticated = true, location = null) => {
             <div className="container">
                 <Switch>
                     <Route path="/register" exact>
-                        <RegPage />
+                        <SnackbarProvider 
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                            }}
+                            maxSnack={4}
+                        >
+                            <SignUp />
+                        </SnackbarProvider>
                     </Route>
                     <Route path="/login" exact>
-                        <LoginPage />
+                        <SnackbarProvider 
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                            }}
+                            maxSnack={4}
+                        >
+                            <SignIn />
+                        </SnackbarProvider>
                     </Route>
                     <Redirect to='/login' />
                 </Switch>

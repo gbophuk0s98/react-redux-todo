@@ -4,6 +4,8 @@ import RegPage from './reg-page'
 import LoginPage from './login-page'
 import ProjectPage from './project-page'
 import ProjectListPage from './project-list-page'
+import SignIn from './sign-in-page'
+import SignUp from './sign-up-page'
 
 export {
     CardPage,
@@ -12,4 +14,6 @@ export {
     LoginPage,
     ProjectPage,
     ProjectListPage,
+    SignIn,
+    SignUp
 }

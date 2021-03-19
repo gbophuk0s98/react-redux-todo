@@ -26,13 +26,13 @@ const initialState = {
     },
     formLoading: false,
     formErrors: {},
-    authError: '',
+    authError: null,
     user: {
         name: '',
         email: '',
         userId: '',
     },
-    theme: 'dark',
+    theme: 'light',
     selectedProject: {},
     selectedTodo: {},
     selectedTodoLoading: false,
@@ -151,6 +151,7 @@ const moveItem = (state, payload) => {
 }
 
 const changeForm = (state, form, event) => {
+    console.log('form', state.form)
     return {
         ...state,
         form: {
@@ -284,7 +285,7 @@ const reducer = (state = initialState, action) => {
         case 'AUTH_ERROR_CLEAR':
             return {
                 ...state,
-                authError: '',
+                authError: null,
                 formLoading: false,
             }
         case 'USER_LOGOUT_SUCCESS':
