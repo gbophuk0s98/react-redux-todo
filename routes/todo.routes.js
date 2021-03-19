@@ -195,6 +195,7 @@ router.put('/updateCards', async (req, res) => {
     try
     {
         const { id, startDate, endDate, color, title, priority } = req.body
+        console.log('req.body', req.body)
         const [todo] = await Todo.find({ _id: id })
         let currentCardId, currentCardItems
 
@@ -219,6 +220,10 @@ router.put('/updateCards', async (req, res) => {
         else if (title) newItems = updateCardItem(currentCardItems, id, null, null, null, title)
         else if (priority) newItems = updateCardItem(currentCardItems, id, null, null, null, null, priority)
 
+        console.log(newItems)
+        newItems.forEach(item => {
+            console.log('item', item)
+        })
         await Card.updateOne({ _id: currentCardId }, { items: newItems })
         res.status(200).json({ message: 'Карточки успешно обновлены!' })
     }

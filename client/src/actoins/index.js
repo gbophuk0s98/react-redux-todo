@@ -222,7 +222,7 @@ const todoSelectedLoading = () => {
 const todoCreated = (dispatch, todo, projectId) => {
     service.createTodo(todo, projectId)
     .then(todo => todoSelected(dispatch, todo._id))
-    .then(() => fetchCards(dispatch, projectId))
+    // .then(() => fetchCards(dispatch, projectId)) //был расположен вторым then
     .then(() => fetchTodos(dispatch, projectId))
     .catch(err => dispatch(createTodoError(err.message)))
 

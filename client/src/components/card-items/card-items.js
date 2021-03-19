@@ -25,7 +25,6 @@ const CardItems = ({ items, projectKey, iconOptions }) => {
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                                 style={{
-                                    // #456C86
                                     backgroundColor: item.background,
                                     ...provided.draggableProps.style,
                                     border: snapshot.isDragging ? `2px solid rgba(140, 140, 140, 1)`: 'none',

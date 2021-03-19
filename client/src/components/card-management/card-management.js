@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
-import { projectUpdate, createCard, deleteCard, saveCards } from '../../actoins'
+import { projectUpdate, createCard, deleteCard, cardsLoaded } from '../../actoins'
 import { Card, CardContent, Button, Dialog, DialogActions, DialogContent, TextField, makeStyles, IconButton } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Divider from '@material-ui/core/Divider'
@@ -18,7 +18,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     userSelect: 'none',
     padding: '2px 5px',
     margin: `0 8px 0 0`,
-    maxWidth: '500px',
+    maxWidth: '400px',
     width: '100%',
     ...draggableStyle,
 })
@@ -43,7 +43,7 @@ const sortCards = (cards, projectItems) => {
     })
 }
 
-const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard, cards, saveCards }) => {
+const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard, cards, cardsLoaded }) => {
 
     const [items, setItems] = useState(selectedProject.cards || [])
     const [open, setOpen] = useState(false)
@@ -62,13 +62,14 @@ const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard
             result.destination.index
         )
         setItems(reorderItems)        
-        saveCards(sortCards(cards, reorderItems))
+        cardsLoaded(sortCards(cards, reorderItems))
         projectUpdate(selectedProject._id, reorderItems)
     }
 
     const handleSubmit = () => {
         setOpen(false)
         createCard({ name: title, projectId: selectedProject._id })
+        setTitle('')
     }
 
     const handleClose = () => {
@@ -82,7 +83,6 @@ const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard
             ...items.slice(0, index),
             ...items.slice(index + 1)
         ]
-        // setItems(myArr)
         deleteCard({ cardId: id, projectId: selectedProject._id }, myArr)
     }
 
@@ -182,7 +182,7 @@ const matDispatchToProps = (dispatch) => {
         projectUpdate: (projectId, items) => projectUpdate(dispatch, projectId, items),
         createCard: (objToBackend) => createCard(dispatch, objToBackend),
         deleteCard: (objToBackend, projectItems) => deleteCard(dispatch, objToBackend, projectItems),
-        saveCards: (cards) => dispatch(saveCards(cards)),
+        cardsLoaded: (cards) => dispatch(cardsLoaded(cards)),
     }
 }
 

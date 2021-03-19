@@ -31,9 +31,6 @@ const TodoDetail = ({ selectedTodo, todoUpdate, selectedTodoLoading, selectedPro
     const classes = useStyles()
 
     useEffect(() => setTitle(selectedTodo.content), [setTitle, selectedTodo])
-    useEffect(() => {
-        if (selectedProject._id) fetchCards(selectedProject._id)
-    }, [fetchCards, selectedProject])
 
     const onTitleChange = e => setTitle(e.target.value)
     

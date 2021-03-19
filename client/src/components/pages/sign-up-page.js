@@ -65,7 +65,7 @@ const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, 
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Вход
+                    Регистрация
                 </Typography>
                 <div className={classes.form}>
                     <TextField
@@ -122,7 +122,7 @@ const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, 
                     <Grid container>
                         <Grid item>
                             <Link to="/login" variant="body2">
-                                {"Или войти в систему"}
+                                {"Или войдите в систему!"}
                             </Link>
                         </Grid>
                     </Grid>
