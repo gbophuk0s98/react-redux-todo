@@ -77,6 +77,7 @@ const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, 
                         name="userName"
                         autoComplete="email"
                         autoFocus
+                        value={form.userName || ''}
                         onChange={changeForm}
                     />
                     <TextField
@@ -87,7 +88,7 @@ const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, 
                         label="Почта"
                         name="email"
                         autoComplete="email"
-                        autoFocus
+                        value={form.email || ''}
                         onChange={changeForm}
                     />
                     <TextField
@@ -98,6 +99,7 @@ const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, 
                         name="password"
                         label="Пароль"
                         type="password"
+                        value={form.password || ''}
                         onChange={changeForm}
                     />
                     <TextField
@@ -108,6 +110,7 @@ const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, 
                         name="matchPassword"
                         label="Подтвердите пароль"
                         type="password"
+                        value={form.matchPassword || ''}
                         onChange={changeForm}
                     />
                     <Button

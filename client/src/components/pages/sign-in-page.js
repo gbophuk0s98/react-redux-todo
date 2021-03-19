@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const SingIn = ({ user, errors, form, loginHandler, changeForm, clearErrors, formLoading }) => {
+    console.log('form', form)
     const classes = useStyles()
     const { enqueueSnackbar } = useSnackbar()
 
@@ -70,6 +71,7 @@ const SingIn = ({ user, errors, form, loginHandler, changeForm, clearErrors, for
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        value={form.email || ''}
                         onChange={changeForm}
                     />
                     <TextField
@@ -80,6 +82,7 @@ const SingIn = ({ user, errors, form, loginHandler, changeForm, clearErrors, for
                         name="password"
                         label="Пароль"
                         type="password"
+                        value={form.password || ''}
                         onChange={changeForm}
                     />
                     <Button
