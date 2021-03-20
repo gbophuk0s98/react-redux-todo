@@ -187,7 +187,7 @@ const mapStateToProps = (state) => {
     return {
         user: state.user,
         selectedProject: state.selectedProject,
-        theme: state.theme,
+        theme: state.user.theme,
     }
 }
 

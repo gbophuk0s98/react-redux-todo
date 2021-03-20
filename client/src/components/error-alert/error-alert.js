@@ -56,9 +56,9 @@ const ErrorAlertWrapper = ({
 
 const mapStateToProps = (state) => {
     return {
-        updateTodoError: state.updateTodoError,
-        createTodoError: state.createTodoError,
-        authError: state.authError,
+        updateTodoError: state.appErrors.updateTodoError,
+        createTodoError: state.appErrors.createTodoError,
+        authError: state.form.authError,
     }
 }
 

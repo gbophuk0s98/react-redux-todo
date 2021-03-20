@@ -142,9 +142,9 @@ const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, 
 const mapStateToProps = (state) => {
     return {
         form: state.form,
-        errors: state.formErrors,
+        errors: state.form.formErrors,
         user: state.user,
-        formLoading: state.formLoading
+        formLoading: state.form.formLoading
     }
 }
 

@@ -82,6 +82,7 @@ const ColorPicker = ({ todoId, todoColor, todoUpdate, selectedProject }) => {
 }
 
 const mapStateToProps = (state) => {
+	console.log('state', state)
 	return {
 		todoId: state.selectedTodo._id,
 		todoColor: state.selectedTodo.background,

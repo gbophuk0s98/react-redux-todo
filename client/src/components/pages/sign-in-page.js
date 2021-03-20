@@ -112,11 +112,12 @@ const SingIn = ({ user, errors, form, loginHandler, changeForm, clearErrors, for
 }
 
 const mapStateToProps = (state) => {
+    console.log('page', state.form)
     return {
         form: state.form,
-        errors: state.formErrors,
+        errors: state.form.formErrors,
         user: state.user,
-        formLoading: state.formLoading
+        formLoading: state.form.formLoading
     }
 }
 

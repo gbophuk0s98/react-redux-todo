@@ -14,7 +14,7 @@ import { ThemeProvider } from 'styled-components'
 import { createMuiTheme, ThemeProvider as MaterialThemeProvider } from '@material-ui/core/styles';
 
 const App = ({ token, theme }) => {
-
+	
 	const routes = useRoutes(!!token)
 	const isMobile = window.innerWidth < 600
 	const muiTheme = createMuiTheme(theme === 'light' ? muiThemeLight: muiThemeDark)
@@ -34,9 +34,10 @@ const App = ({ token, theme }) => {
 }
 
 const mapStateToProps = (state) => {
+	console.log('state', state)
 	return {
 		token: state.user.token,
-		theme: state.theme
+		theme: state.user.theme
 	}
 }
 

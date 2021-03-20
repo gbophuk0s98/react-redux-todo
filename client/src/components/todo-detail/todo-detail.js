@@ -186,7 +186,7 @@ const TodoDetail = ({ selectedTodo, todoUpdate, selectedTodoLoading, selectedPro
 const mapStateTopProps = (state) => {
     return {
         selectedTodo: state.selectedTodo,
-        selectedTodoLoading: state.selectedTodoLoading,
+        selectedTodoLoading: state.selectedTodo.loading,
         selectedProject: state.selectedProject
     }
 }

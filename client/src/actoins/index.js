@@ -65,7 +65,7 @@ const setUser = user => {
 
 const setUserError = error => {
     return {
-        type: 'USER_CREATED_FAILURE',
+        type: 'USER_AUTHENTICATION_FAILURE',
         payload: error
     }
 }
@@ -142,7 +142,7 @@ const fetchProjects = (dispatch, userId) => {
 
 const setProject = project => {
     return {
-        type: 'FETCH_PROJECT_SUCCESS',
+        type: 'PROJECT_SELECT_SUCCESS',
         payload: project
     }
 }
@@ -326,10 +326,6 @@ const setRecentProjects = (dispatch, projectId) => {
     .then(project => dispatch({ type: 'USER_RECENT_PROJECTS', payload: project }))
 }
 
-const clearCardsError = () => {
-    return { type: 'CLEAR_CARDS_ERROR' }
-}
-
 export {
     fetchCards,
     transferCardsItems,
@@ -353,7 +349,6 @@ export {
     projectUpdate,
     createCard,
     deleteCard,
-    clearCardsError,
     clearCreateTodoError,
     clearUpdateTodoError,
     moveCardItem
