@@ -7,67 +7,78 @@ const service = new ProjectService()
 
 const registerHandler = (form) => (dispatch) => {
 
-    dispatch(sendAuthForm())
+    dispatch({ type: 'SIGN_UP_FORM_SENDING' })
     const errors = validateRegForm(form)
-    
+
+    console.log(errors)
     if (!isEmptyObject(errors)) {
         dispatch({
-            type: 'REGISTER_FORM_ERROR',
+            type: 'SIGN_UP_FORM_ERROR',
             payload: errors
         })
     } else {
         service.register(form)
-        .then(user => dispatch(setUser(user)) )
-        .then(() => dispatch({ type: 'REGISTER_FORM_SUBMITED', payload: form }))
-        .catch(error => dispatch(setUserError(error.message)) )
+            .then(user => dispatch(setUser(user)))
+            .then(() => dispatch({ type: 'SIGN_UP_FORM_SUBMITED' }))
+            .then(() => dispatch(clearForms()))
+            .catch(error => dispatch({
+                type: 'USER_REGISTER_FAILURE',
+                payload: error.message
+            }))
     }
 }
 
 const loginHandler = (form) => (dispatch) => {
-    
-    dispatch(sendAuthForm())
+
+    dispatch({ type: 'SIGN_IN_FORM_SENDING' })
 
     const errors = validateAuthForm(form)
 
     if (!isEmptyObject(errors)) {
         dispatch({
-            type: 'LOGIN_FORM_ERROR',
+            type: 'SIGN_IN_FORM_ERROR',
             payload: errors
         })
+    } else {
+        console.log('form', form)
+        service.login(form)
+            .then(user => dispatch(setUser(user)))
+            .then(() => dispatch({ type: 'SIGN_IN_FORM_SUBMITED' }))
+            .then(() => dispatch(clearForms()))
+            .catch(error => dispatch({
+                type: 'USER_AUTHENTICATION_FAILURE',
+                payload: error.message
+            }))
     }
-    service.login(form)
-    .then(user => dispatch(setUser(user)))
-    .then(() => dispatch({ type: 'LOGIN_FORM_SUBMITED', payload: form }))
-    .catch(error => dispatch(setUserError(error.message)) )
 }
 
 const createProject = (project) => (dispatch) => {
     dispatch(createProjectRequested())
     service.createProject(project)
-    .then(res => {
-        dispatch(createProjectSuccess(res)) 
-        dispatch(setProject(res))
-        dispatch(clearSelectedTodo())
-        dispatch(setRecentProjects(res._id))
-    })
-    .catch(error => dispatch(createProjectFailure(error)) )
+        .then(res => {
+            dispatch(createProjectSuccess(res))
+            dispatch(setProject(res))
+            dispatch(clearSelectedTodo())
+            dispatch(setRecentProjects(res._id))
+        })
+        .catch(error => dispatch(createProjectFailure(error)))
 }
 
 const createCard = (objToBackend) => (dispatch) => {
     service.createCard(objToBackend)
-    .then(() => dispatch(fetchProject(objToBackend.projectId)))
+        .then(() => dispatch(fetchProject(objToBackend.projectId)))
 }
 
 const fetchProjects = (userId) => (dispatch) => {
     dispatch(projectsRequested())
     service.getProjects(userId)
-    .then(projects => dispatch(projectsLoaded(projects)) )
-    .catch(error => dispatch(projectsError(error)) )
+        .then(projects => dispatch(projectsLoaded(projects)))
+        .catch(error => dispatch(projectsError(error)))
 }
 
 const fetchProject = (projectId) => (dispatch) => {
     service.getProject(projectId)
-    .then(project => dispatch(setProject(project)))
+        .then(project => dispatch(setProject(project)))
 }
 
 const fetchCards = (projectId) => (dispatch) => {
@@ -79,13 +90,13 @@ const fetchCards = (projectId) => (dispatch) => {
 
 const todoCreated = (todo, projectId) => (dispatch) => {
     service.createTodo(todo, projectId)
-    .then(todo => dispatch(todoSelected(todo._id)))
-    // .then(() => fetchCards(dispatch, projectId)) //был расположен вторым then
-    .then(() => dispatch(fetchTodos(projectId)))
-    .then(() => dispatch(createTodoSuccess('Задача успешно создана!')))
-    .catch(err => dispatch(createTodoError(err.message)))
+        .then(todo => dispatch(todoSelected(todo._id)))
+        // .then(() => fetchCards(dispatch, projectId)) //был расположен вторым then
+        .then(() => dispatch(fetchTodos(projectId)))
+        .then(() => dispatch(createTodoSuccess('Задача успешно создана!')))
+        .catch(err => dispatch(createTodoError(err.message)))
 }
- 
+
 const todoUpdate = (id, projectId, startDate = null, endDate = null, color = null, title = null, priority = null, owner = null) => (dispatch) => {
     let objToUpdate = {}
 
@@ -96,26 +107,26 @@ const todoUpdate = (id, projectId, startDate = null, endDate = null, color = nul
     else if (owner) objToUpdate = { id, owner }
 
     service.updateCardItem(objToUpdate)
-    .then(() => {
-        service.updateTodo(objToUpdate).then(res => dispatch(updateTodoSuccess(res.message)))
-    })
-    .then(() => dispatch(todoSelected(id)))
-    .then(() => dispatch(fetchTodos(projectId)))
-    .then(() => dispatch(fetchCards(projectId)))
-    .then(() => dispatch({ type: 'TODO_UPDATED' }))
-    .catch((err) => dispatch(todoUpdateError(err.message)))
+        .then(() => {
+            service.updateTodo(objToUpdate).then(res => dispatch(updateTodoSuccess(res.message)))
+        })
+        .then(() => dispatch(todoSelected(id)))
+        .then(() => dispatch(fetchTodos(projectId)))
+        .then(() => dispatch(fetchCards(projectId)))
+        .then(() => dispatch({ type: 'TODO_UPDATED' }))
+        .catch((err) => dispatch(todoUpdateError(err.message)))
 }
 
 const todoSelected = (id) => (dispatch) => {
     dispatch(todoSelectedLoading())
     service.getTodo(id)
-    .then(todo => dispatch({ type: 'TODO_SELECTED', payload: todo }) )
+        .then(todo => dispatch({ type: 'TODO_SELECTED', payload: todo }))
 }
 
 const projectUpdate = (projectId, items) => (dispatch) => {
     service.updateProjectItems({ projectId, items })
-    .then(() => dispatch({ type: 'SELECTED_PROJECT_UPDATED' }))
-    .then(() => dispatch(fetchProject(projectId)))
+        .then(() => dispatch({ type: 'SELECTED_PROJECT_UPDATED' }))
+        .then(() => dispatch(fetchProject(projectId)))
 }
 
 const fetchTodos = (projectId) => (dispatch) => {
@@ -127,23 +138,40 @@ const fetchTodos = (projectId) => (dispatch) => {
 
 const deleteCard = (objToBackend, projectItems) => (dispatch) => {
     service.deleteCard(objToBackend)
-    .then(() => dispatch(projectUpdate(objToBackend.projectId, projectItems)))
+        .then(() => dispatch(projectUpdate(objToBackend.projectId, projectItems)))
 }
 
 const setRecentProjects = (projectId) => (dispatch) => {
     service.getProject(projectId)
-    .then(project => dispatch({ type: 'USER_RECENT_PROJECTS', payload: project }))
+        .then(project => dispatch({ type: 'USER_RECENT_PROJECTS', payload: project }))
 }
 
 const updateCardTitle = (objToBackend) => (dispatch) => {
     dispatch(updateCardTitleRequested())
     service.updateCardTitle(objToBackend)
-    .then(res => dispatch(updateCardTitleSuccess(res.message)))
-    .then(() => dispatch(fetchProject(objToBackend.projectId)))
-    .catch(err => dispatch(updateCardTitleError(err.message)))
+        .then(res => dispatch(updateCardTitleSuccess(res.message)))
+        .then(() => dispatch(fetchProject(objToBackend.projectId)))
+        .catch(err => dispatch(updateCardTitleError(err.message)))
 }
 
 // object actions
+const clearSingInFormErrors = () => {
+    return {
+        type: 'SIGN_IN_ERRORS_CLEAR'
+    }
+}
+
+const clearSignUpFormErrors = () => {
+    return {
+        type: 'SIGN_UP_ERRORS_CLEAR'
+    }
+}
+
+const clearForms = () => {
+    return {
+        type: 'FORMS_CLEAR'
+    }
+}
 
 const updateCardTitleRequested = () => {
     return {
@@ -219,13 +247,6 @@ const setUser = user => {
     return {
         type: 'USER_CREATED_SUCCESS',
         payload: user,
-    }
-}
-
-const setUserError = error => {
-    return {
-        type: 'USER_AUTHENTICATION_FAILURE',
-        payload: error
     }
 }
 
@@ -375,27 +396,28 @@ const saveCards = (cards) => {
     }
 }
 
-const changeForm = event => {
+const changeSignInForm = event => {
     return {
-        type: 'FORM_CHANGED',
+        type: 'SIGN_IN_FORM_CHANGED',
         payload: event,
     }
 }
 
-const clearErrors = () => {
+const changeSignUpForm = event => {
     return {
-        type: 'CLEAR_FORM_ERRORS'
+        type: 'SIGN_UP_FORM_CHANGED',
+        payload: event
     }
 }
 
 export {
     fetchCards,
     transferCardsItems,
-    changeForm,
+    changeSignInForm,
+    changeSignUpForm,
     registerHandler,
     loginHandler,
     logoutHandler,
-    clearErrors,
     fetchTodos,
     todoCreated,
     saveCards,
@@ -418,5 +440,8 @@ export {
     updateCardTitle,
     clearCardTitleMessage,
     clearCreateTodoMessage,
-    clearSelectedTodo
+    clearSelectedTodo,
+    clearSingInFormErrors,
+    clearSignUpFormErrors,
+    clearForms,
 }

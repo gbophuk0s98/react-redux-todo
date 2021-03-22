@@ -11,7 +11,7 @@ const ErrorAlert = (props) => {
 }
 
 const ErrorAlertWrapper = ({
-    updateTodoError, createTodoError, authError,
+    updateTodoError, createTodoError, signInAuthError, signUpAuthError,
     clearUpdateTodoError, clearCreateTodoError, clearAuthError
 }) => {
 
@@ -26,12 +26,15 @@ const ErrorAlertWrapper = ({
         else if (!!createTodoError) {
             setOpen(!!createTodoError)
             setMessage(createTodoError)
-        } else if (authError) {
+        } else if (signInAuthError) {
             setOpen(true)
-            setMessage(authError)
+            setMessage(signInAuthError)
+        } else if (signUpAuthError) {
+            setOpen(!!signUpAuthError)
+            setMessage(signUpAuthError)
         }
         
-    }, [updateTodoError, createTodoError, authError])
+    }, [updateTodoError, createTodoError, signInAuthError, signUpAuthError])
 
     const onHandleClose = (event, reason) => {
         if (reason === 'clickaway') return
@@ -58,7 +61,8 @@ const mapStateToProps = (state) => {
     return {
         updateTodoError: state.appErrors.updateTodoError,
         createTodoError: state.appErrors.createTodoError,
-        authError: state.form.authError,
+        signInAuthError: state.form.signInForm.authError,
+        signUpAuthError: state.form.signUpForm.authError,
     }
 }
 

@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 const variant = { variant: 'error' }
 
-const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, formLoading }) => {
+const SignUp = ({ errors, form, registerHandler, changeSignUpForm, clearSignUpFormErrors, formLoading }) => {
     const classes = useStyles()
     const { enqueueSnackbar } = useSnackbar()
 
@@ -49,13 +49,12 @@ const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, 
         if (errors.password) enqueueSnackbar(errors.password, variant)
         if (errors.email) enqueueSnackbar(errors.email, variant)
         if (errors.userName) enqueueSnackbar(errors.userName, variant)
+        if (JSON.stringify(errors) !== '{}') clearSignUpFormErrors()
     }, [errors, enqueueSnackbar])
 
-    useEffect(() => clearErrors(), [clearErrors])
+    useEffect(() => clearSignUpFormErrors(), [])
 
-    const handleSubmit = () => {
-        registerHandler(form)
-    }
+    const handleSubmit = () => registerHandler(form)
 
     return (
         <Container component="main" maxWidth="xs">
@@ -77,7 +76,7 @@ const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, 
                         autoComplete="email"
                         autoFocus
                         value={form.userName || ''}
-                        onChange={changeForm}
+                        onChange={changeSignUpForm}
                     />
                     <TextField
                         variant="outlined"
@@ -88,7 +87,7 @@ const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, 
                         name="email"
                         autoComplete="email"
                         value={form.email || ''}
-                        onChange={changeForm}
+                        onChange={changeSignUpForm}
                     />
                     <TextField
                         variant="outlined"
@@ -99,7 +98,7 @@ const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, 
                         label="Пароль"
                         type="password"
                         value={form.password || ''}
-                        onChange={changeForm}
+                        onChange={changeSignUpForm}
                     />
                     <TextField
                         variant="outlined"
@@ -110,7 +109,7 @@ const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, 
                         label="Подтвердите пароль"
                         type="password"
                         value={form.matchPassword || ''}
-                        onChange={changeForm}
+                        onChange={changeSignUpForm}
                     />
                     <Button
                         fullWidth
@@ -140,18 +139,19 @@ const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, 
 
 const mapStateToProps = (state) => {
     return {
-        form: state.form,
-        errors: state.form.formErrors,
+        form: state.form.signUpForm.form,
+        errors: state.form.signUpForm.formErrors,
+        formLoading: state.form.signUpForm.formLoading,
         user: state.user,
-        formLoading: state.form.formLoading
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { changeForm, clearErrors } = bindActionCreators(actions, dispatch)
+    const { changeSignUpForm, clearSignUpFormErrors, clearAuthError, clearForms } = bindActionCreators(actions, dispatch)
     return {
-        changeForm,
-        clearErrors,
+        changeSignUpForm,
+        clearSignUpFormErrors,
+        clearAuthError,
         registerHandler: (form) => dispatch(actions.registerHandler(form))
     }
 }

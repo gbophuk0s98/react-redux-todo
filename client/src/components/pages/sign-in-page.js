@@ -38,16 +38,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const SingIn = ({ user, errors, form, loginHandler, changeForm, clearErrors, formLoading }) => {
+const SingIn = ({ errors, form, loginHandler, changeSignInForm, clearSingInFormErrors, formLoading }) => {
     const classes = useStyles()
     const { enqueueSnackbar } = useSnackbar()
 
     useEffect(() => {
         if (errors.password) enqueueSnackbar(errors.password, { variant: 'error'})
         if (errors.email) enqueueSnackbar(errors.email, { variant: 'error'})
+        if (JSON.stringify(errors) !== '{}') clearSingInFormErrors()
     }, [errors, enqueueSnackbar])
-
-    useEffect(() => clearErrors(), [clearErrors])
 
     const handleSubmit = () => loginHandler(form)
 
@@ -71,7 +70,7 @@ const SingIn = ({ user, errors, form, loginHandler, changeForm, clearErrors, for
                         autoComplete="email"
                         autoFocus
                         value={form.email || ''}
-                        onChange={changeForm}
+                        onChange={changeSignInForm}
                     />
                     <TextField
                         variant="outlined"
@@ -82,7 +81,7 @@ const SingIn = ({ user, errors, form, loginHandler, changeForm, clearErrors, for
                         label="Пароль"
                         type="password"
                         value={form.password || ''}
-                        onChange={changeForm}
+                        onChange={changeSignInForm}
                     />
                     <Button
                         fullWidth
@@ -112,18 +111,19 @@ const SingIn = ({ user, errors, form, loginHandler, changeForm, clearErrors, for
 
 const mapStateToProps = (state) => {
     return {
-        form: state.form,
-        errors: state.form.formErrors,
+        form: state.form.signInForm.form,
+        errors: state.form.signInForm.formErrors,
+        formLoading: state.form.signInForm.formLoading,
         user: state.user,
-        formLoading: state.form.formLoading
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { changeForm, clearErrors } = bindActionCreators(actions, dispatch)
+    const { changeSignInForm, clearSingInFormErrors, clearAuthError } = bindActionCreators(actions, dispatch)
     return {
-        changeForm,
-        clearErrors,
+        changeSignInForm,
+        clearSingInFormErrors,
+        clearAuthError,
         loginHandler: (form) => dispatch(actions.loginHandler(form))
     }
 }

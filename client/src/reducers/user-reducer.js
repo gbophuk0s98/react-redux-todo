@@ -14,9 +14,9 @@ const updateUser = (state, action) => {
         case 'USER_THEME_CHANGED':
             return { ...state.user, theme: action.payload }
         case 'USER_CREATED_SUCCESS':
-            return { ...action.payload }
+            return { ...action.payload, theme: state.user.theme }
         case 'USER_LOGOUT_SUCCESS':
-            return initialUserState
+            return { ...initialUserState, theme: state.user.theme }
         case 'TODO_UPDATED':
                 return state.user
         default:

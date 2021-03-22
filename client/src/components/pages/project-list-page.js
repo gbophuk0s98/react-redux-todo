@@ -14,6 +14,11 @@ const columns = [
     { id: 'projectOwner', label: 'Администратор', minWidth: 170, aling: 'left' },
 ]
 
+const useStyles = makeStyles({
+    paperStyles: { width: '50%', height: 'max-content' },
+    container: { height: 'max-content' },
+})
+
 const ProjectListPage = ({ user, projects, loading, fetchProjects, fetchProject, setRecentProjects, clearSelectedTodo }) => {
 
     const history = useHistory()
@@ -21,10 +26,6 @@ const ProjectListPage = ({ user, projects, loading, fetchProjects, fetchProject,
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
 
-    const useStyles = makeStyles({
-        paperStyles: { width: '50%', maxHeight: 500 },
-        container: { maxHeight: 440 },
-    })
     const classes = useStyles()
     
     useEffect(() => fetchProjects({userId: user.id, token: user.token }), [fetchProjects, user])

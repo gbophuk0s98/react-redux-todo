@@ -26,7 +26,8 @@ const loginFormValidator = [
 router.post('/login', loginFormValidator, async (req, res) => {
     try
     {
-        const errors = validationResult(req)
+        console.log(req.body)
+        const errors = validationResult(req.body)
         if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array(), message: 'Проверьте правильность вводимых данных!'})
 
         const { email, password } = req.body
