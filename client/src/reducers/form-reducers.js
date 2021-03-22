@@ -23,7 +23,7 @@ const updateAuthForms = (state, action) => {
             return { ...state.form, formLoading: true }
         case 'REGISTER_FORM_ERROR':
         case 'LOGIN_FORM_ERROR':
-            return { ...state.form, formErrors: { ...action.payload } }
+            return { ...state.form, formErrors: { ...action.payload }, formLoading: false }
         case 'CLEAR_FORM_ERRORS':
             return { ...state.form, formErrors: { ...action.payload } }
         case 'USER_AUTHENTICATION_FAILURE':

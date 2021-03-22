@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import { fetchProjects, fetchProject, setRecentProjects } from '../../actoins'
+import { fetchProjects, fetchProject, setRecentProjects, clearSelectedTodo } from '../../actoins'
 import { Table, Button, TableBody, TableCell, TableContainer, TablePagination, TableHead, TableRow, Paper, makeStyles } from '@material-ui/core'
 
 import Spinner from '../spinner'
@@ -14,7 +14,7 @@ const columns = [
     { id: 'projectOwner', label: 'Администратор', minWidth: 170, aling: 'left' },
 ]
 
-const ProjectListPage = ({ user, projects, loading, fetchProjects, fetchProject, setRecentProjects }) => {
+const ProjectListPage = ({ user, projects, loading, fetchProjects, fetchProject, setRecentProjects, clearSelectedTodo }) => {
 
     const history = useHistory()
 
@@ -32,6 +32,7 @@ const ProjectListPage = ({ user, projects, loading, fetchProjects, fetchProject,
     const onTitleClick = (projectId) => {
         fetchProject(projectId)
         setRecentProjects(projectId)
+        clearSelectedTodo()
         history.push('/cards')
     }
     
@@ -121,6 +122,7 @@ const mapDispatchToProps = (dispatch) => {
         fetchProjects: (userId) => dispatch(fetchProjects(userId)),
         fetchProject: (projectId) => dispatch(fetchProject(projectId)),
         setRecentProjects: (projectId) => dispatch(setRecentProjects(projectId)),
+        clearSelectedTodo: () => dispatch(clearSelectedTodo())
     }
 }
 

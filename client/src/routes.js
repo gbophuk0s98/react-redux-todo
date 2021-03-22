@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
 import Header from './components/header'
-import { CardPage, RoadMapPage, RegPage, LoginPage, ProjectPage, ProjectListPage, SignIn, SignUp } from './components/pages'
+import { CardPage, RoadMapPage, ProjectPage, ProjectListPage, SignIn, SignUp } from './components/pages'
 import CardManagement from './components/card-management'
 import { SnackbarProvider } from 'notistack'
 

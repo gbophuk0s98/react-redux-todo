@@ -13,8 +13,16 @@ export const muiThemeLight = {
     overrides: {
         pallete: {
             background: {
-                paper: '#e8e8e8'
+                paper: '#e8e8e8',
             },
+        },
+        Typography: {
+            root: {
+                color: '#303030',
+            },
+            '&-h5': {
+                color: '#303030',
+            }
         },
         MuiButton: {
             root: {
@@ -54,6 +62,7 @@ export const muiThemeLight = {
         MuiCard: {
             root: {
                 backgroundColor: '#f4f5f7',
+                color: '#201E1E',
                 '& p': {
                     paddingLeft: '5px',
                 }
@@ -124,8 +133,33 @@ export const muiThemeLight = {
                     color: '#303030',
                 }
             }
-        }
-      }
+        },
+        MuiInputBase: {
+            root: {
+                color: '#303030',
+                borderColor: '#fff',
+            }
+        },
+        MuiFormLabel: {
+            root: {
+                color: '#303030',
+            }
+        },
+        MuiTextField: {
+            root: {
+                color: '#303030',
+                '& .MuiFormLabel-root': {
+                    color: '#303030',
+                }
+            }
+        },
+        MuiSvgIcon: {
+            colorPrimary: {
+                color: '#1976d2',
+            }
+        },
+
+    }
 }
 
 export const muiThemeDark = {
@@ -185,6 +219,7 @@ export const muiThemeDark = {
         MuiCard: {
             root: {
                 backgroundColor: '#424242',
+                color: '#fff',
             }
         },
         MuiPaper: {
@@ -249,6 +284,30 @@ export const muiThemeDark = {
                     color: '#fff',
                 },
                 '& MuiFormLabel-root': {
+                    color: '#fff',
+                }
+            }
+        },
+        MuiSvgIcon: {
+            colorPrimary: {
+                color: '#456C86'
+            }
+        },
+        MuiInputBase: {
+            root: {
+                color: '#fff',
+                borderColor: '#fff',
+            }
+        },
+        MuiFormLabel: {
+            root: {
+                color: '#fff',
+            }
+        },
+        MuiTextField: {
+            root: {
+                color: '#fff',
+                '& .MuiFormLabel-root': {
                     color: '#fff',
                 }
             }

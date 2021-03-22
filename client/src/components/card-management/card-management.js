@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import { useHistory } from 'react-router-dom'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import { Button, Dialog, DialogActions, DialogContent, TextField } from '@material-ui/core'
 import { connect } from 'react-redux'
+
 import { projectUpdate, createCard, deleteCard, cardsLoaded } from '../../actoins'
-import { Card, CardContent, Button, Dialog, DialogActions, DialogContent, TextField, makeStyles, IconButton } from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete'
-import Divider from '@material-ui/core/Divider'
+
+import CardManagementItems from '../card-management-items'
+import SuccessAlertWrapper from '../success-alert'
 
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list)
@@ -14,27 +17,12 @@ const reorder = (list, startIndex, endIndex) => {
     return result
 }
 
-const getItemStyle = (isDragging, draggableStyle) => ({
-    userSelect: 'none',
-    padding: '2px 5px',
-    margin: `0 8px 0 0`,
-    maxWidth: '400px',
-    width: '100%',
-    ...draggableStyle,
-})
-
 const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? 'lightblue' : 'lightgrey',
     display: 'flex',
     padding: 8,
     width: '100%',
     height: '50%',
-})
-
-const useStyles = makeStyles({
-    cardContent: {
-        padding: 0
-    }
 })
 
 const sortCards = (cards, projectItems) => {
@@ -48,7 +36,7 @@ const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard
     const [items, setItems] = useState(selectedProject.cards || [])
     const [open, setOpen] = useState(false)
     const [title, setTitle] = useState('')
-    const classes = useStyles()
+    const history = useHistory()
 
     useEffect(() => setItems(selectedProject.cards), [selectedProject])
 
@@ -78,13 +66,7 @@ const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard
     }
     const handleOpen = () => setOpen(true)
     const handleChange = e => setTitle(e.target.value)
-    const handleDelete = (id, index) => {
-        const myArr = [
-            ...items.slice(0, index),
-            ...items.slice(index + 1)
-        ]
-        deleteCard({ cardId: id, projectId: selectedProject._id }, myArr)
-    }
+
 
     return (
         <div style={{ width: '70%' }}>
@@ -92,8 +74,13 @@ const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard
                 <Button
                     onClick={handleOpen}
                 >
-                    Добавить столбец...
-            </Button>
+                    {'Добавить столбец...'}
+                </Button>
+                <Button
+                    onClick={() => history.goBack()}
+                >
+                    {'Назад'}
+                </Button>
                 <Dialog
                     open={open}
                     onClose={handleClose}
@@ -131,41 +118,20 @@ const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard
                             {...provided.droppableProps}
                         >
                             {items.map((item, index) => (
-                                <Draggable key={item.id} draggableId={item.id} index={index}>
-                                    {(provided, snapshot) => (
-                                        <Card
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            style={getItemStyle(
-                                                snapshot.isDragging,
-                                                provided.draggableProps.style
-                                            )}
-                                        >
-                                            <CardContent className={classes.cardContent}>
-                                                <div className="text-right">
-                                                    <IconButton
-                                                        onClick={() => handleDelete(item.id, index)}
-                                                        edge="end"
-                                                    >
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                </div>
-                                                <TextField
-                                                    value={item.name}
-                                                    style={{ marginBottom: '15px', width: '100%' }}
-                                                />
-                                                <Divider />
-                                            </CardContent>
-                                        </Card>
-                                    )}
-                                </Draggable>
+                                <CardManagementItems
+                                    key={item.id}
+                                    items={items}
+                                    item={item}
+                                    index={index}
+                                    selectedProjectId={selectedProject._id}
+                                />
                             ))}
                             {provided.placeholder}
                         </div>
                     )}
                 </Droppable>
             </DragDropContext>
+            <SuccessAlertWrapper />
         </div>
     )
 }

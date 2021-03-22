@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { fetchTodos, todoCreated, todoSelected, fetchProject } from '../../actoins'
+import SuccessAlertWrapper from '../success-alert'
 import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'
 import CustomDateRangePicker from '../date-range-picker'
@@ -30,6 +31,7 @@ const getDate = (plusMonth = 0) => `${(new Date().getMonth() + 1) + plusMonth}/$
 
 const columns = [
     { id: 'epicName', label: 'Epic', minWidth: 170, aling: 'left' },
+    { id: 'epicKey', label: 'Epic key', minWidth: 50, aling: 'left' },
     { id: 'epicDate', label: 'Срок выполнения', minWidth: 100, aling: 'left' },
 ]
 
@@ -56,6 +58,7 @@ const RoadMapPage = ({
 
     useEffect(() => {
         if (selectedProject._id) fetchTodos(selectedProject._id)
+        return () => console.log('clear')
     }, [fetchTodos, selectedProject])
 
     const renderHead = (column) => {
@@ -82,6 +85,9 @@ const RoadMapPage = ({
                     >
                         {todo.content}
                     </Button>
+                </TableCell>
+                <TableCell>
+                    {selectedProject.key}-{todo.creationNumber}
                 </TableCell>
                 <TableCell>
                     <CustomDateRangePicker
@@ -187,6 +193,7 @@ const RoadMapPage = ({
                 <TodoDetail />
             </Drawer>
             <ErrorAlertWrapper />
+            <SuccessAlertWrapper />
         </div>
     )
 }

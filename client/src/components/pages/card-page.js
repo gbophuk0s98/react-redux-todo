@@ -49,7 +49,7 @@ const CardPage = ({ cards, loading, transferCardsItems, fetchCards, selectedProj
             onClick={() => history.push('/cardsSettings')}
             color="inherit"
         >
-            <SettingsIcon />
+            <SettingsIcon color="primary" />
         </IconButton>
         </div>
         <div className="card-container">

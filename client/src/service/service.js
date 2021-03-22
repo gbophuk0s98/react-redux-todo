@@ -59,6 +59,10 @@ export default class ProjectService {
         return await this.getResourses(`${this._todoBase}/createTodo`, 'POST', { ...body }, headers)
     }
 
+    updateCardTitle = async (body, headersToBackend = null) => {
+        return await this.getResourses(`${this._todoBase}/updateCardTitle`, 'PUT', { ...body })
+    }
+
     updateTodo = async (body, headers = {}) => {
         return await this.getResourses(`${this._todoBase}/updateTodo`, 'PUT', { ...body })
     }

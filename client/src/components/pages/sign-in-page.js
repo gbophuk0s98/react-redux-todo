@@ -91,7 +91,7 @@ const SingIn = ({ user, errors, form, loginHandler, changeForm, clearErrors, for
                         className={classes.submit}
                         onClick={handleSubmit}
                         >
-                        { formLoading  ? <CircularProgress color="inherit" /> : <>{'Войти'}</>}
+                        { formLoading  ? <CircularProgress size={24} color="inherit" /> : <>{'Войти'}</>}
                     </Button>
                     <Grid container>
                         <Grid item>

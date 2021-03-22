@@ -22,6 +22,8 @@ const updateSelectedTodo = (state, action) => {
             return { ...initialSelctedTodoState, loading: true }
         case 'TODO_SELECTED':
             return { ...action.payload, loading: false }
+        case 'SELECTED_TODO_CLEAR':
+            return { ...initialSelctedTodoState }
         default:
             return state.selectedTodo
     }

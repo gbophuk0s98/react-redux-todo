@@ -322,7 +322,21 @@ router.put('/updateProjectItems', async (req, res) => {
     }
     catch (e)
     {
-        errorResponse(res,)
+        errorResponse(res, e)
+    }
+})
+
+router.put('/updateCardTitle', async (req, res) => {
+    try
+    {
+        const { cardId, projectId, title } = req.body
+        await Card.updateOne({ _id: cardId }, { name: title })
+        await Project.updateOne({ cards: { $elemMatch: { id: { $eq: cardId } }} }, { $set: { "cards.$.name": title } })
+        return res.status(200).json({ message: 'Заголовок успешно обновлен!' })
+    }
+    catch (e)
+    {
+        errorResponse(res, e)
     }
 })
 

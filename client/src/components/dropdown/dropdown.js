@@ -3,7 +3,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { fetchProject } from '../../actoins'
+import { fetchProject, clearSelectedTodo } from '../../actoins'
 import { Button, Menu, MenuItem } from '@material-ui/core'
 
 import './dropdown.css'
@@ -18,7 +18,7 @@ class DropDownWrapper extends React.Component {
     }
 }
 
-const DropDown = ({ recentProjects, fetchProject }) => {
+const DropDown = ({ recentProjects, fetchProject, clearSelectedTodo }) => {
 
     const [anchorEl, setAnchorEl] = useState(false)
 
@@ -49,6 +49,7 @@ const DropDown = ({ recentProjects, fetchProject }) => {
                                 onClick={() => {
                                     handleClose()
                                     fetchProject(project._id)
+                                    clearSelectedTodo()
                                 }}
                             >
                                 {project.title}
@@ -82,6 +83,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchProject: (projectId) => dispatch(fetchProject(projectId)),
+        clearSelectedTodo: () => dispatch(clearSelectedTodo())
     }
 }
 

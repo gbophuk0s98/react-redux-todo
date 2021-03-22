@@ -119,7 +119,7 @@ const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, 
                         className={classes.submit}
                         onClick={handleSubmit}
                         >
-                        { formLoading  ? <CircularProgress color="inherit" /> : <>{'Создать аккаунт'}</>}
+                        { formLoading  ? <CircularProgress size={24} color="inherit" /> : <>{'Создать аккаунт'}</>}
                     </Button>
                     <Grid container>
                         <Grid item>
