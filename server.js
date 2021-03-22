@@ -22,7 +22,7 @@ app.listen(PORT, async () => {
     {
         //mongodb+srv://surta:123@cluster0.nqkum.mongodb.net/todo?retryWrites=true&w=majority
         //mongodb://127.0.0.1:27017/todo
-        await mongo.connect('mongodb://127.0.0.1:27017/todo', {
+        await mongo.connect('mongodb+srv://surta:123@cluster0.nqkum.mongodb.net/todo?retryWrites=true&w=majority', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         }).then(() => console.log(`Сервер работает на порту ${PORT}`))
