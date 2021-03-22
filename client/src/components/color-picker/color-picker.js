@@ -19,8 +19,10 @@ const ColorPicker = ({ todoId, todoColor, todoUpdate, selectedProject }) => {
 	useEffect(() => {
 		let colorObj = { r: '241', g: '112', b: '19', a: '1' }
 		let arrOfNumbers = todoColor.match(/\d+/g)
-		if (arrOfNumbers.length === 4) {
-			colorObj = { r: arrOfNumbers[0], g: arrOfNumbers[1], b: arrOfNumbers[2], a: arrOfNumbers[3] }
+		if (arrOfNumbers) {
+			if (arrOfNumbers.length === 4) {
+				colorObj = { r: arrOfNumbers[0], g: arrOfNumbers[1], b: arrOfNumbers[2], a: arrOfNumbers[3] }
+			}
 		}
 		setColor(colorObj)
 	}, [todoColor])
@@ -82,7 +84,6 @@ const ColorPicker = ({ todoId, todoColor, todoUpdate, selectedProject }) => {
 }
 
 const mapStateToProps = (state) => {
-	console.log('state', state)
 	return {
 		todoId: state.selectedTodo._id,
 		todoColor: state.selectedTodo.background,
@@ -92,7 +93,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return{
-		todoUpdate: (id, projectId, color) => todoUpdate(dispatch, id, projectId, null, null, color)
+		todoUpdate: (id, projectId, color) => dispatch(todoUpdate(id, projectId, null, null, color))
 	}
 }
 

@@ -88,7 +88,7 @@ router.post('/createTodo', async (req, res) => {
     
         // const { _id, items } = await Card.findOne({ columnType: 'TaskList', project: projectId })
         const card = await Card.findOne({ project: projectId })
-        console.log(card)
+        
         if (!card) return res.status(400).json({ message: 'Нельзя создать запись без владельца. Чтобы создать запись, нужна карточка!' })
         const allTodos = await Todo.find({ owner: projectId })
 
@@ -195,7 +195,7 @@ router.put('/updateCards', async (req, res) => {
     try
     {
         const { id, startDate, endDate, color, title, priority } = req.body
-        console.log('req.body', req.body)
+        
         const [todo] = await Todo.find({ _id: id })
         let currentCardId, currentCardItems
 
@@ -220,17 +220,11 @@ router.put('/updateCards', async (req, res) => {
         else if (title) newItems = updateCardItem(currentCardItems, id, null, null, null, title)
         else if (priority) newItems = updateCardItem(currentCardItems, id, null, null, null, null, priority)
 
-        console.log(newItems)
-        newItems.forEach(item => {
-            console.log('item', item)
-        })
         await Card.updateOne({ _id: currentCardId }, { items: newItems })
         res.status(200).json({ message: 'Карточки успешно обновлены!' })
     }
     catch (e)
     {
-        console.log(e)
-        console.log(e.message)
         res.status(500).json({ message: 'Внутренняя ошибка сервера', devMessage: `${e.message}` })
     }
 })
@@ -280,12 +274,10 @@ router.post('/createProject', async (req, res) => {
 router.post('/createCard', async (req, res) => {
     try
     {
-        console.log('/createCard')
         const { name, projectId } = req.body
 
         const newCard = new Card({ name: name, items: [], project: projectId })
         await newCard.save()
-        console.log(newCard)
 
         await Project.updateOne({ _id: projectId }, { 
             $push: { 
@@ -297,7 +289,6 @@ router.post('/createCard', async (req, res) => {
         })
 
         const project = await Project.findOne({ _id: projectId })
-        console.log('project', project)
 
         res.status(200).json({ message: 'Все хорошо!' })
     }
@@ -326,7 +317,7 @@ router.put('/updateProjectItems', async (req, res) => {
         const { projectId, items } = req.body
         await Project.updateOne({ _id: projectId }, { cards: items })
         const project = await Project.findOne({ _id: projectId })
-        console.log(project)
+
         return res.status(200).json({ message: 'Успешно обновлен!' })
     }
     catch (e)

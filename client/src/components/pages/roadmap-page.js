@@ -205,10 +205,10 @@ const mapStateTopProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchTodos: (projectId) => fetchTodos(dispatch, projectId),
-        todoCreated: (todo, projectId) => todoCreated(dispatch, todo, projectId),
-        todoSelected: (id) => todoSelected(dispatch, id),
-        fetchProject: (projectId) => fetchProject(dispatch, projectId),
+        fetchTodos: (projectId) => dispatch(fetchTodos(projectId)),
+        todoCreated: (todo, projectId) => dispatch(todoCreated(todo, projectId)),
+        todoSelected: (id) => dispatch(todoSelected(id)),
+        fetchProject: (projectId) => dispatch(fetchProject(projectId)),
     }
 }
 

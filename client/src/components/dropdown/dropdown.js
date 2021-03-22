@@ -81,7 +81,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchProject: (projectId) => fetchProject(dispatch, projectId),
+        fetchProject: (projectId) => dispatch(fetchProject(projectId)),
     }
 }
 

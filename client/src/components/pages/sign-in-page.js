@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const SingIn = ({ user, errors, form, loginHandler, changeForm, clearErrors, formLoading }) => {
-    console.log('form', form)
     const classes = useStyles()
     const { enqueueSnackbar } = useSnackbar()
 
@@ -112,7 +111,6 @@ const SingIn = ({ user, errors, form, loginHandler, changeForm, clearErrors, for
 }
 
 const mapStateToProps = (state) => {
-    console.log('page', state.form)
     return {
         form: state.form,
         errors: state.form.formErrors,
@@ -122,11 +120,11 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { changeForm, loginHandler, clearErrors } = bindActionCreators(actions, dispatch)
+    const { changeForm, clearErrors } = bindActionCreators(actions, dispatch)
     return {
         changeForm,
         clearErrors,
-        loginHandler: (form) => loginHandler(dispatch, form)
+        loginHandler: (form) => dispatch(actions.loginHandler(form))
     }
 }
 

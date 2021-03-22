@@ -28,7 +28,6 @@ const ProjectListPage = ({ user, projects, loading, fetchProjects, fetchProject,
     const classes = useStyles()
     
     useEffect(() => fetchProjects({userId: user.id, token: user.token }), [fetchProjects, user])
-    console.log('projects', projects)
     
     const onTitleClick = (projectId) => {
         fetchProject(projectId)
@@ -119,9 +118,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 
     return {
-        fetchProjects: (userId) => fetchProjects(dispatch, userId),
-        fetchProject: (projectId) => fetchProject(dispatch, projectId),
-        setRecentProjects: (projectId) => setRecentProjects(dispatch, projectId),
+        fetchProjects: (userId) => dispatch(fetchProjects(userId)),
+        fetchProject: (projectId) => dispatch(fetchProject(projectId)),
+        setRecentProjects: (projectId) => dispatch(setRecentProjects(projectId)),
     }
 }
 

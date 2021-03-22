@@ -51,14 +51,14 @@ const TodoDetail = ({ selectedTodo, todoUpdate, selectedTodoLoading, selectedPro
             <Spinner />
         </Grid>
     )
-    if (JSON.stringify(selectedTodo) === '{}') return (
+    if (!selectedTodo._id) return (
         <Grid
             container
             justify='center'
             alignItems='center'
             style={{ height: '100%' }}
         >
-            Выберите тудушку
+            {}
         </Grid>
     )
     
@@ -193,8 +193,8 @@ const mapStateTopProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        todoUpdate: (id, projectId, title) => todoUpdate(dispatch, id, projectId, null, null, null, title),
-        fetchCards: (projectId) => fetchCards(dispatch, projectId)
+        todoUpdate: (id, projectId, title) => dispatch(todoUpdate(id, projectId, null, null, null, title)),
+        fetchCards: (projectId) => dispatch(fetchCards(projectId))
     }
 }
 

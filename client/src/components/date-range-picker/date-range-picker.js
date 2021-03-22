@@ -41,9 +41,8 @@ const mapStateTopProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { todoUpdate } = bindActionCreators(actions, dispatch)
     return {
-        todoUpdate: (id, projectId, startDate, endDate) => todoUpdate(dispatch, id, projectId, startDate, endDate)
+        todoUpdate: (id, projectId, startDate, endDate) => dispatch(actions.todoUpdate(id, projectId, startDate, endDate))
     }
 }
 

@@ -179,9 +179,9 @@ const mapStateToProps = (state) => {
 
 const matDispatchToProps = (dispatch) => {
     return {
-        projectUpdate: (projectId, items) => projectUpdate(dispatch, projectId, items),
-        createCard: (objToBackend) => createCard(dispatch, objToBackend),
-        deleteCard: (objToBackend, projectItems) => deleteCard(dispatch, objToBackend, projectItems),
+        projectUpdate: (projectId, items) => dispatch(projectUpdate(projectId, items)),
+        createCard: (objToBackend) => dispatch(createCard(objToBackend)),
+        deleteCard: (objToBackend, projectItems) => dispatch(deleteCard(objToBackend, projectItems)),
         cardsLoaded: (cards) => dispatch(cardsLoaded(cards)),
     }
 }

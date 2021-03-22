@@ -17,10 +17,8 @@ const updateUser = (state, action) => {
             return { ...action.payload }
         case 'USER_LOGOUT_SUCCESS':
             return initialUserState
-        case 'USER_CARD_CREATED':
         case 'TODO_UPDATED':
-        case 'USER_CARD_DELETE':
-                return state
+                return state.user
         default:
             return state.user
     }

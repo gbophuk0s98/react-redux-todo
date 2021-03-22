@@ -3,24 +3,21 @@ import ProjectService from '../service'
 
 const service = new ProjectService()
 
-const registerHandler = (dispatch, form) => {
+const registerHandler = (form) => (dispatch) => {
 
     dispatch(sendAuthForm())
     const errors = validateRegForm(form)
     
     if (!isEmptyObject(errors)) {
-        return {
+        dispatch({
             type: 'REGISTER_FORM_ERROR',
             payload: errors
-        }
+        })
     }
     service.register(form)
     .then(user => dispatch(setUser(user)) )
+    .then(() => dispatch({ type: 'REGISTER_FORM_SUBMITED', payload: form }))
     .catch(error => dispatch(setUserError(error.message)) )
-    return {
-        type: 'REGISTER_FORM_SUBMITED',
-        payload: form
-    }
 }
 
 const sendAuthForm = () => {
@@ -29,25 +26,22 @@ const sendAuthForm = () => {
     }
 }
 
-const loginHandler = (dispatch, form) => {
+const loginHandler = (form) => (dispatch) => {
     
     dispatch(sendAuthForm())
 
     const errors = validateAuthForm(form)
 
     if (!isEmptyObject(errors)) {
-        return {
+        dispatch({
             type: 'LOGIN_FORM_ERROR',
             payload: errors
-        }
+        })
     }
     service.login(form)
     .then(user => dispatch(setUser(user)))
+    .then(() => dispatch({ type: 'LOGIN_FORM_SUBMITED', payload: form }))
     .catch(error => dispatch(setUserError(error.message)) )
-    return {
-        type: 'LOGIN_FORM_SUBMITED',
-        payload: form
-    }
 }
 
 const logoutHandler = () => {
@@ -96,21 +90,20 @@ const createProjectFailure = (error) => {
     }
 }
 
-const createProject = (dispatch, project) => {
+const createProject = (project) => (dispatch) => {
     dispatch(createProjectRequested())
     service.createProject(project)
     .then(res => {
         dispatch(createProjectSuccess(res)) 
         dispatch(setProject(res))
-        setRecentProjects(dispatch, res._id)
+        dispatch(setRecentProjects(res._id))
     })
     .catch(error => dispatch(createProjectFailure(error)) )
 }
 
-const createCard = (dispatch, objToBackend) => {
+const createCard = (objToBackend) => (dispatch) => {
     service.createCard(objToBackend)
-    .then(() => fetchProject(dispatch, objToBackend.projectId))
-    return { type: 'USER_CARD_CREATED' }
+    .then(() => dispatch(fetchProject(objToBackend.projectId)))
 }
 
 const projectsRequested = () => {
@@ -133,7 +126,7 @@ const projectsLoaded = projects => {
     }
 }
 
-const fetchProjects = (dispatch, userId) => {
+const fetchProjects = (userId) => (dispatch) => {
     dispatch(projectsRequested())
     service.getProjects(userId)
     .then(projects => dispatch(projectsLoaded(projects)) )
@@ -147,7 +140,7 @@ const setProject = project => {
     }
 }
 
-const fetchProject = (dispatch, projectId) => {
+const fetchProject = (projectId) => (dispatch) => {
     service.getProject(projectId)
     .then(project => dispatch(setProject(project)))
 }
@@ -172,7 +165,7 @@ const cardsLoaded = newCards => {
     }
 }
 
-const fetchCards = (dispatch, projectId) => {
+const fetchCards = (projectId) => (dispatch) => {
     dispatch(cardsRequested())
     service.getCards(projectId)
         .then(data => dispatch(cardsLoaded(data)))
@@ -219,14 +212,12 @@ const todoSelectedLoading = () => {
     }
 }
 
-const todoCreated = (dispatch, todo, projectId) => {
+const todoCreated = (todo, projectId) => (dispatch) => {
     service.createTodo(todo, projectId)
-    .then(todo => todoSelected(dispatch, todo._id))
+    .then(todo => dispatch(todoSelected(todo._id)))
     // .then(() => fetchCards(dispatch, projectId)) //был расположен вторым then
-    .then(() => fetchTodos(dispatch, projectId))
+    .then(() => dispatch(fetchTodos(projectId)))
     .catch(err => dispatch(createTodoError(err.message)))
-
-    return { type: 'TODO_CREATED' }
 }
 
 const createTodoError = error => {
@@ -244,7 +235,7 @@ const clearUpdateTodoError = () => {
     return { type: 'CLEAR_UPDATE_TODO_ERROR' }
 }
  
-const todoUpdate = (dispatch, id, projectId, startDate = null, endDate = null, color = null, title = null, priority = null, owner = null) => {
+const todoUpdate = (id, projectId, startDate = null, endDate = null, color = null, title = null, priority = null, owner = null) => (dispatch) => {
     let objToUpdate = {}
 
     if (startDate && endDate) objToUpdate = { id, startDate, endDate }
@@ -255,27 +246,26 @@ const todoUpdate = (dispatch, id, projectId, startDate = null, endDate = null, c
 
     service.updateCardItem(objToUpdate)
     .then(() => service.updateTodo(objToUpdate))
-    .then(() => todoSelected(dispatch, id))
-    .then(() => fetchTodos(dispatch, projectId))
-    .then(() => fetchCards(dispatch, projectId))
+    .then(() => dispatch(todoSelected(id)))
+    .then(() => dispatch(fetchTodos(projectId)))
+    .then(() => dispatch(fetchCards(projectId)))
+    .then(() => dispatch({ type: 'TODO_UPDATED' }))
     .catch((err) => dispatch(todoUpdateError(err.message)))
-        
-    return { type: 'TODO_UPDATED' }
 }
 
-const todoSelected = (dispatch, id) => {
+const todoSelected = (id) => (dispatch) => {
     dispatch(todoSelectedLoading())
     service.getTodo(id)
     .then(todo => dispatch({ type: 'TODO_SELECTED', payload: todo }) )
 }
 
-const projectUpdate = (dispatch, projectId, items) => {
+const projectUpdate = (projectId, items) => (dispatch) => {
     service.updateProjectItems({ projectId, items })
     .then(() => dispatch({ type: 'SELECTED_PROJECT_UPDATED' }))
-    .then(() => fetchProject(dispatch, projectId))
+    .then(() => dispatch(fetchProject(projectId)))
 }
 
-const fetchTodos = (dispatch, projectId) => {
+const fetchTodos = (projectId) => (dispatch) => {
     dispatch(todosRequested())
     service.getTodos(projectId)
         .then(data => dispatch(todosLoaded(data)))
@@ -289,8 +279,8 @@ const transferCardsItems = (result) => {
     }
 }
 
-const moveCardItem = (dispatch, transferInfo) => {
-    dispatch({ type: 'MOVE_CARD_ITEM', payload: transferInfo })
+const moveCardItem = (transferInfo) => {
+    return { type: 'MOVE_CARD_ITEM', payload: transferInfo }
 }
 
 const saveCards = (cards) => {
@@ -300,12 +290,9 @@ const saveCards = (cards) => {
     }
 }
 
-const deleteCard = (dispatch, objToBackend, projectItems) => {
+const deleteCard = (objToBackend, projectItems) => (dispatch) => {
     service.deleteCard(objToBackend)
-    .then(() => projectUpdate(dispatch, objToBackend.projectId, projectItems))
-    return {
-        type: 'USER_CARD_DELETE'
-    }
+    .then(() => dispatch(projectUpdate(objToBackend.projectId, projectItems)))
 }
 
 const changeForm = event => {
@@ -321,7 +308,7 @@ const clearErrors = () => {
     }
 }
 
-const setRecentProjects = (dispatch, projectId) => {
+const setRecentProjects = (projectId) => (dispatch) => {
     service.getProject(projectId)
     .then(project => dispatch({ type: 'USER_RECENT_PROJECTS', payload: project }))
 }

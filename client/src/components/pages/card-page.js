@@ -74,7 +74,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         transferCardsItems: (result) => dispatch(transferCardsItems(result)),
-        fetchCards: (projectId) => fetchCards(dispatch, projectId),
+        fetchCards: (projectId) => dispatch(fetchCards(projectId)),
         saveCards: (cards) => dispatch(saveCards(cards))
     }
 }

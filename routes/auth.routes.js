@@ -42,8 +42,6 @@ router.post('/login', loginFormValidator, async (req, res) => {
 
         const userToFront = await User.findOne({ _id: user.id })
 
-        console.log(userToFront)
-
         res.status(200).json({
             id: userToFront.id, userName: userToFront.userName, email: userToFront.email, token: userToFront.token
         })
@@ -71,7 +69,6 @@ router.post('/register', async (req, res) => {
         await User.updateOne({ email: user.email }, { token: generateToken(user.id, secretKey) })
 
         const userToFront = await User.findOne({ _id: user.id })
-        console.log(user)
 
         return res.status(200).json({
             id: userToFront.id, userName: userToFront.userName, email: userToFront.email, token: userToFront.token

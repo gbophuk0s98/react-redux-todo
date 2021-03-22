@@ -45,7 +45,6 @@ const SignUp = ({ user, errors, form, registerHandler, changeForm, clearErrors, 
     const { enqueueSnackbar } = useSnackbar()
 
     useEffect(() => {
-        console.log('errors', errors)
         if (errors.matchPassword) enqueueSnackbar(errors.matchPassword, variant)
         if (errors.password) enqueueSnackbar(errors.password, variant)
         if (errors.email) enqueueSnackbar(errors.email, variant)
@@ -149,11 +148,11 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { changeForm, registerHandler, clearErrors } = bindActionCreators(actions, dispatch)
+    const { changeForm, clearErrors } = bindActionCreators(actions, dispatch)
     return {
         changeForm,
         clearErrors,
-        registerHandler: (form) => registerHandler(dispatch, form)
+        registerHandler: (form) => dispatch(actions.registerHandler(form))
     }
 }
 

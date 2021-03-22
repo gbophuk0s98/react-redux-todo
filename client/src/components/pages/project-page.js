@@ -103,8 +103,7 @@ const mapDispatchToProps = (dispatch) => {
         changeForm,
         loginHandler,
         clearErrors,
-        createProject: (project) => actions.createProject(dispatch, project),
-        fetchProjects: (userId) => actions.fetchProjects(dispatch, userId),
+        createProject: (project) => dispatch(actions.createProject(project)),
     }
 }
 

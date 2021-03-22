@@ -23,7 +23,6 @@ const SimpleSelect = ({ selectedTodo, selectedProject, cards, moveCardItem, save
     
     const [options, setOptions] = useState([])
     const [index, setIndex] = useState(null)
-    console.log('seceltedProject', selectedProject)
 
     useEffect(() => setOptions(selectedProject.cards), [selectedProject.cards])
     useEffect(() => saveCards(cards), [saveCards, cards])
@@ -49,12 +48,6 @@ const SimpleSelect = ({ selectedTodo, selectedProject, cards, moveCardItem, save
             }
             return true
         })
-        let obj = {
-            targetCardIndex: targetCardIndex,
-            sourceCardIndex: sourceCardIndex,
-            currentItemIndex: currentItemIndex,
-            currentItem: currentItem,
-        }
     
         moveCardItem({
             targetCardIndex: targetCardIndex,
@@ -89,7 +82,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        moveCardItem: (transferInfo) => moveCardItem(dispatch, transferInfo),
+        moveCardItem: (transferInfo) => dispatch(moveCardItem(transferInfo)),
         saveCards: (cards) => dispatch(saveCards(cards)),
     }
 }

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import Select from 'react-select'
 import { FaArrowUp } from 'react-icons/fa'
@@ -66,7 +66,7 @@ const mapStateTopProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        todoUpdate: (id, projectId, priority) => todoUpdate(dispatch, id, projectId, null, null, null, null, priority)
+        todoUpdate: (id, projectId, priority) => dispatch(todoUpdate(id, projectId, null, null, null, null, priority))
     }
 }
 
