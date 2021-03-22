@@ -16,19 +16,19 @@ export const muiThemeLight = {
                 paper: '#e8e8e8',
             },
         },
-        Typography: {
+        MuiTypography: {
             root: {
                 color: '#303030',
             },
-            '&-h5': {
-                color: '#303030',
-            }
         },
         MuiButton: {
             root: {
                 ...defaultButtonStyles.root,
                 color: "#fff",
                 background: '#0097ff',
+                '&.Mui-disabled': {
+                    color: '#303030',
+                },
             },
             text: { ...defaultButtonStyles.text },
         },
@@ -56,6 +56,9 @@ export const muiThemeLight = {
                 '& button:hover, & a:hover': {
                     borderRadius: 0,
                     borderBottom: '1px solid #fff',
+                },
+                '& p': {
+                    color: '#fff',
                 }
             }
         },
@@ -167,6 +170,11 @@ export const muiThemeDark = {
         pallete: {
             background: {
                 paper: '#474747'
+            },
+        },
+        MuiTypography: {
+            root: {
+                color: '#fff',
             },
         },
         MuiButton: {

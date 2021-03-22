@@ -1,12 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Typography } from '@material-ui/core'
 
 import './create-project-link.css'
 
 const CreateProjectLink = () => {
     return (
         <div>
-            Для начала <Link to='/createProject'>создайте</Link> проект!
+            <Typography>
+                Для начала <Link to='/createProject'>создайте</Link> проект!
+            </Typography>
         </div>
     )
 }
