@@ -9,7 +9,6 @@ const registerHandler = (form) => (dispatch) => {
     dispatch({ type: 'SIGN_UP_FORM_SENDING' })
     const errors = validateRegForm(form)
 
-    console.log(errors)
     if (!isEmptyObject(errors)) {
         dispatch({
             type: 'SIGN_UP_FORM_ERROR',
@@ -39,7 +38,6 @@ const loginHandler = (form) => (dispatch) => {
             payload: errors
         })
     } else {
-        console.log('form', form)
         service.login(form)
             .then(user => dispatch(setUser(user)))
             .then(() => dispatch({ type: 'SIGN_IN_FORM_SUBMITED' }))
@@ -136,7 +134,6 @@ const todoUpdate = (
 }
 
 const todoSelected = (headers) => (dispatch) => {
-    console.log('headers todoselected', headers)
     dispatch(todoSelectedLoading())
     service.getTodo(headers)
         .then(todo => dispatch({ type: 'TODO_SELECTED', payload: todo }))
@@ -144,7 +141,6 @@ const todoSelected = (headers) => (dispatch) => {
 }
 
 const projectUpdate = (projectId, items, headers) => (dispatch) => {
-    console.log('items', items)
     service.updateProjectItems({ projectId, items }, headers)
         .then(() => dispatch({ type: 'SELECTED_PROJECT_UPDATED' }))
         .then(() => dispatch(fetchProject(headers)))
@@ -152,7 +148,6 @@ const projectUpdate = (projectId, items, headers) => (dispatch) => {
 }
 
 const fetchTodos = (headers) => (dispatch) => {
-    console.log('headers', headers)
     dispatch(todosRequested())
     service.getTodos(headers)
         .then(data => dispatch(todosLoaded(data)))

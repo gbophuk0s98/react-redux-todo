@@ -17,8 +17,6 @@ const updateUser = (state, action) => {
             return { ...action.payload, theme: state.user.theme }
         case 'USER_LOGOUT_SUCCESS':
             return { ...initialUserState, theme: state.user.theme }
-        case 'TODO_UPDATED':
-                return state.user
         default:
             return state.user
     }

@@ -58,7 +58,6 @@ const RoadMapPage = ({
 
     useEffect(() => {
         if (selectedProject._id) fetchTodos(headers)
-        return () => console.log('clear')
     }, [fetchTodos, selectedProject])
 
     const renderHead = (column) => {

@@ -44,7 +44,6 @@ export default class ProjectService {
     }
 
     getTodo = async (headers = {}) => {
-        console.log('getTodo headers', headers)
         return await this.getResourses(`${this._todoBase}/getTodo`, 'GET', null, headers)
     }
 
@@ -81,7 +80,6 @@ export default class ProjectService {
     } 
 
     getProject = async (headers = {}) => {
-        console.log('service getProject', headers)
         return await this.getResourses(`${this._todoBase}/getProject`, 'GET', null, headers)
     }
 

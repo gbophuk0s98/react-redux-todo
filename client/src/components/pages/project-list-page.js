@@ -24,7 +24,6 @@ const ProjectListPage = ({ headers, projects, loading, fetchProjects, fetchProje
 
     const history = useHistory()
 
-    console.log(headers)
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
 

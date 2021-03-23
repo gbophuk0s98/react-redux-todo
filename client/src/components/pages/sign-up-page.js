@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 const variant = { variant: 'error' }
 
 const SignUp = ({ errors, form, registerHandler, changeSignUpForm, clearSignUpFormErrors, formLoading }) => {
+ 
     const classes = useStyles()
     const { enqueueSnackbar } = useSnackbar()
 
@@ -147,11 +148,10 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { changeSignUpForm, clearSignUpFormErrors, clearAuthError, clearForms } = bindActionCreators(actions, dispatch)
+    const { changeSignUpForm, clearSignUpFormErrors, clearForms } = bindActionCreators(actions, dispatch)
     return {
         changeSignUpForm,
         clearSignUpFormErrors,
-        clearAuthError,
         registerHandler: (form) => dispatch(actions.registerHandler(form))
     }
 }
