@@ -4,7 +4,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { Button, Dialog, DialogActions, DialogContent, TextField } from '@material-ui/core'
 import { connect } from 'react-redux'
 
-import { projectUpdate, createCard, deleteCard, cardsLoaded } from '../../actoins'
+import { projectUpdate, createCard, cardsLoaded } from '../../actoins'
 
 import CardManagementItems from '../card-management-items'
 import SuccessAlertWrapper from '../success-alert'
@@ -31,7 +31,7 @@ const sortCards = (cards, projectItems) => {
     })
 }
 
-const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard, cards, cardsLoaded }) => {
+const CardManagement = ({ headers, user, selectedProject, projectUpdate, createCard, cards, cardsLoaded }) => {
 
     const [items, setItems] = useState(selectedProject.cards || [])
     const [open, setOpen] = useState(false)
@@ -51,12 +51,12 @@ const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard
         )
         setItems(reorderItems)        
         cardsLoaded(sortCards(cards, reorderItems))
-        projectUpdate(selectedProject._id, reorderItems)
+        projectUpdate(selectedProject._id, reorderItems, headers)
     }
 
     const handleSubmit = () => {
         setOpen(false)
-        createCard({ name: title, projectId: selectedProject._id })
+        createCard({ name: title, projectId: selectedProject._id }, headers)
         setTitle('')
     }
 
@@ -139,15 +139,20 @@ const CardManagement = ({ selectedProject, projectUpdate, createCard, deleteCard
 const mapStateToProps = (state) => {
     return {
         selectedProject: state.selectedProject,
-        cards: state.cards.items
+        cards: state.cards.items,
+        user: state.user,
+        headers: {
+            User: `Id ${state.user.id}`,
+            Token: `Bearer ${state.user.token}`,
+            Project: `Id ${state.selectedProject._id}`
+        }
     }
 }
 
 const matDispatchToProps = (dispatch) => {
     return {
-        projectUpdate: (projectId, items) => dispatch(projectUpdate(projectId, items)),
-        createCard: (objToBackend) => dispatch(createCard(objToBackend)),
-        deleteCard: (objToBackend, projectItems) => dispatch(deleteCard(objToBackend, projectItems)),
+        projectUpdate: (projectId, items, headers) => dispatch(projectUpdate(projectId, items, headers)),
+        createCard: (objToBackend, headers) => dispatch(createCard(objToBackend, headers)),
         cardsLoaded: (cards) => dispatch(cardsLoaded(cards)),
     }
 }

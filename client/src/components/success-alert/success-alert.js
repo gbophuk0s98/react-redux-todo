@@ -10,35 +10,24 @@ const SuccessAlert = (props) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />
 }
 
-const SuccessAlertWrapper = ({ clearCardTitleMessage, titleUpdatedMessage, todoUpdatedMessage, clearUpdateTodoMessage, createTodoMessage, clearCreateTodoMessage }) => {
+const SuccessAlertWrapper = ({ universalMessage,  clearUniversalMessage }) => {
 
     const [open, setOpen] = useState(false)
     const [message, setMessage] = useState()
 
     useEffect(() => {
-        if (titleUpdatedMessage) {
+        if (universalMessage) {
             setOpen(true)
-            setMessage(titleUpdatedMessage)
-        } else if (todoUpdatedMessage) {
-            setOpen(true)
-            setMessage(todoUpdatedMessage)
-        } else if (createTodoMessage) {
-            setOpen(true)
-            setMessage(createTodoMessage)
+            setMessage(universalMessage)
         }
         return () => {
-            clearCardTitleMessage()
-            clearUpdateTodoMessage()
-            clearCreateTodoMessage()
+            clearUniversalMessage()
         }
-    }, [titleUpdatedMessage, todoUpdatedMessage, clearCardTitleMessage, clearUpdateTodoMessage, createTodoMessage, clearCreateTodoMessage])
+    }, [clearUniversalMessage, universalMessage])
 
     const onHandleClose = (event, reason) => {
-        if (reason === 'clickaway') return
         setOpen(false)
-        clearCardTitleMessage()
-        clearUpdateTodoMessage()
-        clearCreateTodoMessage()
+        clearUniversalMessage()
     }
 
     return (
@@ -56,16 +45,14 @@ const SuccessAlertWrapper = ({ clearCardTitleMessage, titleUpdatedMessage, todoU
 
 const mapStateToProps = (state) => {
     return {
-        titleUpdatedMessage: state.appMessages.cardTitleUpdated.message,
-        todoUpdatedMessage: state.appMessages.todoUpdated.message,
-        createTodoMessage: state.appMessages.todoCreated.message,
+        universalMessage: state.appMessages.universalMessage
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { clearCardTitleMessage, clearUpdateTodoMessage, clearCreateTodoMessage } = bindActionCreators(actions, dispatch)
+    const { clearUniversalMessage } = bindActionCreators(actions, dispatch)
     
-    return { clearCardTitleMessage, clearUpdateTodoMessage, clearCreateTodoMessage }
+    return { clearUniversalMessage }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SuccessAlertWrapper)

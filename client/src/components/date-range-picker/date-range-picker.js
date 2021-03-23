@@ -8,7 +8,7 @@ import * as actions from '../../actoins'
 import 'bootstrap-daterangepicker/daterangepicker.css'
 import './date-range-picker.css'
 
-const CustomDateRangePicker = ({ todoId, startDate, endDate, projectId, todoUpdate }) => {
+const CustomDateRangePicker = ({ headers, todoId, startDate, endDate, projectId, todoUpdate }) => {
 
     const getDateFromPicker = picker => `${picker.getMonth() + 1}/${picker.getDate()}/${picker.getFullYear()}`
 
@@ -16,7 +16,7 @@ const CustomDateRangePicker = ({ todoId, startDate, endDate, projectId, todoUpda
         const startDate = getDateFromPicker(picker.startDate._d)
         const endDate = getDateFromPicker(picker.endDate._d)
         if ( picker.oldStartDate._i !== startDate || picker.oldEndDate._i !== endDate) {
-            todoUpdate(todoId, projectId, startDate, endDate)
+            todoUpdate(todoId, headers, startDate, endDate)
         }
     }
 
@@ -37,12 +37,18 @@ const CustomDateRangePicker = ({ todoId, startDate, endDate, projectId, todoUpda
 }
 
 const mapStateTopProps = (state) => {
-    return {}
+    return {
+        headers: {
+            User: `Id ${state.user.id}`,
+            Token: `Bearer ${state.user.token}`,
+            Project: `Id ${state.selectedProject._id}`
+        }
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        todoUpdate: (id, projectId, startDate, endDate) => dispatch(actions.todoUpdate(id, projectId, startDate, endDate))
+        todoUpdate: (id, headers, startDate, endDate) => dispatch(actions.todoUpdate(id, headers, startDate, endDate))
     }
 }
 

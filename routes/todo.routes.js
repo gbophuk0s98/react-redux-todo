@@ -340,7 +340,7 @@ router.put('/updateCardTitle', async (req, res) => {
     }
 })
 
-router.get('/getProjects', auth, async (req, res) => {
+router.get('/getProjects', async (req, res) => {
     try
     {
         const userId = req.headers.user.split(' ')[1]

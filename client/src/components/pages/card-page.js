@@ -18,12 +18,12 @@ const sortCards = (cards, projectItems) => {
     })
 }
 
-const CardPage = ({ cards, loading, transferCardsItems, fetchCards, selectedProject, projectListIsEmpty, saveCards }) => {
+const CardPage = ({ headers, cards, loading, transferCardsItems, fetchCards, selectedProject, projectListIsEmpty, saveCards }) => {
 
     const history = useHistory()
 
     useEffect(() => {
-        if (selectedProject._id) fetchCards(selectedProject._id)
+        if (selectedProject._id) fetchCards(headers)
     }, [fetchCards, selectedProject])
     useEffect(() => saveCards(cards), [saveCards, cards])
 
@@ -68,14 +68,19 @@ const mapStateToProps = (state) => {
         loading: state.cards.loading,
         selectedProject: state.selectedProject,
         projectListIsEmpty,
+        headers: {
+            User: `Id ${state.user.id}`,
+            Token: `Bearer ${state.user.token}`,
+            Project: `Id ${state.selectedProject._id}`
+        }
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         transferCardsItems: (result) => dispatch(transferCardsItems(result)),
-        fetchCards: (projectId) => dispatch(fetchCards(projectId)),
-        saveCards: (cards) => dispatch(saveCards(cards))
+        fetchCards: (headers) => dispatch(fetchCards(headers)),
+        saveCards: (cards, headers) => dispatch(saveCards(cards, headers))
     }
 }
 

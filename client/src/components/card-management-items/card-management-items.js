@@ -23,7 +23,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     ...draggableStyle,
 })
 
-const CardManagementItems = ({ items, item, index, selectedProjectId, deleteCard, updateCardTitle }) => {
+const CardManagementItems = ({ headers, items, item, index, selectedProjectId, deleteCard, updateCardTitle }) => {
 
     const classes = useStyles()
     const [title, setTitle] = useState(item.name)
@@ -33,7 +33,7 @@ const CardManagementItems = ({ items, item, index, selectedProjectId, deleteCard
             ...items.slice(0, index),
             ...items.slice(index + 1)
         ]
-        deleteCard({ cardId: id, projectId: selectedProjectId }, myArr)
+        deleteCard({ cardId: id, projectId: selectedProjectId }, myArr, headers)
     }
 
     const handleOnBlur = () => {
@@ -43,7 +43,7 @@ const CardManagementItems = ({ items, item, index, selectedProjectId, deleteCard
                 projectId: selectedProjectId,
                 title: title,
             }
-            updateCardTitle(objToBackend)
+            updateCardTitle(objToBackend, headers)
         }
     }
 
@@ -83,13 +83,19 @@ const CardManagementItems = ({ items, item, index, selectedProjectId, deleteCard
 }
 
 const mapStateToProps = (state) => {
-    return {}
+    return {
+        headers: {
+            User: `Id ${state.user.id}`,
+            Token: `Bearer ${state.user.token}`,
+            Project: `Id ${state.selectedProject._id}`
+        }
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        deleteCard: (objToBackend, projectItems) => dispatch(deleteCard(objToBackend, projectItems)),
-        updateCardTitle: (objToBackend) => dispatch(updateCardTitle(objToBackend))
+        deleteCard: (objToBackend, projectItems, headers) => dispatch(deleteCard(objToBackend, projectItems, headers)),
+        updateCardTitle: (objToBackend, headers) => dispatch(updateCardTitle(objToBackend, headers))
     }
 }
 

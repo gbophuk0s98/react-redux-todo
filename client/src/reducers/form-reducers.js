@@ -8,7 +8,6 @@ const updateAuthForms = (state, action) => {
             },
             formLoading: false,
             formErrors: {},
-            authError: null,
         },
         signUpForm: {
             form: {
@@ -19,7 +18,6 @@ const updateAuthForms = (state, action) => {
             },
             formLoading: false,
             formErrors: {},
-            authError: null,
         }
     }
 
@@ -54,32 +52,6 @@ const updateAuthForms = (state, action) => {
                     formLoading: false
                 }
             }
-        case 'SIGN_IN_FORM_ERROR':
-            return {
-                ...state.form,
-                signInForm: {
-                    ...state.form.signInForm,
-                    formErrors: action.payload,
-                    formLoading: false,
-                }
-            }
-        case 'SIGN_IN_ERRORS_CLEAR':
-            return {
-                ...state.form,
-                signInForm: {
-                    ...state.form.signInForm,
-                    formErrors: {}
-                }
-            }
-        case 'USER_AUTHENTICATION_FAILURE':
-            return {
-                ...state.form,
-                signInForm: {
-                    ...state.form.signInForm,
-                    authError: action.payload,
-                    formLoading: false
-                }
-            }
         case 'SIGN_UP_FORM_CHANGED':
             const { target } = action.payload
             return {
@@ -92,44 +64,6 @@ const updateAuthForms = (state, action) => {
                     }
                 }
             }
-        case 'AUTH_ERROR_CLEAR':
-            return {
-                ...state.form,
-                signUpForm: {
-                    ...state.form.signUpForm,
-                    authError: null
-                },
-                signInForm: {
-                    ...state.form.signInForm,
-                    authError: null
-                }
-            }
-        case 'USER_REGISTER_FAILURE':
-            return {
-                ...state.form,
-                signUpForm: {
-                    ...state.form.signUpForm,
-                    authError: action.payload,
-                    formLoading: false
-                }
-            }
-        case 'SIGN_UP_ERRORS_CLEAR':
-            return {
-                ...state.form,
-                signUpForm: {
-                    ...state.form.signUpForm,
-                    formErrors: {}
-                }
-            }
-        case 'SIGN_UP_FORM_ERROR':
-            return {
-                ...state.form,
-                signUpForm: {
-                    ...state.form.signUpForm,
-                    formErrors: action.payload,
-                    formLoading: false,
-                }
-            }
         case 'SIGN_UP_FORM_SENDING':
             return {
                 ...state.form,
@@ -139,6 +73,22 @@ const updateAuthForms = (state, action) => {
                 }
             }
         case 'SIGN_UP_FORM_SUBMITED':
+            return {
+                ...state.form,
+                signUpForm: {
+                    ...state.form.signUpForm,
+                    formLoading: false
+                }
+            }
+        case 'STOP_SIGN_IN_FORM_LOADING':
+            return {
+                ...state.form,
+                signInForm: {
+                    ...state.form.signInForm,
+                    formLoading: false
+                }
+            }
+        case 'STOP_SIGN_UP_FORM_LOADING':
             return {
                 ...state.form,
                 signUpForm: {

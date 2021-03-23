@@ -36,8 +36,7 @@ const transferItems = (state, payload) => {
 
     return {
         items: newCards,
-        loading: false,
-        error: null
+        loading: false
     }
 }
 
@@ -73,7 +72,6 @@ const moveItem = (state, payload) => {
 
     return {
         loading: false,
-        error: null,
         items: newCards
     }
 }
@@ -82,8 +80,7 @@ const updateCards = (state, action) => {
 
     const initialCardsState = {
         items: [],
-        loading: false,
-        error: null,
+        loading: false
     }
 
     if (state === undefined) return initialCardsState
@@ -91,8 +88,6 @@ const updateCards = (state, action) => {
     switch (action.type) {
         case 'FETCH_CARDS_REQUEST':
             return { ...initialCardsState, loading: true }
-        case 'FETCH_CARDS_FAILURE':
-            return { ...initialCardsState, error: action.payload }
         case 'FETCH_CARDS_SUCCESS':
             return { ...initialCardsState, items: action.payload }
         case 'TRANSFER_CARDS_ITEMS':

@@ -18,7 +18,7 @@ class DropDownWrapper extends React.Component {
     }
 }
 
-const DropDown = ({ recentProjects, fetchProject, clearSelectedTodo }) => {
+const DropDown = ({ headers, recentProjects, fetchProject, clearSelectedTodo }) => {
 
     const [anchorEl, setAnchorEl] = useState(false)
 
@@ -48,7 +48,10 @@ const DropDown = ({ recentProjects, fetchProject, clearSelectedTodo }) => {
                                 key={project._id}
                                 onClick={() => {
                                     handleClose()
-                                    fetchProject(project._id)
+                                    fetchProject({
+                                        ...headers,
+                                        Project: `Id ${project._id}`,
+                                    })
                                     clearSelectedTodo()
                                 }}
                             >
@@ -76,13 +79,16 @@ const mapStateToProps = (state) => {
     return {
         recentProjects: state.recentProjects,
         selectedProject: state.selectedProject,
-        user: state.user,
+        headers: {
+            user: `Id ${state.user.id}`,
+            token: `Bearer ${state.user.token}`,
+        }
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchProject: (projectId) => dispatch(fetchProject(projectId)),
+        fetchProject: (headers) => dispatch(fetchProject(headers)),
         clearSelectedTodo: () => dispatch(clearSelectedTodo())
     }
 }

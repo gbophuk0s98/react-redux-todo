@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 import { fetchProjects, fetchProject, setRecentProjects, clearSelectedTodo } from '../../actoins'
 import { Table, Button, TableBody, TableCell, TableContainer, TablePagination, TableHead, TableRow, Paper, makeStyles } from '@material-ui/core'
@@ -19,24 +20,29 @@ const useStyles = makeStyles({
     container: { height: 'max-content' },
 })
 
-const ProjectListPage = ({ user, projects, loading, fetchProjects, fetchProject, setRecentProjects, clearSelectedTodo }) => {
+const ProjectListPage = ({ headers, projects, loading, fetchProjects, fetchProject, setRecentProjects, clearSelectedTodo }) => {
 
     const history = useHistory()
 
+    console.log(headers)
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
 
     const classes = useStyles()
-    
-    useEffect(() => fetchProjects({userId: user.id, token: user.token }), [fetchProjects, user])
-    
+
+    useEffect(() => fetchProjects(headers), [fetchProjects])
+
     const onTitleClick = (projectId) => {
-        fetchProject(projectId)
-        setRecentProjects(projectId)
+        const modifiedHeaders = {
+            ...headers,
+            Project: `Id ${projectId}`,
+        }
+        fetchProject(modifiedHeaders)
+        setRecentProjects(modifiedHeaders)
         clearSelectedTodo()
         history.push('/cards')
     }
-    
+
     const handleChangePage = (event, newPage) => setPage(newPage)
 
     const handleChangeRowsPerPage = (event) => {
@@ -77,7 +83,7 @@ const ProjectListPage = ({ user, projects, loading, fetchProjects, fetchProject,
     }
 
     if (loading) return <Spinner />
-    if (projects.length===0) return <CreateProjectLink />
+    if (projects.length === 0) return <CreateProjectLink />
 
     return (
         <Paper className={classes.paperStyles}>
@@ -113,18 +119,21 @@ const mapStateToProps = (state) => {
     return {
         projects: state.projects.items,
         loading: state.projects.loading,
-        user: state.user,
+        headers: {
+            User: `Id ${state.user.id}`,
+            Token: `Bearer ${state.user.token}`,
+        }
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
 
     return {
-        fetchProjects: (userId) => dispatch(fetchProjects(userId)),
-        fetchProject: (projectId) => dispatch(fetchProject(projectId)),
-        setRecentProjects: (projectId) => dispatch(setRecentProjects(projectId)),
+        fetchProjects: (headers) => dispatch(fetchProjects(headers)),
+        fetchProject: (headers) => dispatch(fetchProject(headers)),
+        setRecentProjects: (headers) => dispatch(setRecentProjects(headers)),
         clearSelectedTodo: () => dispatch(clearSelectedTodo())
     }
 }
 
-export default  connect(mapStateToProps, mapDispatchToProps)(ProjectListPage)
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectListPage)

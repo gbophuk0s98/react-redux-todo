@@ -11,7 +11,7 @@ const colorToRGBA = (color) => {
 	return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`
 }
 
-const ColorPicker = ({ todoId, todoColor, todoUpdate, selectedProject }) => {
+const ColorPicker = ({ headers, todoId, todoColor, todoUpdate, selectedProject }) => {
 
 	const [displayColorPicker, setDisplayColorPicker] = useState(false)
 	const [color, setColor] = useState({ r: '241', g: '112', b: '19', a: '1' })
@@ -32,7 +32,7 @@ const ColorPicker = ({ todoId, todoColor, todoUpdate, selectedProject }) => {
 	const handleClose = () => {
 		setDisplayColorPicker(false)
 		if (JSON.stringify(colorToRGBA(color)) !== JSON.stringify(todoColor)) {
-			todoUpdate(todoId, selectedProject._id, colorToRGBA(color))
+			todoUpdate(todoId, headers, colorToRGBA(color))
 		}
 	} 
 
@@ -88,12 +88,17 @@ const mapStateToProps = (state) => {
 		todoId: state.selectedTodo._id,
 		todoColor: state.selectedTodo.background,
 		selectedProject: state.selectedProject,
+		headers: {
+            User: `Id ${state.user.id}`,
+            Token: `Bearer ${state.user.token}`,
+            Project: `Id ${state.selectedProject._id}`
+        }
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return{
-		todoUpdate: (id, projectId, color) => dispatch(todoUpdate(id, projectId, null, null, color))
+		todoUpdate: (id, headers, color) => dispatch(todoUpdate(id, headers, null, null, color))
 	}
 }
 

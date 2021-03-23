@@ -6,7 +6,6 @@ import updateSelectedProject from './selected-project-reducer'
 import updateProjects from './projects-reducer'
 import updateCards from './cards-reducer'
 import updateTodos from './todos-reducer'
-import updateAppErrors from './app-errors-reducer'
 import updateSelectedTodo from './selected-todo-reducer'
 import updateAuthForms from './form-reducers'
 import updateRecentProjects from './recent-projects-reducer'
@@ -22,7 +21,6 @@ const reducer = (state, action) => {
         selectedProject: updateSelectedProject(state, action),
         selectedTodo: updateSelectedTodo(state, action),
         form: updateAuthForms(state, action),
-        appErrors: updateAppErrors(state, action),
         appMessages: updateAppMessages(state, action),
         iconOptions: [
             { value: 'Наивысший', label: 'Наивысший', styles: { fill: 'red', opacity: '1' } },

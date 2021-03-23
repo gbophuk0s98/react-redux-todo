@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-const TodoDetail = ({ selectedTodo, todoUpdate, selectedTodoLoading, selectedProject, fetchCards }) => {
+const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, selectedProject, fetchCards }) => {
 
     const [title, setTitle] = useState('')
     const classes = useStyles()
@@ -36,7 +36,7 @@ const TodoDetail = ({ selectedTodo, todoUpdate, selectedTodoLoading, selectedPro
     
     const onTitleBlurHandler = e => {
         if (title === '' || title === selectedTodo.content) setTitle(selectedTodo.content)
-        else todoUpdate(selectedTodo._id, selectedProject._id, title)
+        else todoUpdate(selectedTodo._id, headers, title)
     }
 
 
@@ -187,13 +187,18 @@ const mapStateTopProps = (state) => {
     return {
         selectedTodo: state.selectedTodo,
         selectedTodoLoading: state.selectedTodo.loading,
-        selectedProject: state.selectedProject
+        selectedProject: state.selectedProject,
+        headers: {
+            User: `Id ${state.user.id}`,
+            Token: `Bearer ${state.user.token}`,
+            Project: `Id ${state.selectedProject._id}`
+        }
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        todoUpdate: (id, projectId, title) => dispatch(todoUpdate(id, projectId, null, null, null, title)),
+        todoUpdate: (id, headers, title) => dispatch(todoUpdate(id, headers, null, null, null, title)),
         fetchCards: (projectId) => dispatch(fetchCards(projectId))
     }
 }

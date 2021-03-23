@@ -1,79 +1,21 @@
 const updateAppMessages = (state, action) => {
 
     const initialAppMessagesState = {
-        todoCreated: {
-            message: '',
-            loading: '',
-        },
-        todoUpdated: {
-            message: '',
-            loading: '',
-        },
-        cardTitleUpdated: {
-            message: '',
-            loading: '',
-        },
+        universalError: null,
+        universalMessage: null,
     }
 
     if (state === undefined) return initialAppMessagesState
 
     switch (action.type) {
-        case 'UPDATE_CARD_TITLE_REQUESTED':
-            return {
-                ...state.appMessages, 
-                cardTitleUpdated: {
-                    message: '',
-                    loading: true,
-                } 
-            }
-        case 'UPDATE_CARD_TITLE_SUCCESS':
-            return {
-                ...state.appMessages,
-                cardTitleUpdated: {
-                    message: action.payload,
-                    loading: false,
-                }
-            }
-        case 'CLEAR_CARD_TITLE_MESSAGE':
-            return {
-                ...state.appMessages,
-                cardTitleUpdated: {
-                    message: '',
-                    loading: false
-                }
-            }
-        case 'UPDATE_TODO_SUCCESS':
-            return {
-                ...state.appMessages,
-                todoUpdated: {
-                    message: action.payload,
-                    loading: false,
-                }
-            }
-        case 'CLEAR_UPDATE_TODO_MESSAGE':
-            return {
-                ...state.appMessages,
-                todoUpdated: {
-                    message: '',
-                    loading: false,
-                }
-            }
-        case 'CREATE_TODO_SUCCESS':
-            return {
-                ...state.appMessages,
-                todoCreated: {
-                    message: action.payload,
-                    loading: false,
-                }
-            }
-        case 'CLEAR_CREATE_TODO_MESSAGE':
-            return {
-                ...state.appMessages,
-                todoCreated: {
-                    message: '',
-                    loading: false
-                }
-            }
+        case 'SET_UNIVERSAL_ERROR':
+            return { ...initialAppMessagesState, universalError: action.payload }
+        case 'CLEAR_UNIVERSAL_ERROR':
+            return { ...initialAppMessagesState, universalError: null }
+        case 'SET_UNIVERSAL_MESSAGE':
+            return { ...initialAppMessagesState, universalMessage: action.payload }
+        case 'CLEAR_UNIVERSAL_MESSAGE':
+            return { ...initialAppMessagesState, universalMessage: null }
         default:
             return state.appMessages
     }

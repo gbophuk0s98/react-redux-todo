@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { fetchTodos, todoCreated, todoSelected, fetchProject } from '../../actoins'
+import { fetchTodos, todoCreated, todoSelected } from '../../actoins'
 import SuccessAlertWrapper from '../success-alert'
 import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'
@@ -45,7 +45,7 @@ const useStyles = makeStyles({
 
 
 const RoadMapPage = ({ 
-    todos, todoCreated, loading, projectListIsEmpty,
+    headers, todos, todoCreated, loading, projectListIsEmpty,
     fetchTodos, todoSelected, selectedProject 
 }) => {
 
@@ -57,7 +57,7 @@ const RoadMapPage = ({
     const classes = useStyles()
 
     useEffect(() => {
-        if (selectedProject._id) fetchTodos(selectedProject._id)
+        if (selectedProject._id) fetchTodos(headers)
         return () => console.log('clear')
     }, [fetchTodos, selectedProject])
 
@@ -79,7 +79,10 @@ const RoadMapPage = ({
                 <TableCell>
                     <Button
                         onClick={() => {
-                            todoSelected(todo._id)
+                            todoSelected({
+                                Todo: `Id ${todo._id}`,
+                                ...headers
+                            })
                             setOpen(true)
                         }}
                     >
@@ -138,7 +141,7 @@ const RoadMapPage = ({
         const { value } = e.target
         if (value) {
             const todo = { content: value, startDate: getDate(), endDate: getDate(1) }
-            todoCreated(todo, selectedProject._id)
+            todoCreated(todo, headers)
         }
         setShowInput(false)
     }
@@ -207,15 +210,19 @@ const mapStateTopProps = (state) => {
         error: state.todos.error,
         projectListIsEmpty,
         selectedProject: state.selectedProject,
+        headers: {
+            User: `Id ${state.user.id}`,
+            Token: `Bearer ${state.user.token}`,
+            Project: `Id ${state.selectedProject._id}`
+        }
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchTodos: (projectId) => dispatch(fetchTodos(projectId)),
-        todoCreated: (todo, projectId) => dispatch(todoCreated(todo, projectId)),
-        todoSelected: (id) => dispatch(todoSelected(id)),
-        fetchProject: (projectId) => dispatch(fetchProject(projectId)),
+        fetchTodos: (headers) => dispatch(fetchTodos(headers)),
+        todoCreated: (todo, headers) => dispatch(todoCreated(todo, headers)),
+        todoSelected: (headers) => dispatch(todoSelected(headers)),
     }
 }
 

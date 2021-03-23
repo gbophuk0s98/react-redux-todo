@@ -10,38 +10,21 @@ const ErrorAlert = (props) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />
 }
 
-const ErrorAlertWrapper = ({
-    updateTodoError, createTodoError, signInAuthError, signUpAuthError,
-    clearUpdateTodoError, clearCreateTodoError, clearAuthError
-}) => {
+const ErrorAlertWrapper = ({ universalError, clearUniversalError }) => {
 
     const [open, setOpen] = useState(false)
     const [message, setMessage] = useState()
 
     useEffect(() => {
-        if (!!updateTodoError) {
-            setOpen(!!updateTodoError)
-            setMessage(updateTodoError)
-        }
-        else if (!!createTodoError) {
-            setOpen(!!createTodoError)
-            setMessage(createTodoError)
-        } else if (signInAuthError) {
+        if (!!universalError) {
             setOpen(true)
-            setMessage(signInAuthError)
-        } else if (signUpAuthError) {
-            setOpen(!!signUpAuthError)
-            setMessage(signUpAuthError)
-        }
-        
-    }, [updateTodoError, createTodoError, signInAuthError, signUpAuthError])
+            setMessage(universalError)
+        }        
+    }, [universalError])
 
-    const onHandleClose = (event, reason) => {
-        if (reason === 'clickaway') return
+    const onHandleClose = () => {
         setOpen(false)
-        clearUpdateTodoError()
-        clearCreateTodoError()
-        clearAuthError()
+        clearUniversalError()
     }
 
     return (
@@ -59,17 +42,14 @@ const ErrorAlertWrapper = ({
 
 const mapStateToProps = (state) => {
     return {
-        updateTodoError: state.appErrors.updateTodoError,
-        createTodoError: state.appErrors.createTodoError,
-        signInAuthError: state.form.signInForm.authError,
-        signUpAuthError: state.form.signUpForm.authError,
+        universalError: state.appMessages.universalError,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { clearAuthError, clearCreateTodoError, clearUpdateTodoError } = bindActionCreators(actions, dispatch)
+    const { clearUniversalError } = bindActionCreators(actions, dispatch)
     
-    return { clearUpdateTodoError ,clearCreateTodoError, clearAuthError }
+    return { clearUniversalError }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ErrorAlertWrapper)

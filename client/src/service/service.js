@@ -31,69 +31,62 @@ export default class ProjectService {
         await this.getResourses(`${this._authBase}/deleteToken`, 'DELETE', { ...body })
     }
 
-    getToken = async (body, headers = {}) => {
-        await this.getResourses(`${this._authBase}/getToken`, 'POST', { ...body })
-    }
-
-    getCards = async (body = null) => {
-        const headers = { Project: `Id ${body}` }
+    getCards = async (headers = {}) => {
         return await this.getResourses(`${this._todoBase}/getCards`, 'GET', null, headers)
     }
 
     updateCardItem = async (body, headers = {}) => {
-        await this.getResourses(`${this._todoBase}/updateCards`, 'PUT',  { ...body })
+        await this.getResourses(`${this._todoBase}/updateCards`, 'PUT',  { ...body }, headers)
     }
 
-    getTodos = async (headersToBackend = null) => {
-        const headers = { Project: `Id ${headersToBackend}` }
+    getTodos = async (headers = {}) => {
         return await this.getResourses(`${this._todoBase}/getTodos`, 'GET', null, headers)
     }
 
-    getTodo = async (headersToBackend = null) => {
-        const headers = { Todo: `Id ${headersToBackend}`}
+    getTodo = async (headers = {}) => {
+        console.log('getTodo headers', headers)
         return await this.getResourses(`${this._todoBase}/getTodo`, 'GET', null, headers)
     }
 
-    createTodo = async (body, headersToBackend = null) => {
-        const headers = { Project: `Id ${headersToBackend}` }
+    createTodo = async (body, headers = {}) => {
         return await this.getResourses(`${this._todoBase}/createTodo`, 'POST', { ...body }, headers)
     }
 
-    updateCardTitle = async (body, headersToBackend = null) => {
-        return await this.getResourses(`${this._todoBase}/updateCardTitle`, 'PUT', { ...body })
+    updateCardTitle = async (body, headers = null) => {
+        return await this.getResourses(`${this._todoBase}/updateCardTitle`, 'PUT', { ...body }, headers)
     }
 
     updateTodo = async (body, headers = {}) => {
-        return await this.getResourses(`${this._todoBase}/updateTodo`, 'PUT', { ...body })
+        return await this.getResourses(`${this._todoBase}/updateTodo`, 'PUT', { ...body }, headers)
     }
     
-    saveCards = async (body, headers = {}) => {
-        await this.getResourses(`${this._todoBase}/saveCards`, 'POST', { ...body })
+    saveCards = async (body = null, headers = {}) => {
+        await this.getResourses(`${this._todoBase}/saveCards`, 'POST', { ...body }, headers)
     }
     
     createCard = async (body = null, headers = {}) => {
-        await this.getResourses(`${this._todoBase}/createCard`, 'POST', { ...body })
+        await this.getResourses(`${this._todoBase}/createCard`, 'POST', { ...body }, headers)
     }
 
-    deleteCard = async (body = null, headers ={}) => {
-        await this.getResourses(`${this._todoBase}/deleteCard`, 'DELETE', { ...body })
+    deleteCard = async (body = null, headers = {}) => {
+        await this.getResourses(`${this._todoBase}/deleteCard`, 'DELETE', { ...body }, headers)
     }
 
     createProject = async (body, headers = {}) => {
-        return await this.getResourses(`${this._todoBase}/createProject`, 'POST', { ...body })
+        return await this.getResourses(`${this._todoBase}/createProject`, 'POST', { ...body }, headers)
     }
 
-    getProjects = async (body = null) => {
-        const headers = { User: `Id ${body.userId}`, Authorization: `Bearer ${body.token}` }
+    getProjects = async (headers = {}) => {
         return await this.getResourses(`${this._todoBase}/getProjects`, 'GET', null, headers)
     } 
-    getProject = async (body = null) => {
-        const headers = { Project: `Id ${body}` }
+
+    getProject = async (headers = {}) => {
+        console.log('service getProject', headers)
         return await this.getResourses(`${this._todoBase}/getProject`, 'GET', null, headers)
     }
 
-    updateProjectItems = async (body = null) => {
-        return await this.getResourses(`${this._todoBase}/updateProjectItems`, 'PUT', { ...body })
+    updateProjectItems = async (body = null, headers = {}) => {
+        return await this.getResourses(`${this._todoBase}/updateProjectItems`, 'PUT', { ...body }, headers)
     }
 
 }

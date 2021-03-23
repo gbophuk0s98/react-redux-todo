@@ -15,7 +15,7 @@ const CustomOption = ({ data, innerRef, innerProps }) => {
     )
 }
 
-const CustomSelect = ({ priority, id, todoUpdate, iconOptions, selectedProject }) => {
+const CustomSelect = ({ headers, priority, id, todoUpdate, iconOptions, selectedProject }) => {
     
     const [options, setOptions] = useState([])
     
@@ -43,7 +43,7 @@ const CustomSelect = ({ priority, id, todoUpdate, iconOptions, selectedProject }
 
     const renderOption = () => options.filter(option => option.value === priority)
 
-    const changeHandler = data => todoUpdate(id, selectedProject._id, data.value)
+    const changeHandler = data => todoUpdate(id, headers, data.value)
 
     return (
         <Select
@@ -61,12 +61,17 @@ const mapStateTopProps = (state) => {
     return {
         iconOptions: state.iconOptions,
         selectedProject: state.selectedProject,
+        headers: {
+            User: `Id ${state.user.id}`,
+            Token: `Bearer ${state.user.token}`,
+            Project: `Id ${state.selectedProject._id}`
+        }
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        todoUpdate: (id, projectId, priority) => dispatch(todoUpdate(id, projectId, null, null, null, null, priority))
+        todoUpdate: (id, headers, priority) => dispatch(todoUpdate(id, headers, null, null, null, null, priority))
     }
 }
 

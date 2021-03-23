@@ -18,7 +18,7 @@ const makeId = () => {
     return text.toUpperCase()
 }
 
-const ProjectPage = ({ createProject, loading, user }) => {
+const ProjectPage = ({ headers, createProject, loading, user }) => {
 
     const [project, setProject] = useState({
         projectName: '',
@@ -49,7 +49,7 @@ const ProjectPage = ({ createProject, loading, user }) => {
 
     const onCreateHandler = e => {
         e.preventDefault()
-        createProject({ ...project, userId: user.id})
+        createProject({ ...project, userId: user.id}, headers)
         history.push('/projectList')
     }
 
@@ -94,6 +94,11 @@ const mapStateToProps = (state) => {
         loading: state.selectedProject.loading,
         error: state.selectedProject.error,
         user: state.user,
+        headers: {
+            User: `Id ${state.user.id}`,
+            Token: `Bearer ${state.user.token}`,
+            Project: `Id ${state.selectedProject._id}`
+        }
     }
 }
 
@@ -103,7 +108,7 @@ const mapDispatchToProps = (dispatch) => {
         changeForm,
         loginHandler,
         clearErrors,
-        createProject: (project) => dispatch(actions.createProject(project)),
+        createProject: (project, headers) => dispatch(actions.createProject(project, headers)),
     }
 }
 
