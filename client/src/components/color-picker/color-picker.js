@@ -22,6 +22,8 @@ const ColorPicker = ({ headers, todoId, todoColor, todoUpdate, selectedProject }
 		if (arrOfNumbers) {
 			if (arrOfNumbers.length === 4) {
 				colorObj = { r: arrOfNumbers[0], g: arrOfNumbers[1], b: arrOfNumbers[2], a: arrOfNumbers[3] }
+			} else if (arrOfNumbers.length === 5) {
+				colorObj = { r: arrOfNumbers[0], g: arrOfNumbers[1], b: arrOfNumbers[2], a: `${arrOfNumbers[3]}.${arrOfNumbers[4]}` }
 			}
 		}
 		setColor(colorObj)
