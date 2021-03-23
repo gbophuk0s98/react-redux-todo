@@ -4,7 +4,6 @@ import ProjectService from '../service'
 const service = new ProjectService()
 
 // function actions
-
 const registerHandler = (form) => (dispatch) => {
 
     dispatch({ type: 'SIGN_UP_FORM_SENDING' })
@@ -111,9 +110,14 @@ const todoCreated = (todo, headers) => (dispatch) => {
         .catch(err => dispatch(setUniversalError(err.message)))
 }
 
-const todoUpdate = (id, headers, startDate = null, endDate = null, color = null, title = null, priority = null, owner = null) => (dispatch) => {
+const todoUpdate = (
+    id, headers,
+    startDate = null, endDate = null,
+    color = null, title = null,
+    priority = null, owner = null
+) => (dispatch) => {
+
     let objToUpdate = {}
-    console.log('headers', headers)
 
     if (startDate && endDate) objToUpdate = { id, startDate, endDate }
     else if (color) objToUpdate = { id, color }
@@ -128,7 +132,6 @@ const todoUpdate = (id, headers, startDate = null, endDate = null, color = null,
         .then(() => dispatch(todoSelected({ ...headers, Todo: `Id ${id}` })))
         .then(() => dispatch(fetchTodos(headers)))
         .then(() => dispatch(fetchCards(headers)))
-        .then(() => dispatch({ type: 'TODO_UPDATED' }))
         .catch(err => dispatch(setUniversalError(err.message)))
 }
 
@@ -176,7 +179,6 @@ const saveCards = (cards, headers) => (dispatch) => {
 }
 
 // object actions
-
 const clearUniversalError = () => {
     return {
         type: 'CLEAR_UNIVERSAL_ERROR'
@@ -227,48 +229,9 @@ const updateCardTitleRequested = () => {
     }
 }
 
-const updateCardTitleSuccess = message => {
-    return {
-        type: 'UPDATE_CARD_TITLE_SUCCESS',
-        payload: message
-    }
-}
-
-const clearCardTitleMessage = () => {
-    return {
-        type: 'CLEAR_CARD_TITLE_MESSAGE'
-    }
-}
-
 const clearSelectedTodo = () => {
     return {
         type: 'SELECTED_TODO_CLEAR'
-    }
-}
-
-const updateTodoSuccess = message => {
-    return {
-        type: 'UPDATE_TODO_SUCCESS',
-        payload: message
-    }
-}
-
-const clearUpdateTodoMessage = () => {
-    return {
-        type: 'CLEAR_UPDATE_TODO_MESSAGE'
-    }
-}
-
-const createTodoSuccess = message => {
-    return {
-        type: 'CREATE_TODO_SUCCESS',
-        payload: message,
-    }
-}
-
-const clearCreateTodoMessage = () => {
-    return {
-        type: 'CLEAR_CREATE_TODO_MESSAGE'
     }
 }
 
@@ -282,12 +245,6 @@ const setUser = user => {
     return {
         type: 'USER_CREATED_SUCCESS',
         payload: user,
-    }
-}
-
-const clearAuthError = () => {
-    return {
-        type: 'AUTH_ERROR_CLEAR'
     }
 }
 
@@ -310,13 +267,6 @@ const projectsRequested = () => {
     }
 }
 
-const projectsError = error => {
-    return {
-        type: 'FETCH_PROJECTS_FAILURE',
-        payload: error
-    }
-}
-
 const projectsLoaded = projects => {
     return {
         type: 'FETCH_PROJECTS_SUCCESS',
@@ -334,13 +284,6 @@ const setProject = project => {
 const cardsRequested = () => {
     return {
         type: 'FETCH_CARDS_REQUEST',
-    }
-}
-
-const cardsError = error => {
-    return {
-        type: 'FETCH_CARDS_FAILURE',
-        payload: error
     }
 }
 
@@ -372,17 +315,7 @@ const todosLoaded = todos => {
 }
 
 const todoSelectedLoading = () => {
-    return {
-        type: 'SELECTED_TODO_LOADING'
-    }
-}
-
-const clearCreateTodoError = () => {
-    return { type: 'CLEAR_TODO_ERROR' }
-}
-
-const clearUpdateTodoError = () => {
-    return { type: 'CLEAR_UPDATE_TODO_ERROR' }
+    return { type: 'SELECTED_TODO_LOADING' }
 }
 
 const transferCardsItems = (result) => {
@@ -411,35 +344,29 @@ const changeSignUpForm = event => {
 }
 
 export {
-    fetchCards,
-    transferCardsItems,
-    changeSignInForm,
-    changeSignUpForm,
     registerHandler,
     loginHandler,
     logoutHandler,
+    changeSignInForm,
+    changeSignUpForm,
+    setTheme,
     fetchTodos,
     todoCreated,
-    saveCards,
-    clearAuthError,
-    createProject,
-    fetchProjects,
     todoSelected,
     todoUpdate,
+    fetchProjects,
+    createProject,
     fetchProject,
     setRecentProjects,
-    setTheme,
-    cardsLoaded,
     projectUpdate,
     createCard,
     deleteCard,
-    clearCreateTodoError,
-    clearUpdateTodoError,
-    clearUpdateTodoMessage,
+    cardsLoaded,
+    saveCards,
+    fetchCards,
     moveCardItem,
     updateCardTitle,
-    clearCardTitleMessage,
-    clearCreateTodoMessage,
+    transferCardsItems,
     clearSelectedTodo,
     clearSingInFormErrors,
     clearSignUpFormErrors,
