@@ -12,51 +12,50 @@ import MoreIcon from '@material-ui/icons/MoreVert'
 
 import './header.css'
 
-const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
-     
-    const useStyles = makeStyles((theme) => ({
-        grow: {
-            flexGrow: 1,
+const useStyles = makeStyles((theme) => ({
+    grow: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    title: {
+        display: 'none',
+        [theme.breakpoints.up('sm')]: {
+            display: 'block',
         },
-        menuButton: {
-            marginRight: theme.spacing(2),
+    },
+    inputRoot: {
+        color: 'inherit',
+    },
+    inputInput: {
+        padding: theme.spacing(1, 1, 1, 0),
+        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('md')]: {
+            width: '20ch',
         },
-        title: {
-            display: 'none',
-            [theme.breakpoints.up('sm')]: {
-                display: 'block',
-            },
-        },
-        inputRoot: {
-            color: 'inherit',
-        },
-        inputInput: {
-            padding: theme.spacing(1, 1, 1, 0),
-            paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-            transition: theme.transitions.create('width'),
-            width: '100%',
-            [theme.breakpoints.up('md')]: {
-                width: '20ch',
-            },
-        },
-        sectionDesktop: {
-            display: 'none',
-            [theme.breakpoints.up('md')]: {
-                display: 'flex',
-            },
-        },
-        sectionMobile: {
+    },
+    sectionDesktop: {
+        display: 'none',
+        [theme.breakpoints.up('md')]: {
             display: 'flex',
-            [theme.breakpoints.up('md')]: {
-                display: 'none',
-            },
         },
-    }))
+    },
+    sectionMobile: {
+        display: 'flex',
+        [theme.breakpoints.up('md')]: {
+            display: 'none',
+        },
+    },
+}))
 
-    const classes = useStyles()
+const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
 
     const [anchorEl, setAnchorEl] = useState(null)
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
+    const classes = useStyles()
 
     const isMenuOpen = Boolean(anchorEl)
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
