@@ -67,6 +67,7 @@ const createProject = (project, headers) => (dispatch) => {
 const createCard = (objToBackend, headers) => (dispatch) => {
     service.createCard(objToBackend, headers)
         .then(() => dispatch(fetchProject(headers)))
+        .then(() => dispatch(setUniversalMessage('Карточка добавлена!')))
         .catch(err => dispatch(setUniversalError(err.message)))
 }
 
@@ -141,8 +142,8 @@ const todoSelected = (headers) => (dispatch) => {
 
 const projectUpdate = (projectId, items, headers) => (dispatch) => {
     service.updateProjectItems({ projectId, items }, headers)
-        .then(() => dispatch({ type: 'SELECTED_PROJECT_UPDATED' }))
         .then(() => dispatch(fetchProject(headers)))
+        .then(() => dispatch(setUniversalMessage('Проект обновлен!')))
         .catch(err => dispatch(setUniversalError(err.message)))
 }
 
