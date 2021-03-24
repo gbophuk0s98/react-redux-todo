@@ -19,8 +19,9 @@ const ErrorAlertWrapper = ({ universalError, clearUniversalError }) => {
         if (!!universalError) {
             setOpen(true)
             setMessage(universalError)
-        }        
-    }, [universalError])
+        }
+        return () => clearUniversalError()
+    }, [universalError, clearUniversalError])
 
     const onHandleClose = () => {
         setOpen(false)

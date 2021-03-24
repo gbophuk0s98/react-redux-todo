@@ -109,11 +109,9 @@ const todoCreated = (todo, headers) => (dispatch) => {
 }
 
 const todoUpdate = (
-    id, headers,
-    startDate = null, endDate = null,
-    color = null, title = null,
-    priority = null, owner = null
-) => (dispatch) => {
+    id, headers, startDate = null, endDate = null,
+    color = null, title = null, priority = null, owner = null,
+    description = null ) => (dispatch) => {
 
     let objToUpdate = {}
 
@@ -122,6 +120,7 @@ const todoUpdate = (
     else if (title) objToUpdate = { id, title }
     else if (priority) objToUpdate = { id, priority }
     else if (owner) objToUpdate = { id, owner }
+    else if (description) objToUpdate = { id, description }
 
     service.updateCardItem(objToUpdate, headers)
         .then(() => {

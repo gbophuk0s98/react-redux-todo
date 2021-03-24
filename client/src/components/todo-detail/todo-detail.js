@@ -25,12 +25,14 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, selectedProject, fetchCards }) => {
+const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, todoUpdateDescription }) => {
 
     const [title, setTitle] = useState('')
+    const [description, setDescription] = useState(``)
     const classes = useStyles()
 
     useEffect(() => setTitle(selectedTodo.content), [setTitle, selectedTodo])
+    useEffect(() => setDescription(selectedTodo.description), [setDescription, selectedTodo])
 
     const onTitleChange = e => setTitle(e.target.value)
     
@@ -39,6 +41,12 @@ const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, se
         else todoUpdate(selectedTodo._id, headers, title)
     }
 
+    const onDescriptionChange = e => setDescription(e.target.value)
+
+    const onDescriptionBlur = e => {
+        if (description === '' || description === selectedTodo.description) setDescription(selectedTodo.description)
+        else todoUpdateDescription(selectedTodo._id, headers, description)
+    }
 
 
     if (selectedTodoLoading) return (
@@ -102,7 +110,11 @@ const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, se
                     <TextField
                         label="Добавить описание..."
                         multiline={true}
+                        inputProps={{ maxLength: 150 }}
                         style={{ width: '100%' }}
+                        value={description}
+                        onChange={onDescriptionChange}
+                        onBlur={onDescriptionBlur}
                     />
                 </Grid>
             </Grid>
@@ -199,7 +211,8 @@ const mapStateTopProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         todoUpdate: (id, headers, title) => dispatch(todoUpdate(id, headers, null, null, null, title)),
-        fetchCards: (projectId) => dispatch(fetchCards(projectId))
+        todoUpdateDescription: (id, headers, description) => dispatch(todoUpdate(id, headers, null, null, null, null, null, null, description)),
+        fetchCards: (projectId) => dispatch(fetchCards(projectId)),
     }
 }
 
