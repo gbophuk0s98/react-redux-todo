@@ -20,9 +20,9 @@ if (process.env.NODE_ENV == 'production'){
 app.listen(PORT, async () => {
     try
     {
-        //mongodb+srv://surta:123@cluster0.nqkum.mongodb.net/todo?retryWrites=true&w=majority
         //mongodb://127.0.0.1:27017/todo
-        await mongo.connect('mongodb+srv://surta:123@cluster0.nqkum.mongodb.net/todo?retryWrites=true&w=majority', {
+        //mongodb+srv://surta:123@cluster0.nqkum.mongodb.net/todo?retryWrites=true&w=majority
+        await mongo.connect('mongodb://127.0.0.1:27017/todo', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         }).then(() => console.log(`Сервер работает на порту ${PORT}`))
