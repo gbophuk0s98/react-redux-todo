@@ -146,7 +146,7 @@ const RoadMapPage = ({
     }
 
 
-    if (!selectedProject._id) return <>Выберите проект</>
+    if (!selectedProject._id) return <>{`Выберите проект`}</>
     if (projectListIsEmpty) return <CreateProjectLink />
     if (loading) return <Spinner />
 

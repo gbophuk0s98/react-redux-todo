@@ -6,9 +6,9 @@ import { bindActionCreators } from 'redux'
 import * as actions from '../../actoins'
 import DropDown from '../dropdown'
 import Brightness4RoundedIcon from '@material-ui/icons/Brightness4Rounded';
-import { Button, makeStyles, AppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from '@material-ui/core'
+import { Button, makeStyles, AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Drawer } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
-import MoreIcon from '@material-ui/icons/MoreVert'
+import MenuIcon from '@material-ui/icons/Menu'
 
 import './header.css'
 
@@ -37,6 +37,12 @@ const useStyles = makeStyles((theme) => ({
             width: '20ch',
         },
     },
+    btnText: {
+        fontSize: '0.875rem',
+        [theme.breakpoints.down('825')]: {
+            fontSize: '0.675rem'
+        }
+    },
     sectionDesktop: {
         display: 'none',
         [theme.breakpoints.up('sm')]: {
@@ -44,32 +50,51 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     sectionMobile: {
-        display: 'flex',
-        [theme.breakpoints.up('md')]: {
-            display: 'none',
-        },
+        display: 'none',
+        [theme.breakpoints.down('825')]: {
+            display: 'block',
+        }
     },
+    sectionNavigationDesktop: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        [theme.breakpoints.down('825')]: {
+            display: 'none',
+        }
+    },
+    MuiDrawer: {
+        root: {
+            ariaHidden: 'true',
+        },
+        paper: {
+            top: '0',
+            maxWidth: '300px',
+            width: '100%',
+            color: '#303030',
+            '& .MuiInputBase-root.Mui-disabled': {
+                color: '#303030',
+            },
+            '& MuiFormLabel-root': {
+                color: '#303030',
+            }
+        }
+    }
 }))
 
 const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
 
     const [anchorEl, setAnchorEl] = useState(null)
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
+    const [open, setOpen] = useState(false)
     const classes = useStyles()
 
     const isMenuOpen = Boolean(anchorEl)
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
     const handleProfileMenuOpen = (event) => setAnchorEl(event.currentTarget)
 
-    const handleMobileMenuClose = () => setMobileMoreAnchorEl(null)
-
     const handleMenuClose = () => {
         setAnchorEl(null)
-        handleMobileMenuClose()
     }
-
-    const handleMobileMenuOpen = (event) => setMobileMoreAnchorEl(event.currentTarget)
 
     const themeToggler = () => {
         theme === 'light' ? setTheme('dark') : setTheme('light')
@@ -86,39 +111,30 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-        <MenuItem onClick={handleMenuClose}>Профиль</MenuItem>
-        <MenuItem onClick={() => {
-            handleMenuClose()
-            logoutHandler()
-        }}>
-            Выйти
-        </MenuItem>
+            <MenuItem onClick={handleMenuClose}>Профиль</MenuItem>
+            <MenuItem onClick={() => {
+                handleMenuClose()
+                logoutHandler()
+            }}>
+                Выйти
+            </MenuItem>
         </Menu>
     )
 
-    const mobileMenuId = 'primary-search-account-menu-mobile';
-    const renderMobileMenu = (
-        <Menu
-        anchorEl={mobileMoreAnchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        id={mobileMenuId}
-        keepMounted
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMobileMenuOpen}
-        onClose={handleMobileMenuClose}
-        >
-        <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-            aria-label="account of current user"
-            aria-controls="primary-search-account-menu"
-            aria-haspopup="true"
-            color="inherit"
-        >
-        <AccountCircle />
-        </IconButton>
-            <p>Profile</p>
-        </MenuItem>
-        </Menu>
+    const renderLinks = (
+        <>
+            <Typography style={{ marginRight: 15 }}>CroCodileUI</Typography>
+            <Button component={Link} to='/cards'>
+            <Typography className={classes.btnText}>Главная</Typography>
+            </Button>
+            <Button component={Link} to='/roadmap'>
+                <Typography className={classes.btnText}>Дорожная карта</Typography>
+            </Button>
+            <DropDown />
+            <Typography>
+                {selectedProject.title && `Текущий проект: ${selectedProject.title}`}
+            </Typography>
+        </>
     )
 
 
@@ -129,17 +145,27 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
                 position="static"
             >
                 <Toolbar>
-                    <Typography style={{ marginRight: 15 }}>CroCodileUI</Typography>
-                    <Button component={Link} to='/cards'>
-                        Главная
-                    </Button>
-                    <Button component={Link} to='/roadmap'>
-                        Дорожная карта
-                    </Button>
-                    <DropDown />
-                    <Typography>
-                        {selectedProject.title && `Текущий проект: ${selectedProject.title}`}
-                    </Typography>
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        className={classes.sectionMobile}
+                        onClick={() => setOpen(!open)}
+                    >
+                        <MenuIcon
+                        />
+                    </IconButton>
+                    <div className={classes.sectionNavigationDesktop}>
+                        {renderLinks}
+                    </div>
+                    <Drawer
+                        variant="persistent"
+                        anchor="left"
+                        open={open}
+                        className={classes.drawer}
+                    >
+                        {renderLinks}
+                    </Drawer>
 
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
@@ -163,20 +189,8 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
                             <AccountCircle />
                         </IconButton>
                     </div>
-                    <div className={classes.sectionMobile}>
-                        <IconButton
-                            aria-label="show more"
-                            aria-controls={mobileMenuId}
-                            aria-haspopup="true"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
-                        <MoreIcon />
-                        </IconButton>
-                    </div>
                 </Toolbar>
             </AppBar>
-            {renderMobileMenu}
             {renderMenu}
         </div>
       )
