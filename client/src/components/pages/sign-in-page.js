@@ -49,7 +49,7 @@ const SingIn = ({ errors, form, loginHandler, changeSignInForm, clearSingInFormE
         if (errors.password) enqueueSnackbar(errors.password, variant)
         if (errors.email) enqueueSnackbar(errors.email, variant)
         if (JSON.stringify(errors) !== '{}') clearSingInFormErrors()
-    }, [errors, enqueueSnackbar])
+    }, [errors, enqueueSnackbar, clearSingInFormErrors])
 
     const handleSubmit = () => loginHandler(form)
 

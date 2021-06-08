@@ -3,6 +3,8 @@ const mongo = require('mongoose')
 const app = express()
 const path = require('path')
 const PORT = process.env.PORT || 8080
+const LOCAL_DB = 'mongodb://127.0.0.1:27017/todo'
+const REMOTE_DB = 'mongodb+srv://surta:123@cluster0.nqkum.mongodb.net/todo?retryWrites=true&w=majority'
 
 app.use(express.json({ extended: true }))
 
@@ -20,15 +22,13 @@ if (process.env.NODE_ENV == 'production'){
 app.listen(PORT, async () => {
     try
     {
-        //mongodb://127.0.0.1:27017/todo
-        //mongodb+srv://surta:123@cluster0.nqkum.mongodb.net/todo?retryWrites=true&w=majority
-        await mongo.connect('mongodb+srv://surta:123@cluster0.nqkum.mongodb.net/todo?retryWrites=true&w=majority', {
+        await mongo.connect(LOCAL_DB, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         }).then(() => console.log(`Сервер работает на порту ${PORT}`))
     }
     catch (e) 
     {
-        console.log(e)
+        console.log(e.message)
     }
 })

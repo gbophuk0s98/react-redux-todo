@@ -12,6 +12,32 @@ import updateRecentProjects from './recent-projects-reducer'
 import updateAppMessages from './app-messages-reducer'
 
 const reducer = (state, action) => {
+
+    if (action.type === 'USER_LOGOUT_SUCCESS') 
+        return {
+            user: {
+                theme: state.user.theme
+            },
+            projects: {
+                items: [],
+                loading: false,
+            },
+            cards: {
+                items: [],
+                loading: false
+            },
+            todos: {
+                items: [],
+                loading: false
+            },
+            recentProjects: [],
+            selectedProject: {},
+            selectedTodo: {},
+            form: state.form,
+            appMessages: state.appMessages,
+            iconOptions: state.iconOptions,
+        }
+
     return {
         user: updateUser(state, action),
         projects: updateProjects(state, action),

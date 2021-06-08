@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     },
     sectionDesktop: {
         display: 'none',
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.up('sm')]: {
             display: 'flex',
         },
     },
@@ -138,7 +138,7 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
                     </Button>
                     <DropDown />
                     <Typography>
-                        Текущий проект: {selectedProject.title}
+                        {selectedProject.title && `Текущий проект: ${selectedProject.title}`}
                     </Typography>
 
                     <div className={classes.grow} />
