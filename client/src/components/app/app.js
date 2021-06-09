@@ -13,19 +13,19 @@ import './app.css'
 import { createMuiTheme, ThemeProvider as MaterialThemeProvider } from '@material-ui/core/styles';
 
 const App = ({ token, theme }) => {
-	
+
 	const routes = useRoutes(!!token)
-	const isMobile = window.innerWidth < 600
-	const muiTheme = createMuiTheme(theme === 'light' ? muiThemeLight: muiThemeDark)
-	
+	const isMobile = window.innerWidth < 768
+	const muiTheme = createMuiTheme(theme === 'light' ? muiThemeLight : muiThemeDark)
+
 	return (
 		<MaterialThemeProvider theme={muiTheme}>
-		<>
-		<GlobalStyles />
-		<DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
-			{routes}
-		</DndProvider>
-		</>
+			<>
+				<GlobalStyles />
+				<DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
+					{routes}
+				</DndProvider>
+			</>
 		</MaterialThemeProvider>
 	)
 }
@@ -37,4 +37,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps)(App) 
+export default connect(mapStateToProps)(App)

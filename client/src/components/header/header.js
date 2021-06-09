@@ -9,10 +9,11 @@ import Brightness4RoundedIcon from '@material-ui/icons/Brightness4Rounded';
 import { Button, makeStyles, AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Drawer } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
 import MenuIcon from '@material-ui/icons/Menu'
+import CloseIcon from '@material-ui/icons/Close'
 
 import './header.css'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
     grow: {
         flexGrow: 1,
     },
@@ -38,13 +39,12 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     btnText: {
-        fontSize: '0.875rem',
-        [theme.breakpoints.down('825')]: {
-            fontSize: '0.675rem'
-        }
+        fontSize: '0.875rem'
     },
     sectionDesktop: {
-        display: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        flexShrink: '2',
         [theme.breakpoints.up('sm')]: {
             display: 'flex',
         },
@@ -63,22 +63,36 @@ const useStyles = makeStyles((theme) => ({
             display: 'none',
         }
     },
-    MuiDrawer: {
-        root: {
-            ariaHidden: 'true',
-        },
-        paper: {
-            top: '0',
-            maxWidth: '300px',
-            width: '100%',
-            color: '#303030',
-            '& .MuiInputBase-root.Mui-disabled': {
-                color: '#303030',
-            },
-            '& MuiFormLabel-root': {
-                color: '#303030',
-            }
+    drawerPaper: {
+        width: '250px',
+        top: '0',
+    },
+    drawerRoot: {
+        ariaHidden: 'true',
+    },
+    titleApp: {
+        [theme.breakpoints.down('825')]: {
+            display: 'none'
         }
+    },
+    headerBtn: {
+        [theme.breakpoints.down('825')]: {
+            width: '100%',
+        }
+    },
+    projectTextColor: {
+        [theme.breakpoints.down('825')]: {
+            textAlign: 'center'
+        },
+        [theme.breakpoints.down('435')]: {
+            fontSize: '0.765rem',
+        },
+        [theme.breakpoints.down('400')]: {
+            fontSize: '0.665rem',
+        },
+        [theme.breakpoints.down('345')]: {
+            fontSize: '0.565rem',
+        },
     }
 }))
 
@@ -90,17 +104,13 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
 
     const isMenuOpen = Boolean(anchorEl)
 
-    const handleProfileMenuOpen = (event) => setAnchorEl(event.currentTarget)
+    const handleProfileMenuOpen = event => setAnchorEl(event.currentTarget)
 
-    const handleMenuClose = () => {
-        setAnchorEl(null)
-    }
+    const handleMenuClose = () => setAnchorEl(null)
 
-    const themeToggler = () => {
-        theme === 'light' ? setTheme('dark') : setTheme('light')
-	}
+    const themeToggler = () => theme === 'light' ? setTheme('dark') : setTheme('light')
 
-    const menuId = 'primary-search-account-menu';
+    const menuId = 'primary-search-account-menu'
     const renderMenu = (
         <Menu
             anchorEl={anchorEl}
@@ -123,17 +133,14 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
 
     const renderLinks = (
         <>
-            <Typography style={{ marginRight: 15 }}>CroCodileUI</Typography>
-            <Button component={Link} to='/cards'>
-            <Typography className={classes.btnText}>Главная</Typography>
+            <Typography className={classes.titleApp} style={{ marginRight: 15 }}>CroCodileUI</Typography>
+            <Button onClick={() => setOpen(false)} className={classes.headerBtn} component={Link} to='/cards'>
+                <Typography className={classes.btnText}>Главная</Typography>
             </Button>
-            <Button component={Link} to='/roadmap'>
+            <Button onClick={() => setOpen(false)} className={classes.headerBtn} component={Link} to='/roadmap'>
                 <Typography className={classes.btnText}>Дорожная карта</Typography>
             </Button>
-            <DropDown />
-            <Typography>
-                {selectedProject.title && `Текущий проект: ${selectedProject.title}`}
-            </Typography>
+            <DropDown classes={classes.headerBtn} />
         </>
     )
 
@@ -150,7 +157,7 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
                         color="inherit"
                         aria-label="menu"
                         className={classes.sectionMobile}
-                        onClick={() => setOpen(!open)}
+                        onClick={() => setOpen(true)}
                     >
                         <MenuIcon
                         />
@@ -162,13 +169,28 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
                         variant="persistent"
                         anchor="left"
                         open={open}
-                        className={classes.drawer}
+                        classes={{
+                            root: classes.drawerRoot,
+                            paper: classes.drawerPaper
+                        }}
                     >
+                        <IconButton
+                            onClick={() => setOpen(false)}
+                            style={{
+                                borderRadius: 0,
+                                border: 'none'
+                            }}
+                        >
+                            <CloseIcon />
+                        </IconButton>
                         {renderLinks}
                     </Drawer>
 
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
+                        <Typography className={classes.projectTextColor}>
+                            {selectedProject.title && `Текущий проект: ${selectedProject.title}`}
+                        </Typography>
                         <IconButton
                             edge="end"
                             aria-label="switch theme"
@@ -193,7 +215,7 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
             </AppBar>
             {renderMenu}
         </div>
-      )
+    )
 }
 
 const mapStateToProps = (state) => {

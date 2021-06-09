@@ -14,11 +14,11 @@ class DropDownWrapper extends React.Component {
         this.wrapper = React.createRef()
     }
     render() {
-        return <div ref={this.wrapper}>{this.props.children}</div>
+        return <div className={this.props.styles} ref={this.wrapper}>{this.props.children}</div>
     }
 }
 
-const DropDown = ({ headers, recentProjects, fetchProject, clearSelectedTodo }) => {
+const DropDown = ({ headers, recentProjects, fetchProject, clearSelectedTodo, classes }) => {
 
     const [anchorEl, setAnchorEl] = useState(false)
 
@@ -26,9 +26,10 @@ const DropDown = ({ headers, recentProjects, fetchProject, clearSelectedTodo }) 
     const handleClose = () => setAnchorEl(null)
 
     return (
-        <DropDownWrapper>
+        <DropDownWrapper styles={classes}>
             <Button
                 onClick={handleClick}
+                style={{ width: '100%' }}
             >
                 Проекты
                 <ArrowDropDownIcon />
