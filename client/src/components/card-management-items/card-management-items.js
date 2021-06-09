@@ -8,20 +8,17 @@ import { Card, CardContent, TextField, makeStyles, IconButton } from '@material-
 
 import { deleteCard, updateCardTitle } from '../../actoins'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     cardContent: {
         padding: 0
-    }
-})
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-    userSelect: 'none',
-    padding: '2px 5px',
-    margin: `0 8px 0 0`,
-    maxWidth: '400px',
-    width: '100%',
-    ...draggableStyle,
-})
+    },
+    dndItem: {
+        userSelect: 'none',
+        padding: '2px 5px',
+        maxWidth: '24%',
+        width: '100%',
+    },
+}))
 
 const CardManagementItems = ({ headers, items, item, index, selectedProjectId, deleteCard, updateCardTitle }) => {
 
@@ -54,10 +51,10 @@ const CardManagementItems = ({ headers, items, item, index, selectedProjectId, d
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                    )}
+                    style={{
+                        ...provided.draggableProps.style
+                    }}
+                    className={classes.dndItem}
                 >
                     <CardContent className={classes.cardContent}>
                         <div className="text-right">

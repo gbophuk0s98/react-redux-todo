@@ -31,12 +31,12 @@ const useStyles = makeStyles(theme => ({
             width: '100%'
         },
         [theme.breakpoints.down('900')]: {
-            // width: '80%',
             justifyContent: 'space-around',
             flexWrap: 'wrap',
         }
     },
     card: {
+        height: 'max-content',
         [theme.breakpoints.up('900')]: {
             width: 'calc(25% - 20px)',
             marginBottom: '20px',

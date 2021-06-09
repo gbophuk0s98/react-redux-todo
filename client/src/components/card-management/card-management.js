@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
-import { Button, Dialog, DialogActions, DialogContent, TextField } from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogContent, TextField, makeStyles } from '@material-ui/core'
 import { connect } from 'react-redux'
 
 import { projectUpdate, createCard, cardsLoaded } from '../../actoins'
@@ -17,26 +17,36 @@ const reorder = (list, startIndex, endIndex) => {
     return result
 }
 
-const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightblue' : 'lightgrey',
-    display: 'flex',
-    padding: 8,
-    width: '100%',
-    height: '50%',
-})
-
 const sortCards = (cards, projectItems) => {
     return cards.sort((a, b) => {
         return projectItems.findIndex(({ id }) => id === a._id ) - projectItems.findIndex(({ id }) => id === b._id )
     })
 }
 
+const useStyles = makeStyles(theme =>({
+    upperBtns: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        marginBottom: '15px',
+    },
+    movementArea: {
+        display: 'flex',
+        justifyContent: 'space-around',
+        padding: '8px',
+        width: '100%',
+        height: 'max-content',
+        flexWrap: 'wrap'
+    },
+}))
+
 const CardManagement = ({ headers, user, selectedProject, projectUpdate, createCard, cards, cardsLoaded }) => {
 
     const [items, setItems] = useState(selectedProject.cards || [])
     const [open, setOpen] = useState(false)
     const [title, setTitle] = useState('')
+
     const history = useHistory()
+    const classes = useStyles()
 
     useEffect(() => setItems(selectedProject.cards), [selectedProject])
 
@@ -69,8 +79,8 @@ const CardManagement = ({ headers, user, selectedProject, projectUpdate, createC
 
 
     return (
-        <div style={{ width: '70%' }}>
-            <div className="d-flex justify-content-end m-2">
+        <div style={{ width: '80%' }}>
+            <div className={classes.upperBtns}>
                 <Button
                     onClick={handleOpen}
                 >
@@ -114,8 +124,9 @@ const CardManagement = ({ headers, user, selectedProject, projectUpdate, createC
                     {(provided, snapshot) => (
                         <div
                             ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}
+                            style={{ background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey' }}
                             {...provided.droppableProps}
+                            className={classes.movementArea}
                         >
                             {items.map((item, index) => (
                                 <CardManagementItems
