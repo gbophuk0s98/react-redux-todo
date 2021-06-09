@@ -30,43 +30,49 @@ const useStyles = makeStyles({
 	},
 })
 
-export const Card = ({ columns }) => {
+export const Card = ({ columns, styles }) => {
 
 	const classes = useStyles()
 
 	return (
 		<>
-		{Object.entries(columns).map(([ id, column ]) => {
-			return (
-				<MaterialCard className={classes.card} key={id}>
-					<CardContent className={classes.cardContent}>
-					<Typography>
-							{column.name} {column.items.length}
-					</Typography>
-					<div className="card-items" style={{ margin: 1, padding: 5, width: '100%' }}>
-						<Droppable droppableId={id.toString()} key={id}>
-							{(provided, snapshot) => {
-								return (
-									<div
-										className="card-items-droppable"
-										{...provided.droppableProps}
-										ref={provided.innerRef}
-										style={{
-											background: snapshot.isDraggingOver ? 'lightblue': '',
-											border: snapshot.isDraggingOver ? 2 + 'px dashed rgb(16,59,68)': '',
-										}}
-									>
-										<CardItems items={column.items} />
-										{provided.placeholder}
-									</div>
-								)
-							}}
-						</Droppable>
-					</div>
-					</CardContent>
-				</MaterialCard>
-			)
-		})}
+			{Object.entries(columns).map(([id, column]) => {
+				return (
+					<MaterialCard
+						className={
+							classes.card,
+							styles
+						}
+						key={id}
+					>
+						<CardContent className={classes.cardContent}>
+							<Typography>
+								{column.name} {column.items.length}
+							</Typography>
+							<div className="card-items" style={{ margin: 1, padding: 5, width: '100%', heigth: 'max-content' }}>
+								<Droppable droppableId={id.toString()} key={id}>
+									{(provided, snapshot) => {
+										return (
+											<div
+												className="card-items-droppable"
+												{...provided.droppableProps}
+												ref={provided.innerRef}
+												style={{
+													background: snapshot.isDraggingOver ? 'lightblue' : '',
+													border: snapshot.isDraggingOver ? 2 + 'px dashed rgb(16,59,68)' : '',
+												}}
+											>
+												<CardItems items={column.items} />
+												{provided.placeholder}
+											</div>
+										)
+									}}
+								</Droppable>
+							</div>
+						</CardContent>
+					</MaterialCard>
+				)
+			})}
 		</>
 	)
 }
