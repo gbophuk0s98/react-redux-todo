@@ -35,18 +35,36 @@ const columns = [
     { id: 'epicDate', label: 'Срок выполнения', minWidth: 100, aling: 'left' },
 ]
 
-const useStyles = makeStyles({
-    paperStyles: { width: '50%', maxHeight: 550, borderRadius: '0' },
-    container: { maxHeight: 500 },
-    paperRow: { width: '50%', maxHeight: 550, padding: '15px 25px', borderRadius: '0' },
+const useStyles = makeStyles(theme => ({
+    paperStyles: {
+        width: '70%',
+        borderRadius: '0',
+        [theme.breakpoints.down('1000')]: {
+            width: '100%'
+        }
+    },
+    container: { height: '451px' },
+    paperRow: {
+        width: '70%',
+        padding: '15px 25px',
+        borderRadius: '0',
+        [theme.breakpoints.down('1000')]: {
+            width: '100%'
+        },
+    },
+    dateCompletion: {
+        [theme.breakpoints.up('450')]: {
+            content: 'Date',
+        },
+    },
     swipe: { height: '200px', top: 64 },
-})
+}))
 
 
 
-const RoadMapPage = ({ 
+const RoadMapPage = ({
     headers, todos, todoCreated, loading, projectListIsEmpty,
-    fetchTodos, todoSelected, selectedProject 
+    fetchTodos, todoSelected, selectedProject
 }) => {
 
     const [showInput, setShowInput] = useState(false)
@@ -71,7 +89,7 @@ const RoadMapPage = ({
             </TableCell>
         )
     }
-    
+
     const renderRow = (todo) => {
         return (
             <TableRow hover key={todo._id}>
@@ -102,7 +120,7 @@ const RoadMapPage = ({
             </TableRow>
         )
     }
-    
+
     const InputRow = () => {
         return (
             <>
@@ -116,14 +134,14 @@ const RoadMapPage = ({
             </>
         )
     }
-    
+
     const BtnRow = () => {
         return (
             <>
                 <Button
                     onClick={() => setShowInput(!showInput)}
                 >
-                    Создать Epic...
+                    {'Создать Epic...'}
                 </Button>
             </>
         )
@@ -151,37 +169,39 @@ const RoadMapPage = ({
     if (loading) return <Spinner />
 
     return (
-        <div className="roadmap-container">
-            <Paper className={classes.paperStyles}>
-                <TableContainer className={classes.container}>
-                    <Table
-                        stickyHeader
-                        aria-label="sticky table"
-                    >
-                        <TableHead>
-                            <TableRow>
-                                {columns.map(column => renderHead(column))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(todo => renderRow(todo))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 15]}
-                    component="div"
-                    count={todos.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
-            </Paper>
-            <Paper className={classes.paperRow}>
-                {!showInput && <BtnRow />}
-                {showInput && <InputRow />}
-            </Paper>
+        <>
+            <div className="roadmap-container">
+                <Paper className={classes.paperStyles}>
+                    <TableContainer className={classes.container}>
+                        <Table
+                            stickyHeader
+                            aria-label="sticky table"
+                        >
+                            <TableHead>
+                                <TableRow>
+                                    {columns.map(column => renderHead(column))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(todo => renderRow(todo))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 15]}
+                        component="div"
+                        count={todos.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
+                </Paper>
+                <Paper className={classes.paperRow}>
+                    {!showInput && <BtnRow />}
+                    {showInput && <InputRow />}
+                </Paper>
+            </div>
             <Drawer
                 variant="persistent"
                 anchor="right"
@@ -196,7 +216,7 @@ const RoadMapPage = ({
             </Drawer>
             <ErrorAlertWrapper />
             <SuccessAlertWrapper />
-        </div>
+        </>
     )
 }
 
