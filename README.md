@@ -4,4 +4,12 @@ You can see the deployed application here: https://gbophuk0sreduxtodo.herokuapp.
   
   
 # *Front-end*:  
-* qweqweqw
+* React  
+* React-router-dom
+* React-redux  
+* React-select
+* React-beautiful-dnd
+* React-dnd-html5-backend
+* React-dnd-touch-backend
+* React-color
+* React-bootstrap-daterangepicker
