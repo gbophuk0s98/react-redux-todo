@@ -103,7 +103,6 @@ const todoCreated = (todo, headers) => (dispatch) => {
             ...headers,
             Todo: `Id ${todo._id}`
         })))
-        // .then(() => fetchCards(dispatch, projectId)) //был расположен вторым then
         .then(() => dispatch(fetchTodos(headers)))
         .then(() => dispatch(setUniversalMessage('Задача успешно создана!')))
         .catch(err => dispatch(setUniversalError(err.message)))
@@ -112,26 +111,26 @@ const todoCreated = (todo, headers) => (dispatch) => {
 const todoUpdate = (
     id, headers, startDate = null, endDate = null,
     color = null, title = null, priority = null, owner = null,
-    description = null ) => (dispatch) => {
+    description = null) => (dispatch) => {
 
-    let objToUpdate = {}
+        let objToUpdate = {}
 
-    if (startDate && endDate) objToUpdate = { id, startDate, endDate }
-    else if (color) objToUpdate = { id, color }
-    else if (title) objToUpdate = { id, title }
-    else if (priority) objToUpdate = { id, priority }
-    else if (owner) objToUpdate = { id, owner }
-    else if (description) objToUpdate = { id, description }
+        if (startDate && endDate) objToUpdate = { id, startDate, endDate }
+        else if (color) objToUpdate = { id, color }
+        else if (title) objToUpdate = { id, title }
+        else if (priority) objToUpdate = { id, priority }
+        else if (owner) objToUpdate = { id, owner }
+        else if (description) objToUpdate = { id, description }
 
-    service.updateCardItem(objToUpdate, headers)
-        .then(() => {
-            service.updateTodo(objToUpdate, headers).then(res => dispatch(setUniversalMessage(res.message)))
-        })
-        .then(() => dispatch(todoSelected({ ...headers, Todo: `Id ${id}` })))
-        .then(() => dispatch(fetchTodos(headers)))
-        .then(() => dispatch(fetchCards(headers)))
-        .catch(err => dispatch(setUniversalError(err.message)))
-}
+        service.updateCardItem(objToUpdate, headers)
+            .then(() => {
+                service.updateTodo(objToUpdate, headers).then(res => dispatch(setUniversalMessage(res.message)))
+            })
+            .then(() => dispatch(todoSelected({ ...headers, Todo: `Id ${id}` })))
+            .then(() => dispatch(fetchTodos(headers)))
+            .then(() => dispatch(fetchCards(headers)))
+            .catch(err => dispatch(setUniversalError(err.message)))
+    }
 
 const todoSelected = (headers) => (dispatch) => {
     dispatch(todoSelectedLoading())
@@ -171,6 +170,14 @@ const updateCardTitle = (objToBackend, headers) => (dispatch) => {
 const saveCards = (cards, headers) => (dispatch) => {
     service.saveCards(cards, headers)
         .catch(err => dispatch(setUniversalError(err.message)))
+}
+
+const moveCardItem = (transferInfo) => dispatch => {
+    dispatch({
+        type: 'MOVE_CARD_ITEM',
+        payload: transferInfo
+    })
+    dispatch(setUniversalMessage('Задача успешно обновлена!'))
 }
 
 // object actions
@@ -318,10 +325,6 @@ const transferCardsItems = (result) => {
         type: 'TRANSFER_CARDS_ITEMS',
         payload: result
     }
-}
-
-const moveCardItem = (transferInfo) => {
-    return { type: 'MOVE_CARD_ITEM', payload: transferInfo }
 }
 
 const changeSignInForm = event => {

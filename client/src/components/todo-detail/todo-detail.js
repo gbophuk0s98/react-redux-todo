@@ -25,6 +25,17 @@ const useStyles = makeStyles((theme) => ({
             padding: '10px 15px',
         }
     },
+    plusHeight: {
+        height: '200px',
+    },
+    fieldText: {
+        [theme.breakpoints.down('500')]: {
+            fontSize: '0.8rem'
+        },
+        [theme.breakpoints.down('400')]: {
+            fontSize: '0.65rem'
+        }
+    },
 }))
 
 
@@ -105,7 +116,7 @@ const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, to
                 spacing={0}
             >
                 <Grid item>
-                    <Typography>
+                    <Typography className={classes.fieldText}>
                         Описание
                     </Typography>
                 </Grid>
@@ -129,7 +140,9 @@ const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, to
                 alignItems={"center"}
             >
                 <Grid item xs={3}>
-                    Исполнитель
+                    <Typography className={classes.fieldText}>
+                        Исполнитель
+                    </Typography>
                 </Grid>
                 <Grid item xs={9}>
                     <TextField
@@ -149,7 +162,9 @@ const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, to
                 alignItems={"center"}
             >
                 <Grid item xs={3}>
-                    Автор
+                    <Typography className={classes.fieldText}>
+                        Автор
+                    </Typography>
                 </Grid>
                 <Grid item xs={9}>
                     <TextField
@@ -169,7 +184,9 @@ const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, to
                 alignItems={"center"}
             >
                 <Grid item xs={3}>
-                    Приоритет
+                    <Typography className={classes.fieldText}>
+                        Приоритет
+                    </Typography>
                 </Grid>
                 <Grid item xs={9}>
                     <CustomSelect
@@ -186,7 +203,9 @@ const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, to
                 alignItems={"center"}
             >
                 <Grid item xs={3}>
-                    Карточка
+                    <Typography className={classes.fieldText}>
+                        Карточка
+                    </Typography>
                 </Grid>
                 <Grid item xs={9}>
                     <SimpleSelect
@@ -194,6 +213,7 @@ const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, to
                     />
                 </Grid>
             </Grid>
+            <Grid className={classes.plusHeight}></Grid>
         </div>
     )
 }

@@ -52,6 +52,7 @@ const CustomSelect = ({ headers, priority, id, todoUpdate, iconOptions, selected
             styles={styles}
             value={renderOption()}
             onChange={(data) => changeHandler(data)}
+            isSearchable={false}
         />
     )
 }
