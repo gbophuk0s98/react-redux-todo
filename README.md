@@ -1,4 +1,4 @@
 # react-redux-todo
 # Pet project
 
-You can see the deployed application here : ![alt-текст](https://cdn.iconscout.com/icon/free/png-256/heroku-5-569467.png)
+You can see the deployed application here : ![alt-текст](https://lh3.googleusercontent.com/proxy/0nCCIJvdauWNUd98Qy4oGvm0ZOCoZFovluEqIChMIvbLecVqS-NAmUaSLikKqfv455CkNr2BPsWDlQWv1gcW3OH1aIPcrLslA2cA)
