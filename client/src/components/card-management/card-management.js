@@ -19,11 +19,11 @@ const reorder = (list, startIndex, endIndex) => {
 
 const sortCards = (cards, projectItems) => {
     return cards.sort((a, b) => {
-        return projectItems.findIndex(({ id }) => id === a._id ) - projectItems.findIndex(({ id }) => id === b._id )
+        return projectItems.findIndex(({ id }) => id === a._id) - projectItems.findIndex(({ id }) => id === b._id)
     })
 }
 
-const useStyles = makeStyles(theme =>({
+const useStyles = makeStyles(theme => ({
     upperBtns: {
         display: 'flex',
         justifyContent: 'flex-end',
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme =>({
     },
 }))
 
-const CardManagement = ({ headers, user, selectedProject, projectUpdate, createCard, cards, cardsLoaded }) => {
+const CardManagement = ({ headers, selectedProject, projectUpdate, createCard, cards, cardsLoaded }) => {
 
     const [items, setItems] = useState(selectedProject.cards || [])
     const [open, setOpen] = useState(false)
@@ -59,7 +59,7 @@ const CardManagement = ({ headers, user, selectedProject, projectUpdate, createC
             result.source.index,
             result.destination.index
         )
-        setItems(reorderItems)        
+        setItems(reorderItems)
         cardsLoaded(sortCards(cards, reorderItems))
         projectUpdate(selectedProject._id, reorderItems, headers)
     }
@@ -151,7 +151,6 @@ const mapStateToProps = (state) => {
     return {
         selectedProject: state.selectedProject,
         cards: state.cards.items,
-        user: state.user,
         headers: {
             User: `Id ${state.user.id}`,
             Token: `Bearer ${state.user.token}`,

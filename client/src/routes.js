@@ -6,7 +6,7 @@ import { CardPage, RoadMapPage, ProjectPage, ProjectListPage, SignIn, SignUp } f
 import CardManagement from './components/card-management'
 import { SnackbarProvider } from 'notistack'
 
-export const useRoutes = (isAuthenticated = true, location = null) => {
+export const useRoutes = (isAuthenticated = true) => {
 
         if (isAuthenticated) {
             return (

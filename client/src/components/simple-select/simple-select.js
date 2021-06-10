@@ -20,7 +20,7 @@ const getObj = (card) => {
 }
 
 const SimpleSelect = ({ selectedTodo, selectedProject, cards, moveCardItem, saveCards }) => {
-    
+
     const [options, setOptions] = useState([])
     const [index, setIndex] = useState(null)
 
@@ -29,11 +29,11 @@ const SimpleSelect = ({ selectedTodo, selectedProject, cards, moveCardItem, save
     useEffect(() => {
         cards.forEach((card, index) => {
             const [todoInCard] = card.items.filter(item => item._id === selectedTodo._id)
-            if (todoInCard)  setIndex(index)
+            if (todoInCard) setIndex(index)
         })
     })
 
-    
+
     const changeHandler = (data) => {
         const copiedCards = [...cards]
         const targetCardIndex = copiedCards.findIndex((item) => item._id === data.value)
@@ -48,7 +48,7 @@ const SimpleSelect = ({ selectedTodo, selectedProject, cards, moveCardItem, save
             }
             return true
         })
-    
+
         moveCardItem({
             targetCardIndex: targetCardIndex,
             sourceCardIndex: sourceCardIndex,
@@ -64,14 +64,15 @@ const SimpleSelect = ({ selectedTodo, selectedProject, cards, moveCardItem, save
             value={myArr[index]}
             components={{ Option: CustomOption }}
             options={options.map(option => getObj(option))}
-            onChange={(data) => changeHandler(data)}
+            onChange={data => changeHandler(data)}
+            isSearchable={false}
         />
     )
 }
 
 const mapStateToProps = (state) => {
 
-    const { _id,  customId, content, startDate, endDate } = state.selectedTodo
+    const { _id, customId, content, startDate, endDate } = state.selectedTodo
 
     return {
         cards: state.cards.items,

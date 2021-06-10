@@ -13,6 +13,9 @@ import Spinner from '../spinner'
 
 
 const useStyles = makeStyles((theme) => ({
+    container: {
+        height: 'max-content'
+    },
     grid: {
         padding: '5px 25px',
         marginBottom: '5px',
@@ -35,7 +38,7 @@ const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, to
     useEffect(() => setDescription(selectedTodo.description), [setDescription, selectedTodo])
 
     const onTitleChange = e => setTitle(e.target.value)
-    
+
     const onTitleBlurHandler = e => {
         if (title === '' || title === selectedTodo.content) setTitle(selectedTodo.content)
         else todoUpdate(selectedTodo._id, headers, title)
@@ -69,9 +72,9 @@ const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, to
             {}
         </Grid>
     )
-    
+
     return (
-        <>
+        <div className={classes.container}>
             <Grid
                 container
                 className={classes.grid}
@@ -126,7 +129,7 @@ const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, to
                 alignItems={"center"}
             >
                 <Grid item xs={3}>
-                        Исполнитель
+                    Исполнитель
                 </Grid>
                 <Grid item xs={9}>
                     <TextField
@@ -146,7 +149,7 @@ const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, to
                 alignItems={"center"}
             >
                 <Grid item xs={3}>
-                        Автор
+                    Автор
                 </Grid>
                 <Grid item xs={9}>
                     <TextField
@@ -166,10 +169,10 @@ const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, to
                 alignItems={"center"}
             >
                 <Grid item xs={3}>
-                        Приоритет
+                    Приоритет
                 </Grid>
                 <Grid item xs={9}>
-                    <CustomSelect 
+                    <CustomSelect
                         id={selectedTodo._id}
                         priority={selectedTodo.priority}
                     />
@@ -183,15 +186,15 @@ const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, to
                 alignItems={"center"}
             >
                 <Grid item xs={3}>
-                        Карточка
+                    Карточка
                 </Grid>
                 <Grid item xs={9}>
-                    <SimpleSelect 
+                    <SimpleSelect
                         todoId={selectedTodo._id}
                     />
                 </Grid>
             </Grid>
-        </>
+        </div>
     )
 }
 

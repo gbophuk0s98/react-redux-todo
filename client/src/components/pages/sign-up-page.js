@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
@@ -148,7 +148,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { changeSignUpForm, clearSignUpFormErrors, clearForms } = bindActionCreators(actions, dispatch)
+    const { changeSignUpForm, clearSignUpFormErrors } = bindActionCreators(actions, dispatch)
     return {
         changeSignUpForm,
         clearSignUpFormErrors,

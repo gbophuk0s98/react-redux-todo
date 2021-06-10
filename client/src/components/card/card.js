@@ -17,7 +17,6 @@ const useStyles = makeStyles({
 		display: 'flex',
 		justifyContent: 'center',
 		flexWrap: 'wrap',
-		// color: '#201E1E',
 		flexDirection: 'column',
 		alignItems: 'center',
 	},

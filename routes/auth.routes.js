@@ -1,8 +1,5 @@
 const { Router } = require('express')
-const uuid = require('uuid')
 const User = require('../models/User')
-const Card = require('../models/Card')
-const Todo = require('../models/Todo')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const { check, validationResult } = require('express-validator')

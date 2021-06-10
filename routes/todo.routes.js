@@ -6,7 +6,6 @@ const Project = require('../models/Project')
 const User = require('../models/User')
 const router = Router()
 const uuid = require('uuid')
-const auth = require('../middleware/auth.middleware')
 
 const getCardIdAndName = (card) => {
     return {
@@ -216,19 +215,15 @@ router.post('/createProject', async (req, res) => {
         const project = new Project({ title: projectName, description: '', key: projectKey, owner: userId, cards: [] })
         await project.save()
 
-        // const tasksCard = new Card({ name: 'Бэклог', columnType: 'TaskList', items: [], project: project.id })
         const tasksCard = new Card({ name: 'Бэклог', items: [], project: project.id })
         await tasksCard.save()
 
-        // const selectedCard = new Card({ name: 'Выбрано для разработки', columnType: 'SelectedList', items: [], project: project.id })
         const selectedCard = new Card({ name: 'Выбрано для разработки', items: [], project: project.id })
         await selectedCard.save()
 
-        // const processingCard = new Card({ name: 'В работе', columnType: 'ProcessingList', items: [], project: project.id })
         const processingCard = new Card({ name: 'В работе', items: [], project: project.id })
         await processingCard.save()
 
-        // const doneCard = new Card({ name: 'Готово', columnType: 'DoneList', items: [], project: project.id })
         const doneCard = new Card({ name: 'Готово', items: [], project: project.id })
         await doneCard.save()
 
@@ -240,7 +235,6 @@ router.post('/createProject', async (req, res) => {
         ]) await Project.updateOne({ _id: project.id }, { $push: { cards: card } })
 
         const currProject = await Project.findOne({ _id: project.id })
-
 
         return res.status(200).json(currProject)
     }
@@ -265,9 +259,7 @@ router.post('/createCard', async (req, res) => {
             }
         })
 
-        const project = await Project.findOne({ _id: projectId })
-
-        res.status(200).json({ message: 'Все хорошо!' })
+        res.status(200).json({ message: 'Карточка успешно создана!' })
     }
     catch (e) {
         errorResponse(res, e)
@@ -278,7 +270,7 @@ router.delete('/deleteCard', async (req, res) => {
     try {
         const { cardId, projectId } = req.body
         await Card.deleteOne({ _id: cardId, project: projectId })
-        return res.status(200).json({ message: 'Удалено' })
+        return res.status(200).json({ message: 'Карточка успешно удалена' })
     }
     catch (e) {
         errorResponse(res, e)
@@ -289,7 +281,6 @@ router.put('/updateProjectItems', async (req, res) => {
     try {
         const { projectId, items } = req.body
         await Project.updateOne({ _id: projectId }, { cards: items })
-        const project = await Project.findOne({ _id: projectId })
 
         return res.status(200).json({ message: 'Успешно обновлен!' })
     }
@@ -300,7 +291,7 @@ router.put('/updateProjectItems', async (req, res) => {
 
 router.put('/updateCardTitle', async (req, res) => {
     try {
-        const { cardId, projectId, title } = req.body
+        const { cardId, title } = req.body
         await Card.updateOne({ _id: cardId }, { name: title })
         await Project.updateOne({ cards: { $elemMatch: { id: { $eq: cardId } } } }, { $set: { "cards.$.name": title } })
         return res.status(200).json({ message: 'Заголовок успешно обновлен!' })

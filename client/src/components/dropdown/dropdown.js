@@ -41,7 +41,7 @@ const DropDown = ({ headers, recentProjects, fetchProject, clearSelectedTodo, cl
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-            <span className="projectList-label">НЕДАВНИЕ:</span>
+                <span className="projectList-label">НЕДАВНИЕ:</span>
                 {
                     recentProjects.map(project => {
                         return (

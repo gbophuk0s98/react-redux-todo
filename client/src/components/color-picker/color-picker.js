@@ -11,7 +11,7 @@ const colorToRGBA = (color) => {
 	return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`
 }
 
-const ColorPicker = ({ headers, todoId, todoColor, todoUpdate, selectedProject }) => {
+const ColorPicker = ({ headers, todoId, todoColor, todoUpdate }) => {
 
 	const [displayColorPicker, setDisplayColorPicker] = useState(false)
 	const [color, setColor] = useState({ r: '241', g: '112', b: '19', a: '1' })
@@ -36,7 +36,7 @@ const ColorPicker = ({ headers, todoId, todoColor, todoUpdate, selectedProject }
 		if (JSON.stringify(colorToRGBA(color)) !== JSON.stringify(todoColor)) {
 			todoUpdate(todoId, headers, colorToRGBA(color))
 		}
-	} 
+	}
 
 	const handleChange = (color) => setColor({ ...color.rgb })
 
@@ -46,7 +46,7 @@ const ColorPicker = ({ headers, todoId, todoColor, todoUpdate, selectedProject }
 				width: '30px',
 				height: '30px',
 				borderRadius: '2px',
-				background: `rgba(${color.r}, ${color.g}, ${color.b}, ${ color.a })`,
+				background: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`,
 			},
 			swatch: {
 				padding: '5px',
@@ -70,19 +70,19 @@ const ColorPicker = ({ headers, todoId, todoColor, todoUpdate, selectedProject }
 
 	return (
 		<>
-		<div className="color-picker-container" style={ styles.swatch } onClick={ handleClick }>
-			<div style={ styles.color } />
-		</div>
-		{ 
-		displayColorPicker ? 
-		<div style={ styles.popover }>
-			<div style={ styles.cover } onClick={ handleClose }/>
-				<SketchPicker color={ color } onChange={ handleChange } />
+			<div className="color-picker-container" style={styles.swatch} onClick={handleClick}>
+				<div style={styles.color} />
 			</div>
-		: null
-		}
+			{
+				displayColorPicker ?
+					<div style={styles.popover}>
+						<div style={styles.cover} onClick={handleClose} />
+						<SketchPicker color={color} onChange={handleChange} />
+					</div>
+					: null
+			}
 		</>
-    )
+	)
 }
 
 const mapStateToProps = (state) => {
@@ -91,15 +91,15 @@ const mapStateToProps = (state) => {
 		todoColor: state.selectedTodo.background,
 		selectedProject: state.selectedProject,
 		headers: {
-            User: `Id ${state.user.id}`,
-            Token: `Bearer ${state.user.token}`,
-            Project: `Id ${state.selectedProject._id}`
-        }
+			User: `Id ${state.user.id}`,
+			Token: `Bearer ${state.user.token}`,
+			Project: `Id ${state.selectedProject._id}`
+		}
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
-	return{
+	return {
 		todoUpdate: (id, headers, color) => dispatch(todoUpdate(id, headers, null, null, color))
 	}
 }

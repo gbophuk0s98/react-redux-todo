@@ -16,4 +16,4 @@ const GlobalStyles = () => {
     return null
 }
 
-export default GlobalStyles;
+export default GlobalStyles

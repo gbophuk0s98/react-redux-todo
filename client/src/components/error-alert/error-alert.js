@@ -49,7 +49,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     const { clearUniversalError } = bindActionCreators(actions, dispatch)
-    
+
     return { clearUniversalError }
 }
 

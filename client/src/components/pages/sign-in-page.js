@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const variant = { variant: 'error'}
+const variant = { variant: 'error' }
 
 const SingIn = ({ errors, form, loginHandler, changeSignInForm, clearSingInFormErrors, formLoading }) => {
 
@@ -92,8 +92,8 @@ const SingIn = ({ errors, form, loginHandler, changeSignInForm, clearSingInFormE
                         color="primary"
                         className={classes.submit}
                         onClick={handleSubmit}
-                        >
-                        { formLoading  ? <CircularProgress size={24} color="inherit" /> : <>{'Войти'}</>}
+                    >
+                        {formLoading ? <CircularProgress size={24} color="inherit" /> : <>{'Войти'}</>}
                     </Button>
                     <Grid container>
                         <Grid item>

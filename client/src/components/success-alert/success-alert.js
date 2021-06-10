@@ -10,7 +10,7 @@ const SuccessAlert = (props) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />
 }
 
-const SuccessAlertWrapper = ({ universalMessage,  clearUniversalMessage }) => {
+const SuccessAlertWrapper = ({ universalMessage, clearUniversalMessage }) => {
 
     const [open, setOpen] = useState(false)
     const [message, setMessage] = useState()
@@ -51,7 +51,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     const { clearUniversalMessage } = bindActionCreators(actions, dispatch)
-    
+
     return { clearUniversalMessage }
 }
 

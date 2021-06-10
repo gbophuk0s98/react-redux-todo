@@ -1,7 +1,6 @@
 import React from 'react'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 
 import * as actions from '../../actoins'
 
@@ -15,16 +14,16 @@ const CustomDateRangePicker = ({ headers, todoId, startDate, endDate, projectId,
     const applyHandler = (e, picker) => {
         const startDate = getDateFromPicker(picker.startDate._d)
         const endDate = getDateFromPicker(picker.endDate._d)
-        if ( picker.oldStartDate._i !== startDate || picker.oldEndDate._i !== endDate) {
+        if (picker.oldStartDate._i !== startDate || picker.oldEndDate._i !== endDate) {
             todoUpdate(todoId, headers, startDate, endDate)
         }
     }
 
     return (
         <DateRangePicker
-                initialSettings={{ startDate, endDate }}
-                onApply={applyHandler}
-            >
+            initialSettings={{ startDate, endDate }}
+            onApply={applyHandler}
+        >
             <button className="btn btn-primary btn-container">
                 <div className="btn-content">
                     <span>{startDate}</span>

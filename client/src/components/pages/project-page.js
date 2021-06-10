@@ -12,7 +12,7 @@ const makeId = () => {
     let text = ""
     let possible = "abcdefghijklmnopqrstuvwxyz"
 
-    for( let i = 0; i < 4; i++ )
+    for (let i = 0; i < 4; i++)
         text += possible.charAt(Math.floor(Math.random() * possible.length))
 
     return text.toUpperCase()
@@ -49,7 +49,7 @@ const ProjectPage = ({ headers, createProject, loading, user }) => {
 
     const onCreateHandler = e => {
         e.preventDefault()
-        createProject({ ...project, userId: user.id}, headers)
+        createProject({ ...project, userId: user.id }, headers)
         history.push('/projectList')
     }
 
@@ -76,9 +76,9 @@ const ProjectPage = ({ headers, createProject, loading, user }) => {
                         onClick={e => onCreateHandler(e)}
                     >
                         <span className="btn-text">Создать</span>
-                        { loading && <span className="spinner-border spinner-border-sm"></span> }
+                        {loading && <span className="spinner-border spinner-border-sm"></span>}
                     </Button>
-                    <Button 
+                    <Button
                         onClick={() => history.goBack()}
                     >
                         Закрыть
