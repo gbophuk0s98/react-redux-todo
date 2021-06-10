@@ -16,10 +16,11 @@ const compose = (...funcs) => (comp) => {
 
 export const store = createStore(
     reducer,
-    compose(
-        applyMiddleware(thunk, logMiddleware),
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-    )
+    applyMiddleware(thunk, logMiddleware)
 )
+
+// compose(
+//     applyMiddleware(thunk, logMiddleware), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+// )
 
 export const persistor = persistStore(store)
