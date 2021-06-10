@@ -3,5 +3,5 @@
 You can see the deployed application here: https://gbophuk0sreduxtodo.herokuapp.com/
   
   
-#*Front-end*:  
+# *Front-end*:  
 * qweqweqw
