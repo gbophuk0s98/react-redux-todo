@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 
 import { fetchProjects, fetchProject, setRecentProjects, clearSelectedTodo } from '../../actoins'
 import { Table, Button, TableBody, TableCell, TableContainer, TablePagination, TableHead, TableRow, Paper, makeStyles } from '@material-ui/core'
 
 import Spinner from '../spinner'
-import CreateProjectLink from '../create-project-link'
+import { CreateProjectLink } from '../create-project-link'
 
 const columns = [
     { id: 'projectName', label: 'Проект', minWidth: 170, aling: 'left' },
@@ -15,10 +14,24 @@ const columns = [
     { id: 'projectOwner', label: 'Администратор', minWidth: 170, aling: 'left' },
 ]
 
-const useStyles = makeStyles({
-    paperStyles: { width: '50%', height: 'max-content' },
-    container: { height: 'max-content' },
-})
+const useStyles = makeStyles(theme => ({
+    paperStyles: {
+        width: '50%',
+        height: 'max-content',
+        [theme.breakpoints.between('1080', '1280')]: {
+            width: '70%'
+        },
+        [theme.breakpoints.down('1080')]: {
+            width: '70%'
+        },
+        [theme.breakpoints.down('860')]: {
+            width: '100%'
+        },
+    },
+    container: { 
+        height: 'max-content'
+     },
+}))
 
 const ProjectListPage = ({ headers, projects, loading, fetchProjects, fetchProject, setRecentProjects, clearSelectedTodo }) => {
 

@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom'
 import Card from '../card'
 import { transferCardsItems, fetchCards, saveCards } from '../../actoins'
 import Spinner from '../spinner'
-import CreateProjectLink from '../create-project-link'
+import { CreateProjectLink, SelectProjectMessage } from '../create-project-link'
 import { IconButton, makeStyles } from '@material-ui/core'
 import SettingsIcon from '@material-ui/icons/Settings'
 
@@ -71,7 +71,7 @@ const CardPage = ({ headers, cards, loading, transferCardsItems, fetchCards, sel
     }
 
     if (projectListIsEmpty) return <CreateProjectLink />
-    if (!selectedProject._id) return <>Выберите проект</>
+    if (!selectedProject._id) return <SelectProjectMessage />
     if (loading) return <Spinner />
 
     return (

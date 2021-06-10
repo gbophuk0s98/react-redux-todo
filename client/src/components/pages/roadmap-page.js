@@ -6,7 +6,7 @@ import SuccessAlertWrapper from '../success-alert'
 import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'
 import CustomDateRangePicker from '../date-range-picker'
-import CreateProjectLink from '../create-project-link'
+import { CreateProjectLink, SelectProjectMessage } from '../create-project-link'
 import ErrorAlertWrapper from '../error-alert'
 import {
     makeStyles,
@@ -39,13 +39,14 @@ const useStyles = makeStyles(theme => ({
     paperStyles: {
         width: '70%',
         borderRadius: '0',
+        height: 'max-content',
         [theme.breakpoints.down('1000')]: {
             width: '100%'
         }
     },
     container: { height: '451px' },
     paperRow: {
-        width: '70%',
+        width: '100%',
         padding: '15px 25px',
         borderRadius: '0',
         [theme.breakpoints.down('1000')]: {
@@ -58,6 +59,9 @@ const useStyles = makeStyles(theme => ({
         },
     },
     swipe: { height: '200px', top: 64 },
+    textColor: {
+        color: theme.palette.secondary.light
+    }
 }))
 
 
@@ -164,44 +168,42 @@ const RoadMapPage = ({
     }
 
 
-    if (!selectedProject._id) return <>{`Выберите проект`}</>
     if (projectListIsEmpty) return <CreateProjectLink />
+    if (!selectedProject._id) return <SelectProjectMessage />
     if (loading) return <Spinner />
 
     return (
         <>
-            <div className="roadmap-container">
-                <Paper className={classes.paperStyles}>
-                    <TableContainer className={classes.container}>
-                        <Table
-                            stickyHeader
-                            aria-label="sticky table"
-                        >
-                            <TableHead>
-                                <TableRow>
-                                    {columns.map(column => renderHead(column))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(todo => renderRow(todo))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 15]}
-                        component="div"
-                        count={todos.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onChangePage={handleChangePage}
-                        onChangeRowsPerPage={handleChangeRowsPerPage}
-                    />
-                </Paper>
+            <Paper className={classes.paperStyles}>
+                <TableContainer className={classes.container}>
+                    <Table
+                        stickyHeader
+                        aria-label="sticky table"
+                    >
+                        <TableHead>
+                            <TableRow>
+                                {columns.map(column => renderHead(column))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {todos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(todo => renderRow(todo))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 15]}
+                    component="div"
+                    count={todos.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                />
                 <Paper className={classes.paperRow}>
                     {!showInput && <BtnRow />}
                     {showInput && <InputRow />}
                 </Paper>
-            </div>
+            </Paper>
             <Drawer
                 variant="persistent"
                 anchor="right"
@@ -233,7 +235,7 @@ const mapStateTopProps = (state) => {
             User: `Id ${state.user.id}`,
             Token: `Bearer ${state.user.token}`,
             Project: `Id ${state.selectedProject._id}`
-        }
+        },
     }
 }
 

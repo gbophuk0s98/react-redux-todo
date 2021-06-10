@@ -1,17 +1,47 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Typography } from '@material-ui/core'
+import { Typography, makeStyles } from '@material-ui/core'
 
 import './create-project-link.css'
 
+const useStyles = makeStyles(theme => ({
+    textColor: {
+        color: theme.palette.secondary.light
+    }
+}))
+
 const CreateProjectLink = () => {
+
+    const classes = useStyles()
+
     return (
-        <div>
-            <Typography>
-                Для начала <Link to='/createProject'>создайте</Link> проект!
-            </Typography>
-        </div>
+        <Typography>
+            <span className={classes.textColor}>
+                {`Для начала`}
+            </span>
+            <Link to='/createProject'>
+                {` создайте `}
+            </Link>
+            <span className={classes.textColor}>
+                {`проект!`}
+            </span>
+        </Typography>
     )
 }
 
-export default CreateProjectLink
+const SelectProjectMessage = () => {
+
+    const classes = useStyles()
+
+    return (
+        <span className={classes.textColor}>
+            {`Выберите проект`}
+        </span>
+    )
+
+}
+
+export {
+    CreateProjectLink,
+    SelectProjectMessage
+}

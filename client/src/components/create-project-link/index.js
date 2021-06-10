@@ -1,3 +1,6 @@
-import CreateProjectLink from './create-project-link'
+import { CreateProjectLink, SelectProjectMessage } from './create-project-link'
 
-export default CreateProjectLink
+export {
+    CreateProjectLink,
+    SelectProjectMessage
+}
