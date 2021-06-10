@@ -1,3 +1,4 @@
 # react-redux-todo
 # Pet project
-deployed app https://gbophuk0sreduxtodo.herokuapp.com/projectList
+
+You can see the deployed application here : (https://www.fullstackpython.com/img/logos/heroku.png)
