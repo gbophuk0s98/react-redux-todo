@@ -6,6 +6,7 @@ import * as actions from '../../actoins'
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { useSnackbar } from 'notistack'
+import { GoogleLogin } from 'react-google-login'
 import ErrorAlertWrapper from '../error-alert'
 import { Link } from 'react-router-dom'
 import { makeStyles, Container, Typography, Box, TextField, Button, Avatar, Grid, CircularProgress } from '@material-ui/core'
@@ -130,6 +131,15 @@ const SignUp = ({ errors, form, registerHandler, changeSignUpForm, clearSignUpFo
                     </Grid>
                 </div>
             </div>
+            <Box>
+            <GoogleLogin
+                clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                buttonText="Log in with Google"
+                onSuccess={() => console.log('success')}
+                onFailure={() => console.log('failure')}
+                cookiePolicy={'single_host_origin'}
+            />
+            </Box>
             <Box mt={4}>
                 <Copyright />
             </Box>
