@@ -49,6 +49,17 @@ const loginHandler = (form) => (dispatch) => {
     }
 }
 
+const googleLogin = data => dispatch => {
+    service.googleLogin(data)
+        .then(user => dispatch(setUser(user)))
+        .then(() => dispatch({ type: 'SIGN_IN_FORM_SUBMITED' }))
+        .then(() => dispatch(clearForms()))
+        .catch(err => {
+            dispatch(setUniversalError(err.message))
+            dispatch({ type: 'STOP_SIGN_IN_FORM_LOADING' })
+        })
+}
+
 const createProject = (project, headers) => (dispatch) => {
     dispatch(createProjectRequested())
     service.createProject(project, headers)
@@ -207,18 +218,6 @@ const setUniversalMessage = message => {
     }
 }
 
-const clearSingInFormErrors = () => {
-    return {
-        type: 'SIGN_IN_ERRORS_CLEAR'
-    }
-}
-
-const clearSignUpFormErrors = () => {
-    return {
-        type: 'SIGN_UP_ERRORS_CLEAR'
-    }
-}
-
 const clearForms = () => {
     return {
         type: 'FORMS_CLEAR'
@@ -342,6 +341,7 @@ const changeSignUpForm = event => {
 }
 
 export {
+    googleLogin,
     registerHandler,
     loginHandler,
     logoutHandler,
@@ -366,8 +366,6 @@ export {
     updateCardTitle,
     transferCardsItems,
     clearSelectedTodo,
-    clearSingInFormErrors,
-    clearSignUpFormErrors,
     clearForms,
     clearUniversalError,
     clearUniversalMessage

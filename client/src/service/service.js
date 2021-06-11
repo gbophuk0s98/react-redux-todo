@@ -23,6 +23,10 @@ export default class ProjectService {
         return await this.getResourses(`${this._authBase}/login`, 'POST', { ...body })
     }
 
+    googleLogin = async (body, headers = {}) => {
+        return await this.getResourses(`${this._authBase}/googleLogin`, 'POST', { ...body })
+    }
+
     register = async (body, headers = {}) => {
         return await this.getResourses(`${this._authBase}/register`, 'POST', { ...body })
     }

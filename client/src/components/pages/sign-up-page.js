@@ -37,12 +37,16 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    googleBtn: {
+        border: '1px solid red',
+        width: '100%',
+    },
 }))
 
 const variant = { variant: 'error' }
 
-const SignUp = ({ errors, form, registerHandler, changeSignUpForm, clearSignUpFormErrors, formLoading }) => {
- 
+const SignUp = ({ errors, form, registerHandler, changeSignUpForm, formLoading, googleLogin, clearForms }) => {
+
     const classes = useStyles()
     const { enqueueSnackbar } = useSnackbar()
 
@@ -51,10 +55,16 @@ const SignUp = ({ errors, form, registerHandler, changeSignUpForm, clearSignUpFo
         if (errors.password) enqueueSnackbar(errors.password, variant)
         if (errors.email) enqueueSnackbar(errors.email, variant)
         if (errors.userName) enqueueSnackbar(errors.userName, variant)
-        if (JSON.stringify(errors) !== '{}') clearSignUpFormErrors()
+        if (JSON.stringify(errors) !== '{}') clearForms()
     }, [errors, enqueueSnackbar])
 
-    useEffect(() => clearSignUpFormErrors(), [])
+    const googleResponseSuccess = response => {
+        googleLogin({
+            tokenId: response.tokenId
+
+        })
+    }
+    const googleResponseFailure = response => console.log(response)
 
     const handleSubmit = () => registerHandler(form)
 
@@ -119,27 +129,28 @@ const SignUp = ({ errors, form, registerHandler, changeSignUpForm, clearSignUpFo
                         color="primary"
                         className={classes.submit}
                         onClick={handleSubmit}
-                        >
-                        { formLoading  ? <CircularProgress size={24} color="inherit" /> : <>{'Создать аккаунт'}</>}
+                    >
+                        {formLoading ? <CircularProgress size={24} color="inherit" /> : <>{'Создать аккаунт'}</>}
                     </Button>
-                    <Grid container>
-                        <Grid item>
-                            <Link to="/login" variant="body2">
-                                {"Или войдите в систему!"}
-                            </Link>
-                        </Grid>
-                    </Grid>
                 </div>
             </div>
-            <Box>
-            <GoogleLogin
-                clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                buttonText="Log in with Google"
-                onSuccess={() => console.log('success')}
-                onFailure={() => console.log('failure')}
-                cookiePolicy={'single_host_origin'}
-            />
+            <Box style={{ marginBottom: '5px' }}>
+                <GoogleLogin
+                    clientId="279291504148-ocdee30nc0f7hpu6bbtftof75qhgn0gi.apps.googleusercontent.com"
+                    buttonText="Войти с помощью Google"
+                    className={classes.googleBtn}
+                    onSuccess={googleResponseSuccess}
+                    onFailure={googleResponseFailure}
+                    cookiePolicy={'single_host_origin'}
+                />
             </Box>
+            <Grid container>
+                <Grid item>
+                    <Link to="/login" variant="body2">
+                        {"Или войдите в систему!"}
+                    </Link>
+                </Grid>
+            </Grid>
             <Box mt={4}>
                 <Copyright />
             </Box>
@@ -158,11 +169,12 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { changeSignUpForm, clearSignUpFormErrors } = bindActionCreators(actions, dispatch)
+    const { changeSignUpForm, googleLogin, clearForms } = bindActionCreators(actions, dispatch)
     return {
         changeSignUpForm,
-        clearSignUpFormErrors,
-        registerHandler: (form) => dispatch(actions.registerHandler(form))
+        clearForms,
+        registerHandler: (form) => dispatch(actions.registerHandler(form)),
+        googleLogin,
     }
 }
 
