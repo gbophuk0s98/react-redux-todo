@@ -23,7 +23,7 @@ app.listen(PORT, async () => {
     try
     {
         console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID)
-        await mongo.connect(LOCAL_DB, {
+        await mongo.connect(REMOTE_DB, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         }).then(() => console.log(`Сервер работает на порту ${PORT}`))
