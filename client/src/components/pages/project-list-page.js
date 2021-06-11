@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import { fetchProjects, fetchProject, setRecentProjects, clearSelectedTodo } from '../../actoins'
+import { fetchProjects, fetchProject, setRecentProjects, clearSelectedTodo } from '../../actions'
 import { Table, Button, TableBody, TableCell, TableContainer, TablePagination, TableHead, TableRow, Paper, makeStyles } from '@material-ui/core'
 
 import Spinner from '../spinner'

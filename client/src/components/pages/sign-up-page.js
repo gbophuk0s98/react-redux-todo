@@ -2,12 +2,12 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import * as actions from '../../actoins'
+import * as actions from '../../actions'
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { useSnackbar } from 'notistack'
-import { GoogleLogin } from 'react-google-login'
 import ErrorAlertWrapper from '../error-alert'
+import GoogleLoginWrapper from '../google-login'
 import { Link } from 'react-router-dom'
 import { makeStyles, Container, Typography, Box, TextField, Button, Avatar, Grid, CircularProgress } from '@material-ui/core'
 
@@ -58,13 +58,6 @@ const SignUp = ({ errors, form, registerHandler, changeSignUpForm, formLoading, 
         if (JSON.stringify(errors) !== '{}') clearForms()
     }, [errors, enqueueSnackbar])
 
-    const googleResponseSuccess = response => {
-        googleLogin({
-            tokenId: response.tokenId
-
-        })
-    }
-    const googleResponseFailure = response => console.log(response)
 
     const handleSubmit = () => registerHandler(form)
 
@@ -135,14 +128,7 @@ const SignUp = ({ errors, form, registerHandler, changeSignUpForm, formLoading, 
                 </div>
             </div>
             <Box style={{ marginBottom: '5px' }}>
-                <GoogleLogin
-                    clientId="279291504148-ocdee30nc0f7hpu6bbtftof75qhgn0gi.apps.googleusercontent.com"
-                    buttonText="Войти с помощью Google"
-                    className={classes.googleBtn}
-                    onSuccess={googleResponseSuccess}
-                    onFailure={googleResponseFailure}
-                    cookiePolicy={'single_host_origin'}
-                />
+                <GoogleLoginWrapper />
             </Box>
             <Grid container>
                 <Grid item>

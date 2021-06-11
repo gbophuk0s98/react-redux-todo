@@ -3,7 +3,7 @@ import reactCSS from 'reactcss'
 import { SketchPicker } from 'react-color'
 import { connect } from 'react-redux'
 
-import { todoUpdate } from '../../actoins'
+import { todoUpdate } from '../../actions'
 
 import './color-picker.css'
 

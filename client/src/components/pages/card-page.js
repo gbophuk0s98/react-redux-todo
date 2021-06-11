@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import Card from '../card'
-import { transferCardsItems, fetchCards, saveCards } from '../../actoins'
+import { transferCardsItems, fetchCards, saveCards } from '../../actions'
 import Spinner from '../spinner'
 import { CreateProjectLink, SelectProjectMessage } from '../create-project-link'
 import { IconButton, makeStyles } from '@material-ui/core'

@@ -2,7 +2,7 @@ import React from 'react'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import { connect } from 'react-redux'
 
-import * as actions from '../../actoins'
+import * as actions from '../../actions'
 
 import 'bootstrap-daterangepicker/daterangepicker.css'
 import './date-range-picker.css'

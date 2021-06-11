@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import MuiAlert from '@material-ui/lab/Alert'
 import { Snackbar } from '@material-ui/core'
 
-import * as actions from '../../actoins'
+import * as actions from '../../actions'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { fetchTodos, todoCreated, todoSelected } from '../../actoins'
+import { fetchTodos, todoCreated, todoSelected } from '../../actions'
 import SuccessAlertWrapper from '../success-alert'
 import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'

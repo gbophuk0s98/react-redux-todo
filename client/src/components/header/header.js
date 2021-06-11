@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 
-import * as actions from '../../actoins'
+import * as actions from '../../actions'
 import DropDown from '../dropdown'
 import Brightness4RoundedIcon from '@material-ui/icons/Brightness4Rounded';
 import { Button, makeStyles, AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Drawer } from '@material-ui/core'

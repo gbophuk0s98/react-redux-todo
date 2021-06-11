@@ -6,7 +6,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import Divider from '@material-ui/core/Divider'
 import { Card, CardContent, TextField, makeStyles, IconButton } from '@material-ui/core'
 
-import { deleteCard, updateCardTitle } from '../../actoins'
+import { deleteCard, updateCardTitle } from '../../actions'
 
 const useStyles = makeStyles(theme => ({
     cardContent: {

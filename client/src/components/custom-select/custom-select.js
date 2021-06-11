@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import Select from 'react-select'
 import { FaArrowUp } from 'react-icons/fa'
-import { todoUpdate } from '../../actoins'
+import { todoUpdate } from '../../actions'
 
 import './custom-select.css'
 

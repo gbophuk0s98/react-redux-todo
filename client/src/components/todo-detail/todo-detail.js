@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import ColorPicker from '../color-picker/color-picker'
 
-import { todoUpdate, fetchCards } from '../../actoins'
+import { todoUpdate, fetchCards } from '../../actions'
 import CustomSelect from '../custom-select'
 import SimpleSelect from '../simple-select'
 

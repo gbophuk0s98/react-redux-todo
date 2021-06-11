@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { useHistory } from 'react-router'
 import { bindActionCreators } from 'redux'
 
-import * as actions from '../../actoins'
+import * as actions from '../../actions'
 import { Button, Card, CardContent, makeStyles, TextField } from '@material-ui/core'
 
 import './pages-css/project-page.css'

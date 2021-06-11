@@ -2,11 +2,12 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import * as actions from '../../actoins'
+import * as actions from '../../actions'
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { useSnackbar } from 'notistack'
 import ErrorAlertWrapper from '../error-alert'
+import GoogleLoginWrapper from '../google-login'
 import { Link } from 'react-router-dom'
 import { makeStyles, Container, Typography, Box, TextField, Button, Avatar, Grid, CircularProgress } from '@material-ui/core'
 
@@ -95,6 +96,9 @@ const SingIn = ({ errors, form, loginHandler, changeSignInForm, formLoading, cle
                     >
                         {formLoading ? <CircularProgress size={24} color="inherit" /> : <>{'Войти'}</>}
                     </Button>
+                    <Box style={{ marginBottom: '5px' }}>
+                        <GoogleLoginWrapper />
+                    </Box>
                     <Grid container>
                         <Grid item>
                             <Link to="/register" variant="body2">

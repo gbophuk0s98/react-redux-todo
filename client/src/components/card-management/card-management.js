@@ -4,7 +4,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { Button, Dialog, DialogActions, DialogContent, TextField, makeStyles } from '@material-ui/core'
 import { connect } from 'react-redux'
 
-import { projectUpdate, createCard, cardsLoaded } from '../../actoins'
+import { projectUpdate, createCard, cardsLoaded } from '../../actions'
 
 import CardManagementItems from '../card-management-items'
 import SuccessAlertWrapper from '../success-alert'

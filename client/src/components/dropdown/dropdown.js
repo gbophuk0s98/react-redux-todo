@@ -3,7 +3,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { fetchProject, clearSelectedTodo } from '../../actoins'
+import { fetchProject, clearSelectedTodo } from '../../actions'
 import { Button, Menu, MenuItem } from '@material-ui/core'
 
 import './dropdown.css'

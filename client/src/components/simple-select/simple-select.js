@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import Select from 'react-select'
 
-import { moveCardItem, saveCards } from '../../actoins'
+import { moveCardItem, saveCards } from '../../actions'
 
 const CustomOption = ({ data, innerRef, innerProps }) => {
     return (
