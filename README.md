@@ -3,7 +3,7 @@
 You can see the deployed application here: https://gbophuk0sreduxtodo.herokuapp.com/
   
   
-# *Front-end*:  
+# *Front-end libraries*:  
 * React.js  
 * React-router-dom
 * React-redux  
@@ -21,8 +21,9 @@ You can see the deployed application here: https://gbophuk0sreduxtodo.herokuapp.
 * Redux-persist
 * Redux-thunk
 * Material-UI
+* React-google-login
 
-# *Back-end*:  
+# *Back-end libraries*:  
 * Node.js
 * Mongoose  
 * Express
@@ -33,3 +34,4 @@ You can see the deployed application here: https://gbophuk0sreduxtodo.herokuapp.
 * Nodemon
 * Path
 * Uuid
+* Google-auth-library
