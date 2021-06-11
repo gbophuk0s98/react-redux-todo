@@ -24,7 +24,7 @@ You can see the deployed application here: https://gbophuk0sreduxtodo.herokuapp.
 * React-google-login
 
 # *Back-end platform: Node.js*
-## *Back-end Framework: Express*
+## *Back-end Framework: Express.js*
 ## *Back-end libraries*:  
 * Mongoose  
 * Express-validator
