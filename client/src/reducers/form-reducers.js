@@ -117,6 +117,24 @@ const updateAuthForms = (state, action) => {
             }
         case 'FORMS_CLEAR':
             return { ...initialFormsState }
+        case 'SIGN_IN_FORM_ERROR_CLEAR': 
+            return {
+                ...state.form,
+                signInForm: {
+                    ...state.form.signInForm,
+                    formErrors: {},
+                    formLoading: false,
+                }
+            }
+        case 'SIGN_UP_FORM_ERROR_CLEAR': 
+            return {
+                ...state.form,
+                signUpForm: {
+                    ...state.form.signUpForm,
+                    formErrors: {},
+                    formLoading: false
+                }
+            }
         default:
             return state.form
     }

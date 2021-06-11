@@ -224,6 +224,17 @@ const clearForms = () => {
     }
 }
 
+const clearSignUpFormErrors = () => {
+    return {
+        type: 'SIGN_UP_FORM_ERROR_CLEAR'
+    }
+}
+const clearSignInFormErrors = () => {
+    return {
+        type: 'SIGN_IN_FORM_ERROR_CLEAR'
+    }
+}
+
 const updateCardTitleRequested = () => {
     return {
         type: 'UPDATE_CARD_TITLE_REQUESTED'
@@ -368,5 +379,7 @@ export {
     clearSelectedTodo,
     clearForms,
     clearUniversalError,
-    clearUniversalMessage
+    clearUniversalMessage,
+    clearSignUpFormErrors,
+    clearSignInFormErrors
 }

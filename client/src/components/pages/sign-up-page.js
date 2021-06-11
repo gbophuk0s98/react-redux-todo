@@ -45,17 +45,19 @@ const useStyles = makeStyles((theme) => ({
 
 const variant = { variant: 'error' }
 
-const SignUp = ({ errors, form, registerHandler, changeSignUpForm, formLoading, googleLogin, clearForms }) => {
+const SignUp = ({ errors, form, registerHandler, changeSignUpForm, formLoading, googleLogin, clearSignUpFormErrors, clearForms }) => {
 
     const classes = useStyles()
     const { enqueueSnackbar } = useSnackbar()
+
+    useEffect(() => clearForms(), [])
 
     useEffect(() => {
         if (errors.matchPassword) enqueueSnackbar(errors.matchPassword, variant)
         if (errors.password) enqueueSnackbar(errors.password, variant)
         if (errors.email) enqueueSnackbar(errors.email, variant)
         if (errors.userName) enqueueSnackbar(errors.userName, variant)
-        if (JSON.stringify(errors) !== '{}') clearForms()
+        if (JSON.stringify(errors) !== '{}') clearSignUpFormErrors()
     }, [errors, enqueueSnackbar])
 
 
@@ -155,9 +157,10 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { changeSignUpForm, googleLogin, clearForms } = bindActionCreators(actions, dispatch)
+    const { changeSignUpForm, googleLogin, clearSignUpFormErrors, clearForms } = bindActionCreators(actions, dispatch)
     return {
         changeSignUpForm,
+        clearSignUpFormErrors,
         clearForms,
         registerHandler: (form) => dispatch(actions.registerHandler(form)),
         googleLogin,

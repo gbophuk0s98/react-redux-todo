@@ -41,15 +41,17 @@ const useStyles = makeStyles((theme) => ({
 
 const variant = { variant: 'error' }
 
-const SingIn = ({ errors, form, loginHandler, changeSignInForm, formLoading, clearForms }) => {
+const SingIn = ({ errors, form, loginHandler, changeSignInForm, formLoading, clearSignInFormErrors, clearForms }) => {
 
     const classes = useStyles()
     const { enqueueSnackbar } = useSnackbar()
 
+    useEffect(() => clearForms(), [])
+
     useEffect(() => {
         if (errors.password) enqueueSnackbar(errors.password, variant)
         if (errors.email) enqueueSnackbar(errors.email, variant)
-        if (JSON.stringify(errors) !== '{}') clearForms()
+        if (JSON.stringify(errors) !== '{}') clearSignInFormErrors()
     }, [errors, enqueueSnackbar])
 
     const handleSubmit = () => loginHandler(form)
@@ -126,9 +128,10 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const { changeSignInForm, clearForms } = bindActionCreators(actions, dispatch)
+    const { changeSignInForm, clearSignInFormErrors, clearForms } = bindActionCreators(actions, dispatch)
     return {
         changeSignInForm,
+        clearSignInFormErrors,
         clearForms,
         loginHandler: (form) => dispatch(actions.loginHandler(form))
     }
