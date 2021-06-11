@@ -23,10 +23,10 @@ You can see the deployed application here: https://gbophuk0sreduxtodo.herokuapp.
 * Material-UI
 * React-google-login
 
-# *Back-end libraries*:  
-* Node.js
+# *Back-end platform: Node.js*
+## *Back-end Framework: Express*
+## *Back-end libraries*:  
 * Mongoose  
-* Express
 * Express-validator
 * Bcryptjs
 * Concurrently
