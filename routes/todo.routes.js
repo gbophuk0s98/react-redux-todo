@@ -339,9 +339,24 @@ router.get('/getProjects', async (req, res) => {
         const participatesInProjects = await Project.find({
             participants: { "$elemMatch": { $eq: user.email } }
         })
-        console.log(participatesInProjects)
 
-        return res.status(200).json([...newProjects, ...participatesInProjects])
+        const projectsToClient = []
+
+        for (const project of participatesInProjects) {
+            const user = await User.findOne({ _id: project.owner })
+            const projectToFront = { 
+                cards: project.cards,
+                participants: project.participants,
+                _id: project._id,
+                title: project.title,
+                description: project.description,
+                key: project.key,
+                owner: user.userName,
+            }
+            projectsToClient.push(projectToFront)
+        }
+
+        return res.status(200).json([...newProjects, ...projectsToClient])
     }
     catch (e) {
         errorResponse(res, e)

@@ -19,7 +19,7 @@ const getObj = (card) => {
     }
 }
 
-const SimpleSelect = ({ selectedTodo, selectedProject, cards, moveCardItem, saveCards }) => {
+const SimpleSelect = ({ selectedTodo, selectedProject, cards, moveCardItem, saveCards, todoId }) => {
 
     const [options, setOptions] = useState([])
     const [index, setIndex] = useState(null)
@@ -29,9 +29,10 @@ const SimpleSelect = ({ selectedTodo, selectedProject, cards, moveCardItem, save
     useEffect(() => {
         cards.forEach((card, index) => {
             const [todoInCard] = card.items.filter(item => item._id === selectedTodo._id)
+            console.log(todoInCard)
             if (todoInCard) setIndex(index)
         })
-    })
+    }, [cards, selectedTodo])
 
 
     const changeHandler = (data) => {

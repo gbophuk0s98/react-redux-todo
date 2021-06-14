@@ -18,6 +18,18 @@ const makeId = () => {
     return text.toUpperCase()
 }
 
+const useStyles = makeStyles((theme) => ({
+    card: {
+        marginTop: '10px',
+        width: 400,
+        height: 180,
+    },
+    cardContent: {
+        display: 'flex',
+        flexDirection: 'column',
+    }
+}))
+
 const ProjectPage = ({ headers, createProject, loading, user }) => {
 
     const [project, setProject] = useState({
@@ -27,16 +39,6 @@ const ProjectPage = ({ headers, createProject, loading, user }) => {
 
     const history = useHistory()
 
-    const useStyles = makeStyles((theme) => ({
-        card: {
-            width: 400,
-            height: 180,
-        },
-        cardContent: {
-            display: 'flex',
-            flexDirection: 'column',
-        }
-    }))
     const classes = useStyles()
 
     const onChangeHandler = e => {

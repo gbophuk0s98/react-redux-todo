@@ -40,6 +40,7 @@ const useStyles = makeStyles(theme => ({
         width: '70%',
         borderRadius: '0',
         height: 'max-content',
+        marginTop: '10px',
         [theme.breakpoints.down('1000')]: {
             width: '100%'
         }

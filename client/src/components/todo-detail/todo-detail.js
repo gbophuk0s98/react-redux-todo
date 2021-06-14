@@ -80,7 +80,7 @@ const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, to
             alignItems='center'
             style={{ height: '100%' }}
         >
-            {}
+            <Typography>Выберите задачу</Typography>
         </Grid>
     )
 

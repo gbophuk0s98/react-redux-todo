@@ -44,11 +44,9 @@ const ProjectDetailsDialog = ({ projectId, openDialog, handleClose, addParticipa
     }
 
     const saveHandler = () => {
-        addParticipant(
-            {
-                email: email,
-                projectId: projectId,
-            }, headers)
+        if (!email) return
+        addParticipant({ email: email, projectId: projectId, }, headers)
+        handleClose()
     }
 
     return (

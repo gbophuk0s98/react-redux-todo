@@ -137,9 +137,9 @@ const todoUpdate = (
             .then(() => {
                 service.updateTodo(objToUpdate, headers).then(res => dispatch(setUniversalMessage(res.message)))
             })
-            .then(() => dispatch(todoSelected({ ...headers, Todo: `Id ${id}` })))
             .then(() => dispatch(fetchTodos(headers)))
             .then(() => dispatch(fetchCards(headers)))
+            .then(() => dispatch(todoSelected({ ...headers, Todo: `Id ${id}` })))
             .catch(err => dispatch(setUniversalError(err.message)))
     }
 
