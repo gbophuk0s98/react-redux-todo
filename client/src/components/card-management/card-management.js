@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     upperBtns: {
         display: 'flex',
         justifyContent: 'flex-end',
-        marginBottom: '15px',
+        margin: '15px 0',
     },
     movementArea: {
         display: 'flex',

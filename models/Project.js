@@ -6,6 +6,7 @@ const schema = new Schema({
     key: { type: String, required: true },
     owner: { type: Types.ObjectId, ref: 'users' },
     cards: { type: Array, required: false },
+    participants: { type: Array, required: false }
 })
 
 module.exports = model('projects', schema)

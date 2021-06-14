@@ -3,19 +3,36 @@ import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import { fetchProjects, fetchProject, setRecentProjects, clearSelectedTodo } from '../../actions'
-import { Table, Button, TableBody, TableCell, TableContainer, TablePagination, TableHead, TableRow, Paper, makeStyles } from '@material-ui/core'
 
 import Spinner from '../spinner'
 import { CreateProjectLink } from '../create-project-link'
+import ProjectDetailsDialog from '../project-details-dialog'
+
+import {
+    Table,
+    Button,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TablePagination,
+    TableHead,
+    TableRow,
+    Paper,
+    makeStyles,
+    IconButton
+} from '@material-ui/core'
+import SettingsIcon from '@material-ui/icons/Settings'
 
 const columns = [
     { id: 'projectName', label: 'Проект', minWidth: 170, aling: 'left' },
     { id: 'projectKey', label: 'Ключ', minWidth: 100, aling: 'left' },
     { id: 'projectOwner', label: 'Администратор', minWidth: 170, aling: 'left' },
+    { id: 'projectSettings', label: '', minWidth: 50, align: 'left' }
 ]
 
 const useStyles = makeStyles(theme => ({
     paperStyles: {
+        marginTop: '10px',
         width: '50%',
         height: 'max-content',
         [theme.breakpoints.between('1080', '1280')]: {
@@ -28,9 +45,9 @@ const useStyles = makeStyles(theme => ({
             width: '100%'
         },
     },
-    container: { 
+    container: {
         height: 'max-content'
-     },
+    },
 }))
 
 const ProjectListPage = ({ headers, projects, loading, fetchProjects, fetchProject, setRecentProjects, clearSelectedTodo }) => {
@@ -39,6 +56,8 @@ const ProjectListPage = ({ headers, projects, loading, fetchProjects, fetchProje
 
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
+    const [openDialog, setOpenDialog] = useState(false)
+    const [projectIdForDialog, setProjectIdFroDialog] = useState(null)
 
     const classes = useStyles()
 
@@ -55,9 +74,16 @@ const ProjectListPage = ({ headers, projects, loading, fetchProjects, fetchProje
         history.push('/cards')
     }
 
+    const onSettingsIconClick = projectId => {
+        setOpenDialog(true)
+        setProjectIdFroDialog(projectId)
+    }
+
+    const closeDialog = () => setOpenDialog(false)
+
     const handleChangePage = (event, newPage) => setPage(newPage)
 
-    const handleChangeRowsPerPage = (event) => {
+    const handleChangeRowsPerPage = event => {
         setRowsPerPage(+event.target.value)
         setPage(0)
     }
@@ -90,6 +116,11 @@ const ProjectListPage = ({ headers, projects, loading, fetchProjects, fetchProje
                 <TableCell>
                     {project.owner}
                 </TableCell>
+                <TableCell>
+                    <IconButton onClick={() => onSettingsIconClick(project._id)}>
+                        <SettingsIcon />
+                    </IconButton>
+                </TableCell>
             </TableRow>
         )
     }
@@ -98,32 +129,39 @@ const ProjectListPage = ({ headers, projects, loading, fetchProjects, fetchProje
     if (projects.length === 0) return <CreateProjectLink />
 
     return (
-        <Paper className={classes.paperStyles}>
-            <TableContainer className={classes.container}>
-                <Table
-                    stickyHeader
-                    aria-label="sticky table"
-                >
-                    <TableHead>
-                        <TableRow>
-                            {columns.map(column => renderHead(column))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {projects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(project => renderRow(project))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[5, 15, 25]}
-                component="div"
-                count={projects.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
+        <>
+            <ProjectDetailsDialog
+                openDialog={openDialog}
+                projectId={projectIdForDialog}
+                handleClose={closeDialog}
             />
-        </Paper>
+            <Paper className={classes.paperStyles}>
+                <TableContainer className={classes.container}>
+                    <Table
+                        stickyHeader
+                        aria-label="sticky table"
+                    >
+                        <TableHead>
+                            <TableRow>
+                                {columns.map(column => renderHead(column))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {projects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(project => renderRow(project))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[5, 15, 25]}
+                    component="div"
+                    count={projects.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                />
+            </Paper>
+        </>
     )
 }
 
