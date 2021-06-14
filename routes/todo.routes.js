@@ -304,11 +304,12 @@ router.put('/updateProjectItems', async (req, res) => {
 router.post('/addParticipant', async (req, res) => {
     try {
         const { email, projectId } = req.body
-        const participatesInProjects = await Project.find({
-            participants: { "$elemMatch": { $eq: email } }
-        })
+        // const participatesInProjects = await Project.find({
+        //     participants: { "$elemMatch": { $eq: email } }
+        // })
+        const projectParticipates = await Project.findOne({ _id: projectId })
 
-        if (participatesInProjects.length !== 0)
+        if (projectParticipates.participants.includes(email))
             return res.status(400).json({ message: 'Такой пользователь уже добавлен в проект' })
 
         await Project.updateOne({ _id: projectId }, { $push: { participants: email } })
