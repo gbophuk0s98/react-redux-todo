@@ -302,12 +302,20 @@ router.put('/updateProjectItems', async (req, res) => {
 })
 
 router.post('/addParticipant', async (req, res) => {
-    try
-    {
-        console.log(req.body)
+    try {
+        const { email, projectId } = req.body
+        const participatesInProjects = await Project.find({
+            participants: { "$elemMatch": { $eq: email } }
+        })
+
+        if (participatesInProjects.length !== 0)
+            return res.status(400).json({ message: 'Такой пользователь уже добавлен в проект' })
+
+        await Project.updateOne({ _id: projectId }, { $push: { participants: email } })
+
+        res.status(200).json({ message: 'Пользователь успешно добавлен!' })
     }
-    catch (e)
-    {
+    catch (e) {
         errorResponse(res, e)
     }
 })
@@ -316,26 +324,24 @@ router.get('/getProjects', async (req, res) => {
     try {
         const userId = req.headers.user.split(' ')[1]
         const projects = await Project.find({ owner: userId })
+        const user = await User.findOne({ _id: userId })
         const [{ userName }] = await User.find({ _id: userId })
         const newProjects = projects.map(project => {
             return {
                 _id: project._id,
                 title: project.title,
-                description: project.description, 
-                key: project.key, 
+                description: project.description,
+                key: project.key,
                 owner: userName
             }
         })
 
         const participatesInProjects = await Project.find({
-            participants: { "$elemMatch": { email: { $eq: 'z@mail.ru' } }}
+            participants: { "$elemMatch": { $eq: user.email } }
         })
         console.log(participatesInProjects)
-        // const [card] = await Card.find(
-        //     { items: { "$elemMatch": { _id: { $eq: id } } } }
-        // )
 
-        return res.status(200).json(newProjects)
+        return res.status(200).json([...newProjects, ...participatesInProjects])
     }
     catch (e) {
         errorResponse(res, e)

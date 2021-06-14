@@ -91,4 +91,8 @@ export default class ProjectService {
         return await this.getResourses(`${this._todoBase}/updateProjectItems`, 'PUT', { ...body }, headers)
     }
 
+    addParticipant = async (body = null, headers = {}) => {
+        return await this.getResourses(`${this._todoBase}/addParticipant`, 'POST', { ...body }, headers)
+    }
+
 }

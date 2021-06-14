@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 
 import { fetchTodos, todoCreated, todoSelected } from '../../actions'
 import SuccessAlertWrapper from '../success-alert'
+import ErrorAlertWrapper from '../error-alert'
 import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'
 import CustomDateRangePicker from '../date-range-picker'
 import { CreateProjectLink, SelectProjectMessage } from '../create-project-link'
-import ErrorAlertWrapper from '../error-alert'
 import {
     makeStyles,
     Table,

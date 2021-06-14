@@ -191,6 +191,12 @@ const moveCardItem = (transferInfo) => dispatch => {
     dispatch(setUniversalMessage('Задача успешно обновлена!'))
 }
 
+const addParticipant = (email, headers) => dispatch => {
+    service.addParticipant(email, headers)
+        .then(res => dispatch(setUniversalMessage(res.message)))
+        .catch(e => dispatch(setUniversalError(e.message)))
+}
+
 // object actions
 const clearUniversalError = () => {
     return {
@@ -381,5 +387,6 @@ export {
     clearUniversalError,
     clearUniversalMessage,
     clearSignUpFormErrors,
-    clearSignInFormErrors
+    clearSignInFormErrors,
+    addParticipant
 }
