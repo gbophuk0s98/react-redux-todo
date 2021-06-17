@@ -1,4 +1,4 @@
-# react-redux-todo  <img alt="heroku logo" src="https://www.fullstackpython.com/img/logos/heroku.png" width="35"/>
+# react-redux-todo  <img alt="heroku logo" src="https://www.fullstackpython.com/img/logos/heroku.png" width="100"/>
  
 You can see the deployed application here: https://gbophuk0sreduxtodo.herokuapp.com/
   
