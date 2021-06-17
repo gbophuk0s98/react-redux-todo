@@ -304,9 +304,7 @@ router.put('/updateProjectItems', async (req, res) => {
 router.post('/addParticipant', async (req, res) => {
     try {
         const { email, projectId } = req.body
-        // const participatesInProjects = await Project.find({
-        //     participants: { "$elemMatch": { $eq: email } }
-        // })
+
         const projectParticipates = await Project.findOne({ _id: projectId })
 
         if (projectParticipates.participants.includes(email))

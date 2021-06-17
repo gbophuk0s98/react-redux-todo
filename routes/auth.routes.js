@@ -94,7 +94,7 @@ router.post('/googleLogin', async (req, res) => {
             if (candidate) {
                 await User.updateOne({ email: email }, { token: generateToken(candidate.id, secretKey), secretKey: secretKey })
 
-                res.status(200).json({
+                return res.status(200).json({
                     id: candidate.id, userName: candidate.userName, email: candidate.email, token: candidate.token
                 })
             }
