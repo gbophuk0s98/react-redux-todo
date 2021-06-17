@@ -258,7 +258,9 @@ router.post('/createProject', async (req, res) => {
     try {
         const { projectName, projectKey, userId } = req.body
 
-        const project = new Project({ title: projectName, description: '', key: projectKey, owner: userId, cards: [], participants: [userId] })
+        const user = await User.findOne({ _id: userId })
+
+        const project = new Project({ title: projectName, description: '', key: projectKey, owner: userId, cards: [], participants: [user.email] })
         await project.save()
 
         const tasksCard = new Card({ name: 'Бэклог', items: [], project: project.id })
