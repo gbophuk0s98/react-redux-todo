@@ -62,6 +62,7 @@ const SimpleSelect = ({ selectedTodo, selectedProject, cards, moveCardItem, save
 
     return (
         <Select
+            placeholder={'Выберите карточку...'}
             value={myArr[index]}
             components={{ Option: CustomOption }}
             options={options.map(option => getObj(option))}

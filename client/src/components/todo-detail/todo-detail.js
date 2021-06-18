@@ -41,6 +41,8 @@ const useStyles = makeStyles((theme) => ({
 
 const TodoDetail = ({ headers, selectedTodo, todoUpdate, selectedTodoLoading, todoUpdateDescription }) => {
 
+    console.log(selectedTodo)
+
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState(``)
     const classes = useStyles()

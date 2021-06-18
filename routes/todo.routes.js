@@ -55,8 +55,7 @@ router.get('/getTodo', async (req, res) => {
     try {
         const id = req.headers.todo.split(' ')[1]
         const [todo] = await Todo.find({ _id: id })
-        const project = await Project.findOne({ _id: todo.owner })
-        const user = await User.findOne({ _id: project.owner })
+        const user = await User.findOne({ _id: todo.creator })
         const todoToFront = {
             _id: todo._id,
             customId: todo.customId,
@@ -81,7 +80,8 @@ router.get('/getTodo', async (req, res) => {
 router.post('/createTodo', async (req, res) => {
     try {
         const projectId = req.headers.project.split(' ')[1]
-        const userId = req.headers.user.split('')[1]
+        const userId = req.headers.user.split(' ')[1]
+        console.log(userId)
         const { content, startDate, endDate } = req.body
         const customId = uuid.v4()
 
@@ -89,6 +89,8 @@ router.post('/createTodo', async (req, res) => {
 
         if (!card) return res.status(400).json({ message: 'Нельзя создать запись без владельца. Чтобы создать запись, нужна карточка!' })
         const allTodos = await Todo.find({ owner: projectId })
+        const user = await User.find({ _id: userId })
+        console.log(user)
 
         const todo = new Todo({
             customId: customId,
@@ -115,6 +117,8 @@ router.post('/createTodo', async (req, res) => {
             background: todo.background,
             priority: todo.priority,
             creationNumber: todo.creationNumber,
+            creator: user._id,
+            creatorEmail: user.email,
         }
 
         let cardItem = { ...todoToFront, posNumber: card.items.length }
