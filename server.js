@@ -22,7 +22,7 @@ if (process.env.NODE_ENV == 'production'){
 app.listen(PORT, async () => {
     try
     {
-        await mongo.connect(REMOTE_DB, {
+        await mongo.connect(LOCAL_DB, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         }).then(() => console.log(`The server is running on port ${PORT}`))

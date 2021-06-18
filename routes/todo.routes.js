@@ -81,6 +81,7 @@ router.get('/getTodo', async (req, res) => {
 router.post('/createTodo', async (req, res) => {
     try {
         const projectId = req.headers.project.split(' ')[1]
+        const userId = req.headers.user.split('')[1]
         const { content, startDate, endDate } = req.body
         const customId = uuid.v4()
 
@@ -96,6 +97,7 @@ router.post('/createTodo', async (req, res) => {
             startDate: startDate,
             endDate: endDate,
             owner: projectId,
+            creator: userId,
             background: 'rgba(69, 108, 134, 1)',
             priority: 'Средний',
             creationNumber: allTodos.length + 1
@@ -326,38 +328,40 @@ router.get('/getProjects', async (req, res) => {
         const userId = req.headers.user.split(' ')[1]
         const projects = await Project.find({ owner: userId })
         const user = await User.findOne({ _id: userId })
-        const [{ userName }] = await User.find({ _id: userId })
-        const newProjects = projects.map(project => {
+        const projectsList = projects.map(project => {
             return {
                 _id: project._id,
                 title: project.title,
                 description: project.description,
                 key: project.key,
-                owner: userName
+                owner: user.userName
             }
         })
 
-        const participatesInProjects = await Project.find({
+        let participatesInProjects = [],
+            projectsToClient = []
+
+        participatesInProjects = await Project.find({
             participants: { "$elemMatch": { $eq: user.email } }
         })
 
-        const projectsToClient = []
-
         for (const project of participatesInProjects) {
-            const user = await User.findOne({ _id: project.owner })
-            const projectToFront = { 
-                cards: project.cards,
-                participants: project.participants,
-                _id: project._id,
-                title: project.title,
-                description: project.description,
-                key: project.key,
-                owner: user.userName,
+            if (projectsList.findIndex(({ _id }) => project._id.toString() === _id.toString()) === -1) {
+                const user = await User.findOne({ _id: project.owner })
+                const projectToFront = {
+                    cards: project.cards,
+                    participants: project.participants,
+                    _id: project._id,
+                    title: project.title,
+                    description: project.description,
+                    key: project.key,
+                    owner: user.userName,
+                }
+                projectsToClient.push(projectToFront)
             }
-            projectsToClient.push(projectToFront)
         }
 
-        return res.status(200).json([...newProjects, ...projectsToClient])
+        return res.status(200).json([...projectsList, ...projectsToClient])
     }
     catch (e) {
         errorResponse(res, e)

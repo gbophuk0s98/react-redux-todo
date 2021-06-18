@@ -7,6 +7,7 @@ const schema = new Schema({
     startDate: { type: String, required: true },
     endDate: { type: String, required: true },
     owner: { type: Types.ObjectId, ref: 'projects' },
+    creator: { type: Types.ObjectId, ref: 'users' },
     background: { type: String, required: false, default: 'rgba(27, 42, 53, 1)' },
     creationNumber: { type: String, required: true },
     priority: { type: String, required: false },

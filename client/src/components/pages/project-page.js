@@ -49,9 +49,9 @@ const ProjectPage = ({ headers, createProject, loading, user }) => {
         } else setProject({ [name]: value, projectKey: '' })
     }
 
-    const onCreateHandler = e => {
+    const onCreateHandler = async (e) => {
         e.preventDefault()
-        createProject({ ...project, userId: user.id }, headers)
+        await createProject({ ...project, userId: user.id }, headers)
         history.push('/projectList')
     }
 
