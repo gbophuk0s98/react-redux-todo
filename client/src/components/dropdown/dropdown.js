@@ -31,7 +31,7 @@ const DropDown = ({ headers, recentProjects, fetchProject, clearSelectedTodo, cl
                 onClick={handleClick}
                 style={{ width: '100%' }}
             >
-                Проекты
+                Доски
                 <ArrowDropDownIcon />
             </Button>
             <Menu
@@ -62,8 +62,8 @@ const DropDown = ({ headers, recentProjects, fetchProject, clearSelectedTodo, cl
                     })
                 }
                 <MenuItem onClick={handleClose}>
-                    <Button component={Link} to='projectList'>
-                        Все проекты
+                    <Button component={Link} to='boardList'>
+                        Все доски
                     </Button>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>

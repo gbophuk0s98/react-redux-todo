@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { fetchProjects, fetchProject, setRecentProjects, clearSelectedTodo } from '../../actions'
 
 import Spinner from '../spinner'
-import { CreateProjectLink } from '../create-project-link'
+import { CreateBoardLink } from '../create-project-link'
 import ProjectDetailsDialog from '../project-details-dialog'
 
 import {
@@ -24,9 +24,9 @@ import {
 import SettingsIcon from '@material-ui/icons/Settings'
 
 const columns = [
-    { id: 'projectName', label: 'Проект', minWidth: 170, aling: 'left' },
+    { id: 'projectName', label: 'Доска', minWidth: 170, aling: 'left' },
     { id: 'projectKey', label: 'Ключ', minWidth: 100, aling: 'left' },
-    { id: 'projectOwner', label: 'Администратор', minWidth: 170, aling: 'left' },
+    { id: 'projectOwner', label: 'Создатель', minWidth: 170, aling: 'left' },
     { id: 'projectSettings', label: '', minWidth: 50, align: 'left' }
 ]
 
@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const ProjectListPage = ({ headers, projects, loading, fetchProjects, fetchProject, setRecentProjects, clearSelectedTodo }) => {
+const BoardListPage = ({ headers, projects, loading, fetchProjects, fetchProject, setRecentProjects, clearSelectedTodo }) => {
 
     const history = useHistory()
 
@@ -117,16 +117,18 @@ const ProjectListPage = ({ headers, projects, loading, fetchProjects, fetchProje
                     {project.owner}
                 </TableCell>
                 <TableCell>
-                    <IconButton onClick={() => onSettingsIconClick(project._id)}>
-                        <SettingsIcon />
-                    </IconButton>
+                    <Button
+                        onClick={() => onSettingsIconClick(project._id)}
+                    >
+                        Добавить пользователя
+                    </Button>
                 </TableCell>
             </TableRow>
         )
     }
 
     if (loading) return <Spinner />
-    if (projects.length === 0) return <CreateProjectLink />
+    if (projects.length === 0) return <CreateBoardLink />
 
     return (
         <>
@@ -186,4 +188,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectListPage)
+export default connect(mapStateToProps, mapDispatchToProps)(BoardListPage)

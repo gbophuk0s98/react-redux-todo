@@ -133,12 +133,12 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
 
     const renderLinks = (
         <>
-            <Typography className={classes.titleApp} style={{ marginRight: 15 }}>CroCodileUI</Typography>
+            <Typography className={classes.titleApp} style={{ marginRight: 15 }}>Управление персональными задачами</Typography>
             <Button onClick={() => setOpen(false)} className={classes.headerBtn} component={Link} to='/cards'>
-                <Typography className={classes.btnText}>Главная</Typography>
+                <Typography className={classes.btnText}>Карточки</Typography>
             </Button>
             <Button onClick={() => setOpen(false)} className={classes.headerBtn} component={Link} to='/roadmap'>
-                <Typography className={classes.btnText}>Дорожная карта</Typography>
+                <Typography className={classes.btnText}>Задачи</Typography>
             </Button>
             <DropDown classes={classes.headerBtn} />
         </>
@@ -189,7 +189,7 @@ const Header = ({ logoutHandler, setTheme, theme, selectedProject, user }) => {
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
                         <Typography className={classes.projectTextColor}>
-                            {selectedProject.title && `Текущий проект: ${selectedProject.title}`}
+                            {selectedProject.title && `Текущая доска: ${selectedProject.title}`}
                         </Typography>
                         <IconButton
                             edge="end"

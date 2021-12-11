@@ -81,13 +81,15 @@ router.get('/getTodo', async (req, res) => {
 router.post('/createTodo', async (req, res) => {
     try {
         const projectId = req.headers.project.split(' ')[1]
-        const userId = req.headers.user.split('')[1]
+        const userId = req.headers.user.split(' ')[1]
         const { content, startDate, endDate } = req.body
         const customId = uuid.v4()
 
         const card = await Card.findOne({ project: projectId })
 
-        if (!card) return res.status(400).json({ message: 'Нельзя создать запись без владельца. Чтобы создать запись, нужна карточка!' })
+        if (!card) {
+            return res.status(400).json({ message: 'Нельзя создать запись без владельца. Чтобы создать запись, нужна карточка!' })
+        }
         const allTodos = await Todo.find({ owner: projectId })
 
         const todo = new Todo({
@@ -103,25 +105,12 @@ router.post('/createTodo', async (req, res) => {
             creationNumber: allTodos.length + 1
         })
 
-        await todo.save()
+        let cardItem = { ...todo, posNumber: card.items.length }
 
-        let todoToFront = {
-            _id: todo._id,
-            customId: todo.customId,
-            description: todo.description,
-            content: todo.content,
-            startDate: todo.startDate,
-            endDate: todo.endDate,
-            background: todo.background,
-            priority: todo.priority,
-            creationNumber: todo.creationNumber,
-        }
-
-        let cardItem = { ...todoToFront, posNumber: card.items.length }
-
+        await todo.save();
         await Card.updateOne({ _id: card.id }, { $push: { items: cardItem } })
 
-        return res.status(200).json(todoToFront)
+        return res.status(200).json(todo)
     }
     catch (e) {
         errorResponse(res, e)
@@ -268,10 +257,10 @@ router.post('/createProject', async (req, res) => {
         const tasksCard = new Card({ name: 'Бэклог', items: [], project: project.id })
         await tasksCard.save()
 
-        const selectedCard = new Card({ name: 'Выбрано для разработки', items: [], project: project.id })
+        const selectedCard = new Card({ name: 'Выбрано для выполнения', items: [], project: project.id })
         await selectedCard.save()
 
-        const processingCard = new Card({ name: 'В работе', items: [], project: project.id })
+        const processingCard = new Card({ name: 'В процессе', items: [], project: project.id })
         await processingCard.save()
 
         const doneCard = new Card({ name: 'Готово', items: [], project: project.id })
@@ -312,7 +301,7 @@ router.post('/addParticipant', async (req, res) => {
         const projectParticipates = await Project.findOne({ _id: projectId })
 
         if (projectParticipates.participants.includes(email))
-            return res.status(400).json({ message: 'Такой пользователь уже добавлен в проект' })
+            return res.status(400).json({ message: 'Такой пользователь уже добавлен в доску' })
 
         await Project.updateOne({ _id: projectId }, { $push: { participants: email } })
 
@@ -326,6 +315,7 @@ router.post('/addParticipant', async (req, res) => {
 router.get('/getProjects', async (req, res) => {
     try {
         const userId = req.headers.user.split(' ')[1]
+        console.log("userId", userId);
         const projects = await Project.find({ owner: userId })
         const user = await User.findOne({ _id: userId })
         const projectsList = projects.map(project => {

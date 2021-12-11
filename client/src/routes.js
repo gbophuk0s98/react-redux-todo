@@ -23,13 +23,13 @@ export const useRoutes = (isAuthenticated = true) => {
                             <Route path="/createProject" exact>
                                 <ProjectPage />
                             </Route>
-                            <Route path="/projectList" exact>
+                            <Route path="/boardList" exact>
                                 <ProjectListPage />
                             </Route>
                             <Route path="/cardsSettings">
                                 <CardManagement />
                             </Route>
-                            <Redirect to='/projectList' />
+                            <Redirect to='/boardList' />
                         </Switch>
                     </div>
                 </>

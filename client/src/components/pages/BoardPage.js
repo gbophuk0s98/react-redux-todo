@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import * as actions from '../../actions'
 import { Button, Card, CardContent, makeStyles, TextField } from '@material-ui/core'
 
-import './pages-css/project-page.css'
+import './css/project-page.css'
 
 const makeId = () => {
     let text = ""
@@ -30,9 +30,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ProjectPage = ({ headers, createProject, loading, user }) => {
+const BoardPage = ({ headers, createProject, loading, user }) => {
 
-    const [project, setProject] = useState({
+    const [board, setBoard] = useState({
         projectName: '',
         projectKey: '',
     })
@@ -42,17 +42,23 @@ const ProjectPage = ({ headers, createProject, loading, user }) => {
     const classes = useStyles()
 
     const onChangeHandler = e => {
-        const { name, value } = e.target
-
-        if (project.projectName.length >= 2 && value.length > 2) {
-            setProject({ [name]: value, projectKey: makeId() })
-        } else setProject({ [name]: value, projectKey: '' })
+        if (board.projectName.length >= 2) {
+            setBoard({
+                projectName: e.target.value,
+                projectKey: makeId()
+            })
+        } else {
+            setBoard({
+                projectName: e.target.value,
+                projectKey: ''
+            })
+        }
     }
 
     const onCreateHandler = async (e) => {
         e.preventDefault()
-        await createProject({ ...project, userId: user.id }, headers)
-        history.push('/projectList')
+        await createProject({ ...board, userId: user.id }, headers)
+        history.push('/boardList')
     }
 
     return (
@@ -60,8 +66,8 @@ const ProjectPage = ({ headers, createProject, loading, user }) => {
             <CardContent className={classes.cardContent}>
                 <TextField
                     name="projectName"
-                    value={project.projectName}
-                    label="Название проекта"
+                    value={board.projectName}
+                    label="Название доски"
                     onChange={onChangeHandler}
                 />
                 <TextField
@@ -70,11 +76,11 @@ const ProjectPage = ({ headers, createProject, loading, user }) => {
                     id="standard-basic2"
                     label="Ключ"
                     disabled={true}
-                    value={project.projectKey}
+                    value={board.projectKey}
                 />
                 <div className="d-flex justify-content-end mt-3 mb-2 flex-row">
                     <Button
-                        disabled={project.projectName.length > 2 ? false : true}
+                        disabled={!board.projectName.length > 2}
                         onClick={e => onCreateHandler(e)}
                     >
                         <span className="btn-text">Создать</span>
@@ -114,4 +120,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectPage)
+export default connect(mapStateToProps, mapDispatchToProps)(BoardPage)

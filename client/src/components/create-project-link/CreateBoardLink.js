@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const CreateProjectLink = () => {
+const CreateBoardLink = () => {
 
     const classes = useStyles()
 
@@ -21,15 +21,9 @@ const CreateProjectLink = () => {
         <Typography
             className={classes.indent}
         >
-            <span className={classes.textColor}>
-                {`Для начала`}
-            </span>
-            <Link to='/createProject'>
-                {` создайте `}
-            </Link>
-            <span className={classes.textColor}>
-                {`проект!`}
-            </span>
+            <span className={classes.textColor}>Для начала</span>
+            <Link to='/createProject'>{" создайте "}</Link>
+            <span className={classes.textColor}>доску!</span>
         </Typography>
     )
 }
@@ -43,7 +37,7 @@ const SelectProjectMessage = () => {
             className={classes.indent}
         >
             <span className={classes.textColor}>
-                {`Выберите проект`}
+                {`Выберите доску`}
             </span>
         </Typography>
     )
@@ -51,6 +45,6 @@ const SelectProjectMessage = () => {
 }
 
 export {
-    CreateProjectLink,
+    CreateBoardLink,
     SelectProjectMessage
 }

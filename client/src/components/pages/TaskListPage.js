@@ -7,7 +7,7 @@ import ErrorAlertWrapper from '../error-alert'
 import Spinner from '../spinner'
 import TodoDetail from '../todo-detail'
 import CustomDateRangePicker from '../date-range-picker'
-import { CreateProjectLink, SelectProjectMessage } from '../create-project-link'
+import { CreateBoardLink, SelectProjectMessage } from '../create-project-link'
 import {
     makeStyles,
     Table,
@@ -25,7 +25,7 @@ import {
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 
-import './pages-css/roadmap-page.css'
+import './css/roadmap-page.css'
 
 const getDate = (plusMonth = 0) => `${(new Date().getMonth() + 1) + plusMonth}/${new Date().getDate()}/${new Date().getFullYear()}`
 
@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const RoadMapPage = ({
+const TaskListPage = ({
     headers, todos, todoCreated, loading, projectListIsEmpty,
     fetchTodos, todoSelected, selectedProject
 }) => {
@@ -169,7 +169,7 @@ const RoadMapPage = ({
     }
 
 
-    if (projectListIsEmpty) return <CreateProjectLink />
+    if (projectListIsEmpty) return <CreateBoardLink />
     if (!selectedProject._id) return <SelectProjectMessage />
     if (loading) return <Spinner />
 
@@ -248,4 +248,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateTopProps, mapDispatchToProps)(RoadMapPage)
+export default connect(mapStateTopProps, mapDispatchToProps)(TaskListPage)

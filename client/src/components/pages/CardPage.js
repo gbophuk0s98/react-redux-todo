@@ -6,11 +6,11 @@ import { useHistory } from 'react-router-dom'
 import Card from '../card'
 import { transferCardsItems, fetchCards, saveCards } from '../../actions'
 import Spinner from '../spinner'
-import { CreateProjectLink, SelectProjectMessage } from '../create-project-link'
+import { CreateBoardLink, SelectProjectMessage } from '../create-project-link'
 import { IconButton, makeStyles } from '@material-ui/core'
 import SettingsIcon from '@material-ui/icons/Settings'
 
-import './pages-css/card-page.css'
+import './css/card-page.css'
 
 const sortCards = (cards, projectItems) => {
     return cards.sort((a, b) => {
@@ -70,7 +70,7 @@ const CardPage = ({ headers, cards, loading, transferCardsItems, fetchCards, sel
         transferCardsItems(result)
     }
 
-    if (projectListIsEmpty) return <CreateProjectLink />
+    if (projectListIsEmpty) return <CreateBoardLink />
     if (!selectedProject._id) return <SelectProjectMessage />
     if (loading) return <Spinner />
 

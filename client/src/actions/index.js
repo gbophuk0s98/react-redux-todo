@@ -153,7 +153,7 @@ const todoSelected = (headers) => (dispatch) => {
 const projectUpdate = (projectId, items, headers) => (dispatch) => {
     service.updateProjectItems({ projectId, items }, headers)
         .then(() => dispatch(fetchProject(headers)))
-        .then(() => dispatch(setUniversalMessage('Проект обновлен!')))
+        .then(() => dispatch(setUniversalMessage('Доска обновлена!')))
         .catch(err => dispatch(setUniversalError(err.message)))
 }
 

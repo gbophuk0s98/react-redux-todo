@@ -27,9 +27,12 @@ const loginFormValidator = [
 router.post('/login', loginFormValidator, async (req, res) => {
     try {
         const errors = validationResult(req.body)
-        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array(), message: 'Проверьте правильность вводимых данных!' })
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array(), message: 'Проверьте правильность вводимых данных!' });
+        }
 
         const { email, password } = req.body
+        console.log("req.body", req.body)
 
         const user = await User.findOne({ email })
         if (!user) return res.status(400).json({ message: 'Пользователь не найден!' })

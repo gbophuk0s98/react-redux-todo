@@ -58,14 +58,13 @@ const ProjectDetailsDialog = ({ projectId, openDialog, handleClose, addParticipa
                 onClose={handleClose}
                 aria-labelledby="dialog-title"
             >
-                <DialogTitle id="dialog-title">Настройки проекта</DialogTitle>
                 <DialogContent dividers>
                     <Grid container spacing={3}>
                         <Grid
                             item
                             xs={3}
                         >
-                            <Typography>Добавить пользователя</Typography>
+                            <Typography>Email пользователя</Typography>
                         </Grid>
                         <Grid
                             item

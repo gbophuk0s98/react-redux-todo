@@ -1,6 +1,6 @@
-import { CreateProjectLink, SelectProjectMessage } from './create-project-link'
+import { CreateBoardLink, SelectProjectMessage } from './CreateBoardLink'
 
 export {
-    CreateProjectLink,
+    CreateBoardLink,
     SelectProjectMessage
 }

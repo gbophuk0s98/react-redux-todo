@@ -1,9 +1,9 @@
-import CardPage from './card-page'
-import RoadMapPage from './roadmap-page'
-import ProjectPage from './project-page'
-import ProjectListPage from './project-list-page'
-import SignIn from './sign-in-page'
-import SignUp from './sign-up-page'
+import CardPage from './CardPage'
+import RoadMapPage from './TaskListPage'
+import ProjectPage from './BoardPage'
+import ProjectListPage from './BoardListPage'
+import SignIn from './SignInPage'
+import SignUp from './SignUpPage'
 
 export {
     CardPage,
