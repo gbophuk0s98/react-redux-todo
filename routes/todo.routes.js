@@ -314,8 +314,7 @@ router.post('/addParticipant', async (req, res) => {
 
 router.get('/getProjects', async (req, res) => {
     try {
-        const userId = req.headers.user.split(' ')[1]
-        console.log("userId", userId);
+        const userId = req.headers.user.split(' ')[1];
         const projects = await Project.find({ owner: userId })
         const user = await User.findOne({ _id: userId })
         const projectsList = projects.map(project => {

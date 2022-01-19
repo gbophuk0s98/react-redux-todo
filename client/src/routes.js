@@ -42,7 +42,7 @@ export const useRoutes = (isAuthenticated = true) => {
                         <SnackbarProvider 
                             anchorOrigin={{
                                 vertical: 'top',
-                                horizontal: 'left',
+                                horizontal: 'center',
                             }}
                             maxSnack={4}
                         >
@@ -53,7 +53,7 @@ export const useRoutes = (isAuthenticated = true) => {
                         <SnackbarProvider 
                             anchorOrigin={{
                                 vertical: 'top',
-                                horizontal: 'left',
+                                horizontal: 'center',
                             }}
                             maxSnack={4}
                         >

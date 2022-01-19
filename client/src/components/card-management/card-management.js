@@ -84,7 +84,7 @@ const CardManagement = ({ headers, selectedProject, projectUpdate, createCard, c
                 <Button
                     onClick={handleOpen}
                 >
-                    {'Добавить столбец...'}
+                    {'Добавить карточку...'}
                 </Button>
                 <Button
                     onClick={() => history.goBack()}

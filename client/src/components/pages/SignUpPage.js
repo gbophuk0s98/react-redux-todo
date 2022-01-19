@@ -139,9 +139,6 @@ const SignUp = ({ errors, form, registerHandler, changeSignUpForm, formLoading, 
                     </Link>
                 </Grid>
             </Grid>
-            <Box mt={4}>
-                <Copyright />
-            </Box>
             <ErrorAlertWrapper />
         </Container>
     )

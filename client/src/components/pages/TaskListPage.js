@@ -30,8 +30,8 @@ import './css/roadmap-page.css'
 const getDate = (plusMonth = 0) => `${(new Date().getMonth() + 1) + plusMonth}/${new Date().getDate()}/${new Date().getFullYear()}`
 
 const columns = [
-    { id: 'epicName', label: 'Epic', minWidth: 170, aling: 'left' },
-    { id: 'epicKey', label: 'Epic key', minWidth: 50, aling: 'left' },
+    { id: 'epicName', label: 'Задача', minWidth: 170, aling: 'left' },
+    { id: 'epicKey', label: 'Ключ', minWidth: 50, aling: 'left' },
     { id: 'epicDate', label: 'Срок выполнения', minWidth: 100, aling: 'left' },
 ]
 
@@ -130,7 +130,7 @@ const TaskListPage = ({
         return (
             <>
                 <TextField
-                    label="Epic"
+                    label="Задача"
                     variant="outlined"
                     name="content"
                     autoFocus={true}
@@ -146,7 +146,7 @@ const TaskListPage = ({
                 <Button
                     onClick={() => setShowInput(!showInput)}
                 >
-                    {'Создать Epic...'}
+                    {'Создать задачу'}
                 </Button>
             </>
         )

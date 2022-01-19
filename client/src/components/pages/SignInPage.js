@@ -13,9 +13,7 @@ import { makeStyles, Container, Typography, Box, TextField, Button, Avatar, Grid
 
 const Copyright = () => (
     <Typography variant="body2" color="textSecondary" align="center">
-        {'gbophuk0s98© '}
-        {new Date().getFullYear()}
-        {'.'}
+
     </Typography>
 )
 
@@ -110,9 +108,6 @@ const SingIn = ({ errors, form, loginHandler, changeSignInForm, formLoading, cle
                     </Grid>
                 </div>
             </div>
-            <Box mt={4}>
-                <Copyright />
-            </Box>
             <ErrorAlertWrapper />
         </Container>
     )
